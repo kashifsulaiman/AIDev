@@ -1,0 +1,48 @@
+{
+  "name": "ai-dev",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "node --max-old-space-size=4096 node_modules/.bin/next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
+    "@nextui-org/react": "^2.4.8",
+    "@tanstack/react-query": "4.29.7",
+    "@types/js-cookie": "^3.0.6",
+    "axios": "^1.7.7",
+    "easy-peasy": "^6.0.5",
+    "formik": "^2.4.6",
+    "framer-motion": "^11.11.7",
+    "jose": "^5.9.6",
+    "js-cookie": "^3.0.5",
+    "next": "^14.2.15",
+    "prismjs": "^1.29.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.3.0",
+    "react-live": "^4.1.7",
+    "react-query": "^3.39.3",
+    "react-toastify": "^10.0.6",
+    "swiper": "^11.1.14",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.14",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

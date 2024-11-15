@@ -1,0 +1,189 @@
+{
+  "id": "0",
+  "name": "root",
+  "type": 1,
+  "depth": 0,
+  "dirs": [
+    {
+      "id": "B18nc1Qrc",
+      "name": ".codesandbox",
+      "parentId": "0",
+      "type": 1,
+      "depth": 1,
+      "dirs": [],
+      "files": []
+    },
+    {
+      "id": "H1rMWpafrq",
+      "name": "public",
+      "parentId": "0",
+      "type": 1,
+      "depth": 1,
+      "dirs": [],
+      "files": [
+        {
+          "id": "Hkfgz-TpfS9",
+          "name": "index.html",
+          "parentId": "H1rMWpafrq",
+          "type": 0,
+          "depth": 2,
+          "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <link rel=\"icon\" href=\"%PUBLIC_URL%/favicon.ico\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <meta name=\"theme-color\" content=\"#000000\" />\n    <meta\n      name=\"description\"\n      content=\"Web site created using create-react-app\"\n    />\n    <link rel=\"apple-touch-icon\" href=\"%PUBLIC_URL%/logo192.png\" />\n    <!--\n      manifest.json provides metadata used when your web app is installed on a\n      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/\n    -->\n    <link rel=\"manifest\" href=\"%PUBLIC_URL%/manifest.json\" />\n    <!--\n      Notice the use of %PUBLIC_URL% in the tags above.\n      It will be replaced with the URL of the `public` folder during the build.\n      Only files inside the `public` folder can be referenced from the HTML.\n\n      Unlike \"/favicon.ico\" or \"favicon.ico\", \"%PUBLIC_URL%/favicon.ico\" will\n      work correctly both with client-side routing and a non-root public URL.\n      Learn how to configure a non-root public URL by running `npm run build`.\n    -->\n    <title>React App</title>\n  </head>\n  <body>\n    <noscript>You need to enable JavaScript to run this app.</noscript>\n    <div id=\"root\"></div>\n    <!--\n      This HTML file is a template.\n      If you open it directly in the browser, you will see an empty page.\n\n      You can add webfonts, meta tags, or analytics to this file.\n      The build step will place the bundled scripts into the <body> tag.\n\n      To begin the development, run `npm start` or `yarn start`.\n      To create a production bundle, use `npm run build` or `yarn build`.\n    -->\n  </body>\n</html>\n"
+        }
+      ]
+    },
+    {
+      "id": "ryLzZTpfr5",
+      "name": "src",
+      "parentId": "0",
+      "type": 1,
+      "depth": 1,
+      "dirs": [
+        {
+          "id": "SJDzbapfSq",
+          "name": "components",
+          "parentId": "ryLzZTpfr5",
+          "type": 1,
+          "depth": 2,
+          "dirs": [],
+          "files": [
+            {
+              "id": "B1_xMWaTzB5",
+              "name": "file-tree.tsx",
+              "parentId": "SJDzbapfSq",
+              "type": 0,
+              "depth": 3,
+              "content": "import React, {useState} from 'react'\nimport {Directory, File, sortDir, sortFile} from \"../utils/file-manager\";\nimport {getIcon} from \"./icon\";\nimport styled from \"@emotion/styled\";\n\ninterface FileTreeProps {\n  rootDir: Directory;   // 根目录\n  selectedFile: File | undefined;   // 当前选中文件\n  onSelect: (file: File) => void;  // 更改选中时触发事件\n}\n\nexport const FileTree = (props: FileTreeProps) => {\n  return <SubTree directory={props.rootDir} {...props}/>\n}\n\ninterface SubTreeProps {\n  directory: Directory;   // 根目录\n  selectedFile: File | undefined;   // 当前选中文件\n  onSelect: (file: File) => void;  // 更改选中时触发事件\n}\n\nconst SubTree = (props: SubTreeProps) => {\n  return (\n    <div>\n      {\n        props.directory.dirs\n          .sort(sortDir)\n          .map(dir => (\n            <React.Fragment key={dir.id}>\n              <DirDiv\n                directory={dir}\n                selectedFile={props.selectedFile}\n                onSelect={props.onSelect}/>\n            </React.Fragment>\n          ))\n      }\n      {\n        props.directory.files\n          .sort(sortFile)\n          .map(file => (\n            <React.Fragment key={file.id}>\n              <FileDiv\n                file={file}\n                selectedFile={props.selectedFile}\n                onClick={() => props.onSelect(file)}/>\n            </React.Fragment>\n          ))\n      }\n    </div>\n  )\n}\n\nconst FileDiv = ({file, icon, selectedFile, onClick}: {\n  file: File | Directory; // 当前文件\n  icon?: string;          // 图标名称\n  selectedFile: File | undefined;     // 选中的文件\n  onClick: () => void;    // 点击事件\n}) => {\n  const isSelected = (selectedFile && selectedFile.id === file.id) as boolean;\n  const depth = file.depth;\n  return (\n    <Div\n      depth={depth}\n      isSelected={isSelected}\n      onClick={onClick}>\n      <FileIcon\n        name={icon}\n        extension={file.name.split('.').pop() || \"\"}/>\n      <span style={{marginLeft: 1}}>\n        {file.name}\n      </span>\n    </Div>\n  )\n}\n\nconst Div = styled.div<{\n  depth: number;\n  isSelected: boolean;\n}>`\n  display: flex;\n  align-items: center;\n  padding-left: ${props => props.depth * 16}px;\n  background-color: ${props => props.isSelected ? \"#242424\" : \"transparent\"};\n\n  :hover {\n    cursor: pointer;\n    background-color: #242424;\n  }\n`\n\nconst DirDiv = ({directory, selectedFile, onSelect}: {\n  directory: Directory;  // 当前目录\n  selectedFile: File | undefined;    // 选中的文件\n  onSelect: (file: File) => void;  // 点击事件\n}) => {\n  let defaultOpen = false;\n  if (selectedFile)\n    defaultOpen = isChildSelected(directory, selectedFile)\n  const [open, setOpen] = useState(defaultOpen);\n  return (\n    <>\n      <FileDiv\n        file={directory}\n        icon={open ? \"openDirectory\" : \"closedDirectory\"}\n        selectedFile={selectedFile}\n        onClick={() => setOpen(!open)}/>\n      {\n        open ? (\n          <SubTree\n            directory={directory}\n            selectedFile={selectedFile}\n            onSelect={onSelect}/>\n        ) : null\n      }\n    </>\n  )\n}\n\n\nconst isChildSelected = (directory: Directory, selectedFile: File) => {\n  let res: boolean = false;\n\n  function isChild(dir: Directory, file: File) {\n    if (selectedFile.parentId === dir.id) {\n      res = true;\n      return;\n    }\n    if (selectedFile.parentId === '0') {\n      res = false;\n      return;\n    }\n    dir.dirs.forEach((item) => {\n      isChild(item, file);\n    })\n  }\n\n  isChild(directory, selectedFile);\n  return res;\n}\n\nconst FileIcon = ({extension, name}: { name?: string, extension?: string }) => {\n  let icon = getIcon(extension || \"\", name || \"\");\n  return (\n    <Span>\n      {icon}\n    </Span>\n  )\n}\n\nconst Span = styled.span`\n  display: flex;\n  width: 32px;\n  height: 32px;\n  justify-content: center;\n  align-items: center;\n`\n\n"
+            },
+            {
+              "id": "SyKlMZTTGSq",
+              "name": "icon.tsx",
+              "parentId": "SJDzbapfSq",
+              "type": 0,
+              "depth": 3,
+              "content": "import React, { ReactNode } from \"react\";\nimport {\n  SiHtml5,\n  SiCss3,\n  SiJavascript,\n  SiTypescript,\n  SiJson,\n} from \"react-icons/si\";\nimport { FcFolder, FcOpenedFolder, FcPicture, FcFile } from \"react-icons/fc\";\nimport { AiFillFileText } from \"react-icons/ai\";\n\nfunction getIconHelper() {\n  const cache = new Map<string, ReactNode>();\n  cache.set(\"js\", <SiJavascript color=\"#fbcb38\" />);\n  cache.set(\"jsx\", <SiJavascript color=\"#fbcb38\" />);\n  cache.set(\"ts\", <SiTypescript color=\"#378baa\" />);\n  cache.set(\"tsx\", <SiTypescript color=\"#378baa\" />);\n  cache.set(\"css\", <SiCss3 color=\"purple\" />);\n  cache.set(\"json\", <SiJson color=\"#5656e6\" />);\n  cache.set(\"html\", <SiHtml5 color=\"#e04e2c\" />);\n  cache.set(\"png\", <FcPicture />);\n  cache.set(\"jpg\", <FcPicture />);\n  cache.set(\"ico\", <FcPicture />);\n  cache.set(\"txt\", <AiFillFileText color=\"white\" />);\n  cache.set(\"closedDirectory\", <FcFolder />);\n  cache.set(\"openDirectory\", <FcOpenedFolder />);\n  return function (extension: string, name: string): ReactNode {\n    if (cache.has(extension)) return cache.get(extension);\n    else if (cache.has(name)) return cache.get(name);\n    else return <FcFile />;\n  };\n}\n\nexport const getIcon = getIconHelper();\n"
+            },
+            {
+              "id": "rJcgzWaafHc",
+              "name": "sidebar.tsx",
+              "parentId": "SJDzbapfSq",
+              "type": 0,
+              "depth": 3,
+              "content": "import React, {ReactNode} from 'react';\nimport styled from \"@emotion/styled\";\n\nexport const Sidebar = ({children}: { children: ReactNode }) => {\n  return (\n    <Aside>\n      {children}\n    </Aside>\n  )\n}\n\nconst Aside = styled.aside`\n  display: block;\n  width: 250px;\n  height: 100vh;\n  border-right: 2px solid;\n  border-color: #242424;\n  padding-top: 3px;\n`\n\nexport default Sidebar\n"
+            }
+          ]
+        },
+        {
+          "id": "ry_fZ6TfH9",
+          "name": "editor",
+          "parentId": "ryLzZTpfr5",
+          "type": 1,
+          "depth": 2,
+          "dirs": [],
+          "files": [
+            {
+              "id": "SkiefbTafHq",
+              "name": "code.tsx",
+              "parentId": "ry_fZ6TfH9",
+              "type": 0,
+              "depth": 3,
+              "content": "import React from 'react'\nimport Editor from \"@monaco-editor/react\";"
+            }
+          ]
+        },
+        {
+          "id": "SJKM-a6Mr5",
+          "name": "utils",
+          "parentId": "ryLzZTpfr5",
+          "type": 1,
+          "depth": 2,
+          "dirs": [],
+          "files": [
+            {
+              "id": "By--GW6pMHc",
+              "name": "file-manager.tsx",
+              "parentId": "SJKM-a6Mr5",
+              "type": 0,
+              "depth": 3,
+              "content": "export enum Type {\n  FILE, }\n"
+            },
+            {
+              "id": "HkzZf-66GBq",
+              "name": "index.tsx",
+              "parentId": "SJKM-a6Mr5",
+              "type": 0,
+              "depth": 3,
+              "content": "import React from 'react'\n"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "id": "ByBeMb6pMrq",
+          "name": "App.css",
+          "parentId": "ryLzZTpfr5",
+          "type": 0,
+          "depth": 2,
+          "content": "body {\n  font-family: 'Inter', sans-serif;\n  "
+        },
+        {
+          "id": "r18xfbTTzSc",
+          "name": "App.test.tsx",
+          "parentId": "ryLzZTpfr5",
+          "type": 0,
+          "depth": 2,
+          "content": "import React from 'react'"
+        },
+        {
+          "id": "S1vxGZ6TGrc",
+          "name": "App.tsx",
+          "parentId": "ryLzZTpfr5",
+          "type": 0,
+          "depth": 2,
+          "content": "import React, { useState } from \"react\"\n"
+        },
+        {
+          "id": "S12eM-TTzH5",
+          "name": "index.css",
+          "parentId": "ryLzZTpfr5",
+          "type": 0,
+          "depth": 2,
+          "content": "body {\n  margin: 0;\n  \n"
+        },
+        {
+          "id": "HJpgf-aTGH9",
+          "name": "index.tsx",
+          "parentId": "ryLzZTpfr5",
+          "type": 0,
+          "depth": 2,
+          "content": "import React from 'react';\n"
+        },
+        {
+          "id": "SyRxGbp6zrq",
+          "name": "react-app-env.d.ts",
+          "parentId": "ryLzZTpfr5",
+          "type": 0,
+          "depth": 2,
+          "content": "/// <reference types=\"react-scripts\" />\n"
+        },
+        {
+          "id": "HJkbM-pazB5",
+          "name": "reportWebVitals.ts",
+          "parentId": "ryLzZTpfr5",
+          "type": 0,
+          "depth": 2,
+          "content": "import { ReportHandler } from 'web-vitals';\n"
+        },
+        {
+          "id": "H1gbM-ppMr5",
+          "name": "setupTests.ts",
+          "parentId": "ryLzZTpfr5",
+          "type": 0,
+          "depth": 2,
+          "content": ""
+        }
+      ]
+    }
+  ],
+  "files": []
+}

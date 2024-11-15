@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:prettier/recommended" // Add Prettier support
+  ],
+  "plugins": ["prettier"], // Prettier plugin
+  "rules": {
+    "prettier/prettier": "error", // Treat Prettier issues as ESLint errors
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}

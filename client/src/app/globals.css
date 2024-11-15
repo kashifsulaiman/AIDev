@@ -1,0 +1,183 @@
+@import url('https://fonts.cdnfonts.com/css/plus-jakarta-sans');
+@import url('https://fonts.cdnfonts.com/css/sora');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --navbar-height: 5rem;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+.bg-image {
+  background-image: url('https://dc3yp5a9dizw2.cloudfront.net/images/Authback.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.swiper {
+  width: 100%;
+  /* overflow-y: initial !important; */
+  overflow: clip !important;
+  /* overflow: unset !important; */
+  margin: 0px auto;
+  position: relative;
+}
+@media (min-width: 640px) {
+  .swiper {
+    /* padding: 80px 10px !important; */
+    width: 100%;
+    margin: 0px auto;
+    position: relative;
+    overflow: clip;
+  }
+}
+.swiper-button-prev,
+.swiper-button-next {
+  height: auto !important;
+  top: auto !important;
+  padding: 0 !important;
+  margin: 0 !important; 
+}
+.swiper-button-prev,
+.swiper-button-next {
+  background-color: #8a21c4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px !important;
+  height: 40px !important;
+  z-index: 999;
+}
+.swiper-button-prev {
+  color: white !important;
+  position: absolute;
+  left: 47% !important;
+  bottom: -15%;
+}
+.swiper-button-prev:after {
+  font-size: 16px !important;
+  font-weight: 700;
+}
+.swiper-button-next {
+  color: white !important;
+  position: absolute;
+  right: 47% !important;
+  bottom: -15%;
+}
+.swiper-button-next:after {
+  font-size: 16px !important;
+  font-weight: 700;
+}
+
+.form-checkbox[type='checkbox'] {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #94a3b8;
+  border-radius: 2px;
+  display: grid;
+  place-content: center;
+}
+
+.form-checkbox[type='checkbox']::before {
+  background-color: #0f172a;
+  content: '';
+  background-image: url('https://d6k8l1pltsvuc.cloudfront.net/checkMarked.svg');
+  background-size: cover;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+}
+
+.form-checkbox[type='checkbox']:checked::before {
+  transform: scale(1);
+}
+.Scroller-Class::-webkit-scrollbar {
+  width: 0px;
+}
+
+.Scroller-Class::-webkit-scrollbar-track {
+  background: #504e4e;
+}
+
+.Scroller-Class::-webkit-scrollbar-thumb {
+  background: #504e4e;
+}
+
+.Scroller-Class::-webkit-scrollbar-thumb:hover {
+  background: #504e4e;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+.navbar-height {
+  --navbar-height: 85px !important;
+  top:0 !important;
+  
+}
+.DashboardScroller::-webkit-scrollbar {
+  width: 0;
+}
+
+.DashboardScroller:hover::-webkit-scrollbar {
+  width: 10px;
+}
+
+.DashboardScroller::-webkit-scrollbar-track {
+  background: #e6d5ff;
+}
+
+.DashboardScroller::-webkit-scrollbar-thumb {
+
+  background: #a485cfc0;
+
+}
+
+.DashboardScroller::-webkit-scrollbar-thumb:hover {
+  background: #8c54db;
+}
+
+@media (max-width: 1536px) {
+  .swiper-button-prev {
+    left: 45% !important;
+  }
+  .swiper-button-next {
+    right: 45% !important;
+  }
+  
+}
+
+@media (max-width: 1024px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none !important;
+  }
+  
+}
