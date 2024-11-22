@@ -6,7 +6,13 @@
   ],
   "plugins": ["prettier"], // Prettier plugin
   "rules": {
-    "prettier/prettier": "error", // Treat Prettier issues as ESLint errors
+    "prettier/prettier": [
+      "error",  // alternativly change to 'warn' if you want only warning 
+      {
+        "endOfLine": "auto"
+        // ... put other prettier rules here like "semi":flase,
+      }
+    ],
     "@typescript-eslint/no-explicit-any": "off"
   }
 }
