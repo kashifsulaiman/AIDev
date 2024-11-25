@@ -29,7 +29,6 @@ function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
   const jsxCode = prompt?.code;
-  console.log("jsx",jsxCode)
   const cssCode = `.hello {
     color: red;
     font-size: 24px;
@@ -83,19 +82,12 @@ function Page() {
               {/* <Code code={jsxCode} type='javascript' onChange={(value) => setJsxCode(value || "")} />
               <Code code={cssCode} type='css' onChange={(value) => setCssCode(value || "")} /> */}
 
-              {/* <SandpackProvider
+              <SandpackProvider
                 template="react"
                 options={{
                   externalResources: ['https://cdn.tailwindcss.com'],
                 }}
-                files={{
-                  '/App.js': {
-                    code: jsxCode,
-                  },
-                  '/styles.css': {
-                    code: cssCode,
-                  },
-                }}
+                files={jsxCode}
               >
                 <SandpackLayout>
                   <SandpackFileExplorer />
@@ -108,7 +100,7 @@ function Page() {
                   />
                   <SandpackPreview />
                 </SandpackLayout>
-              </SandpackProvider> */}
+              </SandpackProvider>
             </div>
 
             {/* Live Preview */}

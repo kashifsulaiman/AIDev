@@ -40,7 +40,7 @@ const OverviewMain = () => {
       setCode(data?.data?.appFiles);
       setContent(data?.text);
       setLoader(false);
-      promptData.code = data?.code;
+      promptData.code = data?.data?.appFiles;
       setPrompt(promptData);
     } catch (error: any) {
       showToaster(error.message ?? 'Something went wrong', 'error');
