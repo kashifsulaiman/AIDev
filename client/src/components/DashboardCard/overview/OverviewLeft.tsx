@@ -97,7 +97,7 @@ const OverviewLeft = ({ setTypingCompleted, content, loader }: any) => {
                 onComplete={() => setTypingCompleted(false)}
                 speed={10}
               >
-                {content}
+                {content ? content : null}
               </TypingEffect>
             </div>
           </div>

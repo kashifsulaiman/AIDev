@@ -50,10 +50,13 @@ const OverviewRight = ({ typingCompleted, code }: any) => {
             options={{
               externalResources: ['https://cdn.tailwindcss.com'],
             }}
+            style={{
+              height:"100%"
+            }}
             files={code}
           >
-            <SandpackLayout>
-              <SandpackPreview />
+            <SandpackLayout  style={{height:"100%"}}>
+              <SandpackPreview  style={{height:"100%"}}/>
             </SandpackLayout>
           </SandpackProvider>
         </div>

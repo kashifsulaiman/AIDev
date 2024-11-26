@@ -38,7 +38,7 @@ const OverviewMain = () => {
 
       const data = await response.json();
       setCode(data?.data?.appFiles);
-      setContent(data?.text);
+      setContent(data?.data?.text);
       setLoader(false);
       promptData.code = data?.data?.appFiles;
       setPrompt(promptData);

@@ -54,7 +54,7 @@ function Page() {
       ) : (
         <>
           <div className="h-full bg-opacity-25 bg-purple-white-gradient-opactity25 lg:h-screen">
-            <div className="flex">
+            <div className='w-full h-full flex'>
               {/* <Sidebar>
                 <div
                   className={`flex items-center ${true ? 'bg-[#6f63c5] hover:!bg-none' : 'bg-transparent hover:bg-[#b9b2e9]'} mb-0.5 hover:text-white`}
@@ -81,24 +81,28 @@ function Page() {
               </Sidebar> */}
               {/* <Code code={jsxCode} type='javascript' onChange={(value) => setJsxCode(value || "")} />
               <Code code={cssCode} type='css' onChange={(value) => setCssCode(value || "")} /> */}
-
               <SandpackProvider
                 template="react"
                 options={{
                   externalResources: ['https://cdn.tailwindcss.com'],
                 }}
+                style={{
+                  height: '100%',
+                  width: "100%", 
+                }}
                 files={jsxCode}
               >
-                <SandpackLayout>
-                  <SandpackFileExplorer />
+               <SandpackLayout style={{ height:"100%" }}>
+                  <SandpackFileExplorer style={{ height:"100%" }} />
                   <SandpackCodeEditor
                     showTabs
                     showLineNumbers={false}
                     showInlineErrors
                     wrapContent
                     closableTabs
+                    style={{ height:"100%" }}
                   />
-                  <SandpackPreview />
+                  <SandpackPreview style={{height:"100%" }}/>
                 </SandpackLayout>
               </SandpackProvider>
             </div>
