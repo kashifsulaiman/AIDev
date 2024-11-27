@@ -1,9 +1,9 @@
 'use client';
 import Loader from '@/Loader/loading';
 import { useStoreState } from 'easy-peasy';
-import React, { useEffect, useRef, useState } from 'react';
+// import React, { useEffect, useRef, useState } from 'react';
 import { LuCode2 } from 'react-icons/lu';
-import { LiveProvider, LivePreview } from 'react-live';
+// import { LiveProvider, LivePreview } from 'react-live';
 import {
   SandpackProvider,
   SandpackLayout,
@@ -51,12 +51,12 @@ const OverviewRight = ({ typingCompleted, code }: any) => {
               externalResources: ['https://cdn.tailwindcss.com'],
             }}
             style={{
-              height:"100%"
+              height: '100%',
             }}
             files={code}
           >
-            <SandpackLayout  style={{height:"100%"}}>
-              <SandpackPreview  style={{height:"100%"}}/>
+            <SandpackLayout style={{ height: '100%' }}>
+              <SandpackPreview style={{ height: '100%' }} />
             </SandpackLayout>
           </SandpackProvider>
         </div>

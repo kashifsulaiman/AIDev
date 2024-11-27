@@ -29,10 +29,10 @@ function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
   const jsxCode = prompt?.code;
-  const cssCode = `.hello {
-    color: red;
-    font-size: 24px;
-  }`;
+  // const cssCode = `.hello {
+  //   color: red;
+  //   font-size: 24px;
+  // }`;
 
   useEffect(() => {
     if (prompt?.code) {
@@ -54,7 +54,7 @@ function Page() {
       ) : (
         <>
           <div className="h-full bg-opacity-25 bg-purple-white-gradient-opactity25 lg:h-screen">
-            <div className='w-full h-full flex'>
+            <div className="flex h-full w-full">
               {/* <Sidebar>
                 <div
                   className={`flex items-center ${true ? 'bg-[#6f63c5] hover:!bg-none' : 'bg-transparent hover:bg-[#b9b2e9]'} mb-0.5 hover:text-white`}
@@ -88,21 +88,21 @@ function Page() {
                 }}
                 style={{
                   height: '100%',
-                  width: "100%", 
+                  width: '100%',
                 }}
                 files={jsxCode}
               >
-               <SandpackLayout style={{ height:"100%" }}>
-                  <SandpackFileExplorer style={{ height:"100%" }} />
+                <SandpackLayout style={{ height: '100%' }}>
+                  <SandpackFileExplorer style={{ height: '100%' }} />
                   <SandpackCodeEditor
                     showTabs
                     showLineNumbers={false}
                     showInlineErrors
                     wrapContent
                     closableTabs
-                    style={{ height:"100%" }}
+                    style={{ height: '100%' }}
                   />
-                  <SandpackPreview style={{height:"100%" }}/>
+                  <SandpackPreview style={{ height: '100%' }} />
                 </SandpackLayout>
               </SandpackProvider>
             </div>
