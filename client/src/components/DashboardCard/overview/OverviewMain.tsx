@@ -20,14 +20,14 @@ const OverviewMain = () => {
   const promtHandler = async (promptData: any) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_AI_MODAL_API}/${promptData.apiKey}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/generate`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            question: promptData.question,
+            humanPrompt: promptData.question,
           }),
         }
       );
@@ -37,10 +37,10 @@ const OverviewMain = () => {
       }
 
       const data = await response.json();
-      setCode(data?.code);
-      setContent(data?.text);
+      setCode(data?.data?.appFiles);
+      setContent(data?.data?.text);
       setLoader(false);
-      promptData.code = data?.code;
+      promptData.code = data?.data?.appFiles;
       setPrompt(promptData);
     } catch (error: any) {
       showToaster(error.message ?? 'Something went wrong', 'error');

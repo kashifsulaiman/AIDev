@@ -1,9 +1,14 @@
 'use client';
 import Loader from '@/Loader/loading';
 import { useStoreState } from 'easy-peasy';
-import React, { useEffect, useRef, useState } from 'react';
+// import React, { useEffect, useRef, useState } from 'react';
 import { LuCode2 } from 'react-icons/lu';
-import { LiveProvider, LivePreview } from 'react-live';
+// import { LiveProvider, LivePreview } from 'react-live';
+import {
+  SandpackProvider,
+  SandpackLayout,
+  SandpackPreview,
+} from '@codesandbox/sandpack-react';
 import 'prismjs/themes/prism-dark.css';
 
 const OverviewRight = ({ typingCompleted, code }: any) => {
@@ -32,14 +37,28 @@ const OverviewRight = ({ typingCompleted, code }: any) => {
         </div>
       ) : (
         <div className="Scroller-Class relative mt-10 h-[80vh] overflow-y-auto bg-zinc-200">
-          <LiveProvider
+          {/* <LiveProvider
             language="jsx"
             code={code}
             noInline
             scope={{ React, useState, useEffect, useRef }}
           >
             <LivePreview />
-          </LiveProvider>
+          </LiveProvider> */}
+          <SandpackProvider
+            template="react"
+            options={{
+              externalResources: ['https://cdn.tailwindcss.com'],
+            }}
+            style={{
+              height: '100%',
+            }}
+            files={code}
+          >
+            <SandpackLayout style={{ height: '100%' }}>
+              <SandpackPreview style={{ height: '100%' }} />
+            </SandpackLayout>
+          </SandpackProvider>
         </div>
       )}
     </div>

@@ -53,7 +53,7 @@ body {
   height: auto !important;
   top: auto !important;
   padding: 0 !important;
-  margin: 0 !important; 
+  margin: 0 !important;
 }
 .swiper-button-prev,
 .swiper-button-next {
@@ -139,8 +139,7 @@ input[type='number'] {
 }
 .navbar-height {
   --navbar-height: 85px !important;
-  top:0 !important;
-  
+  top: 0 !important;
 }
 .DashboardScroller::-webkit-scrollbar {
   width: 0;
@@ -155,9 +154,7 @@ input[type='number'] {
 }
 
 .DashboardScroller::-webkit-scrollbar-thumb {
-
   background: #a485cfc0;
-
 }
 
 .DashboardScroller::-webkit-scrollbar-thumb:hover {
@@ -171,7 +168,6 @@ input[type='number'] {
   .swiper-button-next {
     right: 45% !important;
   }
-  
 }
 
 @media (max-width: 1024px) {
@@ -179,5 +175,4 @@ input[type='number'] {
   .swiper-button-next {
     display: none !important;
   }
-  
 }
