@@ -1,11 +1,9 @@
-import { NextResponse } from 'next/server';
 import archiver from 'archiver';
 import { join } from 'path';
 import { PassThrough } from 'stream';
 import fs from 'fs';
 
 export async function GET() {
-  // Paths for the project and temporary Next.js structure
   const projectPath = join(process.cwd(), 'src/app/project');
   const tempPath = join(process.cwd(), 'temp/nextjs-project');
 
@@ -28,12 +26,30 @@ export async function GET() {
 
   archive.pipe(passThroughStream);
 
-  // Add the Next.js structure to the ZIP
+  // Add the temporary Next.js structure to the ZIP
   archive.directory(tempPath, false);
-
   archive.finalize();
 
-  return new Response(passThroughStream, {
+  // Convert PassThrough stream to ReadableStream
+  const readableStream = new ReadableStream({
+    start(controller) {
+      passThroughStream.on('data', (chunk) => {
+        controller.enqueue(chunk);
+      });
+
+      passThroughStream.on('end', () => {
+        controller.close();
+      });
+
+      passThroughStream.on('error', (err) => {
+        console.error('Stream error:', err);
+        controller.error(err);
+      });
+    },
+  });
+
+  // Return the stream as a response
+  return new Response(readableStream, {
     headers: {
       'Content-Type': 'application/zip',
       'Content-Disposition': 'attachment; filename="nextjs-project.zip"',
@@ -73,7 +89,10 @@ function createNextJsStructure(basePath: string, projectPath: string) {
       'react-dom': 'latest',
     },
   };
-  fs.writeFileSync(join(basePath, 'package.json'), JSON.stringify(packageJson, null, 2));
+  fs.writeFileSync(
+    join(basePath, 'package.json'),
+    JSON.stringify(packageJson, null, 2)
+  );
 
   // Create `next.config.js`
   const nextConfig = `module.exports = {};`;

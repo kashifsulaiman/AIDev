@@ -1,7 +1,7 @@
 'use client';
 
 const PreviewPage = () => {
-  const iframeSrc = '/project'
+  const iframeSrc = '/project';
   const downloadProject = () => {
     // Trigger download by navigating to the API route
     const link = document.createElement('a');
@@ -15,7 +15,6 @@ const PreviewPage = () => {
       {/* Navigation Buttons */}
       <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem' }}>
         Below is an IFrame of a Nextjs project
-
         <button onClick={downloadProject}>Download Project</button>
       </div>
 
