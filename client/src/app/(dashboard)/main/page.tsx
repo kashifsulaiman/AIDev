@@ -28,7 +28,7 @@ const DashBoard = async ({ searchParams }: any) => {
               </div>
             </div>
             <div>
-              <TextArea readOnly={true} prompt={selectedPrompt} />
+              <TextArea prompt={selectedPrompt} />
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import OverviewLeft from './OverviewLeft';
 import OverviewRight from './OverviewRight';
 import { useStoreActions, useStoreState } from 'easy-peasy';
@@ -16,7 +16,7 @@ const OverviewMain = () => {
   const setPrompt = useStoreActions(
     (actions: any) => actions?.promptModel?.setPrompt
   );
-
+  const apiCalledRef = useRef(false);
   const promtHandler = async (promptData: any) => {
     try {
       const response = await fetch(
@@ -48,10 +48,11 @@ const OverviewMain = () => {
   };
 
   useEffect(() => {
-    if (prompt?.apiKey) {
+    if (prompt?.question && !apiCalledRef.current) {
+      apiCalledRef.current = true;
       promtHandler(prompt);
     }
-  }, [prompt?.apiKey]);
+  }, [prompt?.question]);
 
   return (
     <div className="grid-col-1 grid min-h-screen lg:grid-cols-2">
@@ -60,7 +61,11 @@ const OverviewMain = () => {
         content={content}
         loader={loader}
       />
-      <OverviewRight typingCompleted={typingCompleted} code={code} />
+      <OverviewRight
+        typingCompleted={typingCompleted}
+        code={code}
+        loader={loader}
+      />
     </div>
   );
 };
