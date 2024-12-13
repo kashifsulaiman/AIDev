@@ -7,7 +7,6 @@ import { useStoreActions } from 'easy-peasy';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const TextArea = ({
-  value,
   prompt,
   classNames,
   // isExpanded,

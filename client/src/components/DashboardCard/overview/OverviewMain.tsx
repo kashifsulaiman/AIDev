@@ -8,7 +8,7 @@ import { showToaster } from '@/components/Toaster';
 
 const OverviewMain = () => {
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
-  
+
   const [typingCompleted, setTypingCompleted] = useState(true);
   const [content, setContent] = useState('');
   const [code, setCode] = useState('');
