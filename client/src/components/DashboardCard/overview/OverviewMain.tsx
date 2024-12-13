@@ -61,7 +61,11 @@ const OverviewMain = () => {
         content={content}
         loader={loader}
       />
-      <OverviewRight typingCompleted={typingCompleted} code={code} />
+      <OverviewRight
+        typingCompleted={typingCompleted}
+        code={code}
+        loader={loader}
+      />
     </div>
   );
 };

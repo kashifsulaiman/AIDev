@@ -11,7 +11,7 @@ import {
 } from '@codesandbox/sandpack-react';
 import 'prismjs/themes/prism-dark.css';
 
-const OverviewRight = ({ typingCompleted, code }: any) => {
+const OverviewRight = ({ typingCompleted, code, loader }: any) => {
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
 
   return (
@@ -29,7 +29,7 @@ const OverviewRight = ({ typingCompleted, code }: any) => {
         </a>
       </div>
 
-      {typingCompleted ? (
+      {loader ? (
         <div className="flex size-full items-center justify-center">
           <div className="size-10">
             <Loader Color="#961CBE" />
