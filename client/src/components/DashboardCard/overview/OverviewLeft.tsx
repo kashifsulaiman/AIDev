@@ -12,7 +12,7 @@ import { useStoreState } from 'easy-peasy';
 
 import TypingEffect from '@/components/TypingEffect';
 
-const OverviewLeft = ({ setTypingCompleted, content, loader }: any) => {
+const OverviewLeft = ({ content, loader }: any) => {
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
   const [generating, setGenerating] = useState(false);
 
@@ -93,12 +93,7 @@ const OverviewLeft = ({ setTypingCompleted, content, loader }: any) => {
               }}
             />
             <div className="leading-2 max-h-[459px] w-[100%] font-Jakarta text-[16px] font-normal text-black">
-              <TypingEffect
-                onComplete={() => setTypingCompleted(false)}
-                speed={10}
-              >
-                {content ? content : null}
-              </TypingEffect>
+              <TypingEffect speed={10}>{content ? content : null}</TypingEffect>
             </div>
           </div>
 
