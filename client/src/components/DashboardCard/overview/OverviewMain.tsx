@@ -62,7 +62,6 @@ const OverviewMain = () => {
         loader={loader}
       />
       <OverviewRight
-        typingCompleted={typingCompleted}
         code={code}
         loader={loader}
       />
