@@ -9,7 +9,6 @@ import { showToaster } from '@/components/Toaster';
 const OverviewMain = () => {
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
 
-  const [typingCompleted, setTypingCompleted] = useState(true);
   const [content, setContent] = useState('');
   const [code, setCode] = useState('');
   const [loader, setLoader] = useState(true);
@@ -56,15 +55,8 @@ const OverviewMain = () => {
 
   return (
     <div className="grid-col-1 grid min-h-screen lg:grid-cols-2">
-      <OverviewLeft
-        setTypingCompleted={setTypingCompleted}
-        content={content}
-        loader={loader}
-      />
-      <OverviewRight
-        code={code}
-        loader={loader}
-      />
+      <OverviewLeft content={content} loader={loader} />
+      <OverviewRight code={code} loader={loader} />
     </div>
   );
 };
