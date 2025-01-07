@@ -16,7 +16,27 @@ const OverviewMain = () => {
     (actions: any) => actions?.promptModel?.setPrompt
   );
   const apiCalledRef = useRef(false);
+  const extractAttributes = (inputPrompt: string) => {
+    const allowedFrameworks = ['next', 'react', 'vue'];
+    const lowerCasePrompt = inputPrompt.toLowerCase();
+    const attributes = {
+      framework: '',
+    };
+
+    for (const framework of allowedFrameworks) {
+      if (lowerCasePrompt.includes(framework)) {
+        attributes.framework = framework;
+        break;
+      } else {
+        attributes.framework = 'react';
+        break;
+      }
+    }
+
+    return attributes;
+  };
   const promtHandler = async (promptData: any) => {
+    const attributes = extractAttributes(promptData.question);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/generate`,
@@ -27,6 +47,7 @@ const OverviewMain = () => {
           },
           body: JSON.stringify({
             humanPrompt: promptData.question,
+            attributes,
           }),
         }
       );
