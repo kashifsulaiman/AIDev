@@ -75,7 +75,7 @@ const OverviewMain = () => {
   }, [prompt?.question]);
 
   return (
-    <div className="grid-col-1 grid min-h-screen lg:grid-cols-2">
+    <div className="flex max-h-screen min-h-screen w-full max-sm:max-h-full max-sm:flex-col max-sm:gap-4">
       <OverviewLeft content={content} loader={loader} />
       <OverviewRight code={code} loader={loader} />
     </div>

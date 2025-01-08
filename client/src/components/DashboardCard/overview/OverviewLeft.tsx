@@ -12,6 +12,8 @@ import { useStoreState } from 'easy-peasy';
 
 import TypingEffect from '@/components/TypingEffect';
 
+import { Resizable } from 're-resizable';
+
 const OverviewLeft = ({ content, loader }: any) => {
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
   const [generating, setGenerating] = useState(false);
@@ -51,7 +53,13 @@ const OverviewLeft = ({ content, loader }: any) => {
   }, []);
 
   return (
-    <div className="overflow=-y-auto flex h-screen flex-col justify-around px-3 pt-[21px] shadow-2xl md:px-11">
+    <Resizable
+      minWidth={300}
+      defaultSize={{
+        width: '50%',
+      }}
+      className="flex max-h-screen flex-col justify-around overflow-hidden px-3 pt-[21px] shadow-2xl max-sm:w-full md:px-11"
+    >
       <h4 className="mb-8 text-2xl font-semibold text-black md:mb-16">
         {prompt?.title}
       </h4>
@@ -102,7 +110,7 @@ const OverviewLeft = ({ content, loader }: any) => {
           </div>
         </>
       )}
-    </div>
+    </Resizable>
   );
 };
 

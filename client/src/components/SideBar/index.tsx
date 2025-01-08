@@ -41,7 +41,7 @@ export default function MainSideBar() {
     (actions: any) => actions?.promptModel?.setPrompt
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [prompts, setPrompts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -85,25 +85,8 @@ export default function MainSideBar() {
   };
 
   const toggleCollapse = () => {
-    if (window.innerWidth <= 1280) {
-      setIsCollapsed((prevState) => !prevState);
-    }
+    setIsCollapsed((prevState) => !prevState);
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 1280) {
-        setIsCollapsed(true);
-      } else {
-        setIsCollapsed(false);
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -151,7 +134,7 @@ export default function MainSideBar() {
           isCollapsed ? 'w-16' : 'w-[280px]'
         }`}
       >
-        <div className="absolute -right-3 top-7 block xl:hidden">
+        <div className="absolute -right-3 top-7 block">
           <Button
             onClick={toggleCollapse}
             className={`max-h-6 min-w-6 rounded-full border-1 border-[#E2E8F0] bg-white p-0`}
@@ -203,7 +186,7 @@ export default function MainSideBar() {
           )}
           <Divider className="my-2" />
           <div
-            className="flex items-end justify-between px-6 py-2"
+            className={`flex items-end justify-between py-2 ${isCollapsed ? 'px-3' : 'px-6'}`}
             onClick={toggleDropdown}
           >
             <div className="flex gap-3">
@@ -231,6 +214,7 @@ export default function MainSideBar() {
                 <DropdownrightArrow />
               </button>
             )}
+
             {isOpen && (
               <div
                 className={`${isCollapsed ? '-right-36' : '-right-16'} absolute bottom-16 z-10 mt-2 w-48 rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5`}
