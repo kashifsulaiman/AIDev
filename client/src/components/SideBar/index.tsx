@@ -25,11 +25,11 @@ enum MenuName {
   'FITNESS_APP' = 'Fitness',
 }
 export const Icons = {
-  BLOG_APP: <TbBrandBlogger />,
-  CHATBOT_APP: <PiChatsCircleFill />,
-  CALCULATOR_APP: <LuCalculator />,
-  FITNESS_APP: <IoFitnessOutline />,
-  BOOKING_APP: <HiBookOpen />,
+  BLOG_APP: <TbBrandBlogger className="mx-auto max-sm:h-6 max-sm:w-6" />,
+  CHATBOT_APP: <PiChatsCircleFill className="mx-auto max-sm:h-6 max-sm:w-6" />,
+  CALCULATOR_APP: <LuCalculator className="mx-auto max-sm:h-6 max-sm:w-6" />,
+  FITNESS_APP: <IoFitnessOutline className="mx-auto max-sm:h-6 max-sm:w-6" />,
+  BOOKING_APP: <HiBookOpen className="mx-auto max-sm:h-6 max-sm:w-6" />,
 };
 export default function MainSideBar() {
   const router = useRouter();
@@ -131,7 +131,7 @@ export default function MainSideBar() {
       <div
         id="sidebar"
         className={`sidebar fixed inset-y-0 z-10 flex h-screen flex-col bg-white shadow-xl transition-all duration-150 ${
-          isCollapsed ? 'w-16' : 'w-[280px]'
+          isCollapsed ? 'w-16 max-sm:w-10' : 'w-[280px]'
         }`}
       >
         <div className="absolute -right-3 top-7 block">
@@ -186,11 +186,11 @@ export default function MainSideBar() {
           )}
           <Divider className="my-2" />
           <div
-            className={`flex items-end justify-between py-2 ${isCollapsed ? 'px-3' : 'px-6'}`}
+            className={`flex items-end justify-between py-2 ${isCollapsed ? 'px-3 max-sm:px-2' : 'px-6'}`}
             onClick={toggleDropdown}
           >
             <div className="flex gap-3">
-              <div className="size-10 overflow-hidden rounded-full">
+              <div className="size-10 overflow-hidden rounded-full max-sm:size-6">
                 <GenericImage
                   alt="profile avatar"
                   src={

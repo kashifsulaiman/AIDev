@@ -14,6 +14,7 @@ const OverviewRight = ({ code, loader }: any) => {
         terminalHeight: 50,
         startScript: 'dev',
         hideDevTools: false,
+        view: 'editor',
       });
     }
   }, [code]);

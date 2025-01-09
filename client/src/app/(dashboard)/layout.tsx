@@ -9,7 +9,9 @@ const layout = ({
   return (
     <div className="flex">
       <MainSideBar />
-      <main className="ml-16 flex-1 overflow-hidden">{children}</main>
+      <main className="ml-16 flex-1 overflow-hidden max-sm:ml-10">
+        {children}
+      </main>
     </div>
   );
 };
