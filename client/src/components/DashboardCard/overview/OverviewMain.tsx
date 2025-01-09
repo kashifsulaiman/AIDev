@@ -19,20 +19,12 @@ const OverviewMain = () => {
   const extractAttributes = (inputPrompt: string) => {
     const allowedFrameworks = ['next', 'react', 'vue'];
     const lowerCasePrompt = inputPrompt.toLowerCase();
-    const attributes = {
-      framework: '',
-    };
-
-    for (const framework of allowedFrameworks) {
-      if (lowerCasePrompt.includes(framework)) {
-        attributes.framework = framework;
-        break;
-      } else {
-        attributes.framework = 'react';
-        break;
-      }
-    }
-
+    const attributes = { framework: 'react' };
+    const findFrameworkIndex = allowedFrameworks.findIndex((item) =>
+      lowerCasePrompt.includes(item)
+    );
+    if (findFrameworkIndex !== -1)
+      attributes.framework = allowedFrameworks[findFrameworkIndex];
     return attributes;
   };
   const promtHandler = async (promptData: any) => {
