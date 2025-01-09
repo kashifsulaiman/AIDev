@@ -17,6 +17,8 @@ import { LuCalculator } from 'react-icons/lu';
 import MenuSkeleton from '../Skeletons/MenuSkeleton';
 import { useAuthVerification } from '@/hooks/useAuthVerification';
 
+const SidebarIconClasses = 'mx-auto max-sm:h-6 max-sm:w-6';
+
 enum MenuName {
   'BLOG_APP' = 'Blog',
   'CHATBOT_APP' = 'Chatbot',
@@ -25,11 +27,11 @@ enum MenuName {
   'FITNESS_APP' = 'Fitness',
 }
 export const Icons = {
-  BLOG_APP: <TbBrandBlogger className="mx-auto max-sm:h-6 max-sm:w-6" />,
-  CHATBOT_APP: <PiChatsCircleFill className="mx-auto max-sm:h-6 max-sm:w-6" />,
-  CALCULATOR_APP: <LuCalculator className="mx-auto max-sm:h-6 max-sm:w-6" />,
-  FITNESS_APP: <IoFitnessOutline className="mx-auto max-sm:h-6 max-sm:w-6" />,
-  BOOKING_APP: <HiBookOpen className="mx-auto max-sm:h-6 max-sm:w-6" />,
+  BLOG_APP: <TbBrandBlogger className={SidebarIconClasses} />,
+  CHATBOT_APP: <PiChatsCircleFill className={SidebarIconClasses} />,
+  CALCULATOR_APP: <LuCalculator className={SidebarIconClasses} />,
+  FITNESS_APP: <IoFitnessOutline className={SidebarIconClasses} />,
+  BOOKING_APP: <HiBookOpen className={SidebarIconClasses} />,
 };
 export default function MainSideBar() {
   const router = useRouter();

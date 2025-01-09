@@ -25,6 +25,7 @@ const OverviewLeft = ({ content, loader }: any) => {
   const [isGenratingLoading, setIsGenratingLoading] = useState(true);
   const [isScanningLoading, setIsScanningLoading] = useState(false);
   const [isFinishingLoading, setIsFinishingLoading] = useState(false);
+  const [stackblitzDefWidth, setStackblitzDefWidth] = useState('100%');
 
   useEffect(() => {
     setGenerating(true);
@@ -52,11 +53,21 @@ const OverviewLeft = ({ content, loader }: any) => {
     };
   }, []);
 
+  useEffect(() => {
+    const updateWidth = () => {
+      setStackblitzDefWidth(window.innerWidth <= 640 ? '100%' : '50%');
+    };
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
   return (
     <Resizable
       minWidth={300}
       defaultSize={{
-        width: '50%',
+        width: stackblitzDefWidth,
       }}
       className="flex max-h-screen flex-col justify-around overflow-hidden px-3 pt-[21px] shadow-2xl max-sm:w-full md:px-11"
     >

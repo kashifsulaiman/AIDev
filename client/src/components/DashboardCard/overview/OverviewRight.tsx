@@ -15,6 +15,7 @@ const OverviewRight = ({ code, loader }: any) => {
         startScript: 'dev',
         hideDevTools: false,
         view: 'editor',
+        theme: 'light',
       });
     }
   }, [code]);
