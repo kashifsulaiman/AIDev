@@ -16,7 +16,19 @@ const OverviewMain = () => {
     (actions: any) => actions?.promptModel?.setPrompt
   );
   const apiCalledRef = useRef(false);
+  const extractAttributes = (inputPrompt: string) => {
+    const allowedFrameworks = ['next', 'react', 'vue'];
+    const lowerCasePrompt = inputPrompt.toLowerCase();
+    const attributes = { framework: 'react' };
+    const findFrameworkIndex = allowedFrameworks.findIndex((item) =>
+      lowerCasePrompt.includes(item)
+    );
+    if (findFrameworkIndex !== -1)
+      attributes.framework = allowedFrameworks[findFrameworkIndex];
+    return attributes;
+  };
   const promtHandler = async (promptData: any) => {
+    const attributes = extractAttributes(promptData.question);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/generate`,
@@ -27,6 +39,7 @@ const OverviewMain = () => {
           },
           body: JSON.stringify({
             humanPrompt: promptData.question,
+            attributes,
           }),
         }
       );
@@ -54,7 +67,7 @@ const OverviewMain = () => {
   }, [prompt?.question]);
 
   return (
-    <div className="grid-col-1 grid min-h-screen lg:grid-cols-2">
+    <div className="flex max-h-screen min-h-screen w-full max-sm:max-h-full max-sm:flex-col max-sm:gap-4">
       <OverviewLeft content={content} loader={loader} />
       <OverviewRight code={code} loader={loader} />
     </div>

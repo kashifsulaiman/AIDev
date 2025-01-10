@@ -23,7 +23,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     <Listbox
       aria-labelledby="listbox-label"
       id="sidebar-list"
-      className="Scroller-Class lg:overflow-y-[initial] mt-4 flex max-h-56 flex-col items-center justify-center gap-1 overflow-y-auto px-4 lg:max-h-[initial]"
+      className="Scroller-Class lg:overflow-y-[initial] flex flex-col items-center justify-center gap-1 px-4 lg:max-h-[initial]"
     >
       {items.map((item, index) => (
         <ListboxItem
