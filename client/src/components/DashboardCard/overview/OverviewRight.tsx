@@ -25,9 +25,9 @@ const OverviewRight = ({ code, loader }: any) => {
   const getCodeAndRedirect = async () => {
     const iframe = document.getElementById('embed') as HTMLIFrameElement;
     const vm = await StackBlitzSDK.connect(iframe);
-    const codeSnapshort = await vm.getFsSnapshot();
+    const codeSnapShot = await vm.getFsSnapshot();
     const newCode = code;
-    newCode.files = codeSnapshort;
+    newCode.files = codeSnapShot;
     localStorage.setItem('proj-code', JSON.stringify(newCode));
     const relativeUrl = `${window.location.origin}/preview`;
     window.open(relativeUrl, '_blank');
