@@ -5,12 +5,11 @@ import React, { useEffect } from 'react';
 
 function Page() {
   useEffect(() => {
-    const LSD = localStorage.getItem('proj-code');
-    if (!LSD) {
+    const localStorageData = localStorage.getItem('proj-code');
+    if (!localStorageData) {
       return;
     }
-    const data = JSON.parse(LSD);
-    console.log(typeof data);
+    const data = JSON.parse(localStorageData);
     if (typeof data === 'object') {
       StackBlitzSDK.embedProject('embed', data, {
         height: 600,
