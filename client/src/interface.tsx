@@ -1,3 +1,3 @@
 export interface IconInterface {
-    classes?: string
+  classes?: string;
 }
