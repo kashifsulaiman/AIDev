@@ -1,5 +1,6 @@
 'use client';
 
+import { StackblitzSettingPreview } from '@/constants/stackblitz';
 import StackBlitzSDK from '@stackblitz/sdk';
 import React, { useEffect } from 'react';
 
@@ -11,18 +12,7 @@ function Page() {
     }
     const data = JSON.parse(localStorageData);
     if (typeof data === 'object') {
-      StackBlitzSDK.embedProject('embed', data, {
-        height: 600,
-        openFile: 'package.json',
-        terminalHeight: 50,
-        startScript: 'dev',
-        hideDevTools: true,
-        view: 'preview',
-        theme: 'light',
-        hideNavigation: true,
-        hideExplorer: true,
-        showSidebar: false,
-      });
+      StackBlitzSDK.embedProject('embed', data, StackblitzSettingPreview);
     }
   }, []);
 

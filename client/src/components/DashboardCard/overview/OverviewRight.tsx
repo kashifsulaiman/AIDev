@@ -5,20 +5,12 @@ import 'prismjs/themes/prism-dark.css';
 import StackBlitzSDK from '@stackblitz/sdk';
 import { useEffect } from 'react';
 import { CodeIcon } from '@/components/SVG';
+import { StackblitzSettingMain } from '@/constants/stackblitz';
 
 const OverviewRight = ({ code, loader }: any) => {
   useEffect(() => {
     if (code) {
-      StackBlitzSDK.embedProject('embed', code, {
-        height: 600,
-        openFile: 'package.json',
-        terminalHeight: 50,
-        startScript: 'dev',
-        hideDevTools: true,
-        view: 'preview',
-        theme: 'light',
-        hideNavigation: true,
-      });
+      StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
     }
   }, [code]);
 
