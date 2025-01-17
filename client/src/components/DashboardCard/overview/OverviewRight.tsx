@@ -4,7 +4,7 @@ import Loader from '@/Loader/loading';
 import 'prismjs/themes/prism-dark.css';
 import StackBlitzSDK from '@stackblitz/sdk';
 import { useEffect } from 'react';
-import { CodeIcon } from '@/icons';
+import { CodeIcon } from '@/components/SVG';
 
 const OverviewRight = ({ code, loader }: any) => {
   useEffect(() => {

@@ -1,3 +1,6 @@
+import { IconTypes } from '@/types/generalTypes';
+import { VscPreview } from 'react-icons/vsc';
+
 const DropdownIcon = () => {
   return (
     <svg
@@ -2483,6 +2486,11 @@ const PreviewIcon = () => {
     </svg>
   );
 };
+
+const CodeIcon = ({ classes }: IconTypes) => {
+  return <VscPreview className={classes} />;
+};
+
 export {
   Platform,
   ExploreStudio,
@@ -2527,4 +2535,5 @@ export {
   PortfolioWebsite,
   HistoryIcon,
   PreviewIcon,
+  CodeIcon,
 };
