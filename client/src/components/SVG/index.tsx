@@ -1,6 +1,6 @@
 import { IconTypes } from '@/types/generalTypes';
 import { VscPreview } from 'react-icons/vsc';
-import { TiArrowBack } from "react-icons/ti";
+import { TiArrowBack } from 'react-icons/ti';
 
 const DropdownIcon = () => {
   return (
@@ -2493,8 +2493,8 @@ const CodeIcon = ({ classes }: IconTypes) => {
 };
 
 const BackArrowIcon = ({ classes }: IconTypes) => {
-  return <TiArrowBack className={classes} />
-}
+  return <TiArrowBack className={classes} />;
+};
 
 export {
   Platform,
@@ -2541,5 +2541,5 @@ export {
   HistoryIcon,
   PreviewIcon,
   CodeIcon,
-  BackArrowIcon
+  BackArrowIcon,
 };

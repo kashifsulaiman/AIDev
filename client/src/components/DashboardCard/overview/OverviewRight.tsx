@@ -10,7 +10,7 @@ import { StackblitzSettingMain } from '@/constants/stackblitz';
 const OverviewRight = ({ code, loader, handleViewChange }: any) => {
   useEffect(() => {
     if (code) {
-      localStorage.removeItem('proj-code')
+      localStorage.removeItem('proj-code');
       sdk.embedProject('embed', code, StackblitzSettingMain);
       localStorage.setItem('proj-code', JSON.stringify(code));
     }
@@ -23,8 +23,8 @@ const OverviewRight = ({ code, loader, handleViewChange }: any) => {
     const newCode = code;
     newCode.files = codeSnapShot;
     localStorage.setItem('proj-code', JSON.stringify(newCode));
-    handleViewChange()
-  }
+    handleViewChange();
+  };
 
   return (
     <div className="relative flex h-screen w-full flex-col items-end justify-center">
