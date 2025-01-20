@@ -2,28 +2,29 @@
 
 import Loader from '@/Loader/loading';
 import 'prismjs/themes/prism-dark.css';
-import StackBlitzSDK from '@stackblitz/sdk';
+import sdk from '@stackblitz/sdk';
 import { useEffect } from 'react';
 import { CodeIcon } from '@/components/SVG';
 import { StackblitzSettingMain } from '@/constants/stackblitz';
 
-const OverviewRight = ({ code, loader }: any) => {
+const OverviewRight = ({ code, loader, handleViewChange }: any) => {
   useEffect(() => {
     if (code) {
-      StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
+      localStorage.removeItem('proj-code')
+      sdk.embedProject('embed', code, StackblitzSettingMain);
+      localStorage.setItem('proj-code', JSON.stringify(code));
     }
   }, [code]);
 
   const getCodeAndRedirect = async () => {
     const iframe = document.getElementById('embed') as HTMLIFrameElement;
-    const vm = await StackBlitzSDK.connect(iframe);
+    const vm = await sdk.connect(iframe);
     const codeSnapShot = await vm.getFsSnapshot();
     const newCode = code;
     newCode.files = codeSnapShot;
     localStorage.setItem('proj-code', JSON.stringify(newCode));
-    const relativeUrl = `${window.location.origin}/preview`;
-    window.open(relativeUrl, '_blank');
-  };
+    handleViewChange()
+  }
 
   return (
     <div className="relative flex h-screen w-full flex-col items-end justify-center">
