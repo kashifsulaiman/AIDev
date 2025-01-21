@@ -6,13 +6,18 @@ import sdk from '@stackblitz/sdk';
 import { useEffect } from 'react';
 import { CodeIcon } from '@/components/SVG';
 import { StackblitzSettingMain } from '@/constants/stackblitz';
+import { useStoreActions } from 'easy-peasy';
 
 const OverviewRight = ({ code, loader, handleViewChange }: any) => {
+  const setUpdatedCode = useStoreActions(
+    (actions: any) => actions?.updatedCodeModel?.setUpdatedCode
+  );
+
   useEffect(() => {
     if (code) {
-      localStorage.removeItem('proj-code');
+      setUpdatedCode(null);
       sdk.embedProject('embed', code, StackblitzSettingMain);
-      localStorage.setItem('proj-code', JSON.stringify(code));
+      setUpdatedCode(JSON.stringify(code));
     }
   }, [code]);
 
@@ -22,7 +27,7 @@ const OverviewRight = ({ code, loader, handleViewChange }: any) => {
     const codeSnapShot = await vm.getFsSnapshot();
     const newCode = code;
     newCode.files = codeSnapShot;
-    localStorage.setItem('proj-code', JSON.stringify(newCode));
+    setUpdatedCode(JSON.stringify(newCode));
   };
 
   const handleShowPreview = () => {

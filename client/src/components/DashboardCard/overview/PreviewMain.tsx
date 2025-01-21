@@ -6,29 +6,34 @@ import { PreviewMainInterface } from '@/types/interface';
 import React, { useEffect } from 'react';
 import sdk from '@stackblitz/sdk';
 import { DiffCodeAndSendChanges } from '@/utils/stackblitz';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 function PreviewMain({ handleViewChange, code }: PreviewMainInterface) {
-  const localStorageCode = localStorage.getItem('proj-code');
+  const updatedCode = useStoreState(
+    (state: any) => state?.updatedCodeModel?.code
+  );
+  const setUpdatedCode = useStoreActions(
+    (actions: any) => actions?.updatedCodeModel?.setUpdatedCode
+  );
 
   useEffect(() => {
     if (code && typeof code === 'object') {
-      localStorage.removeItem('proj-code');
+      setUpdatedCode(null);
       sdk.embedProject('preview', code, StackblitzSettingPreview);
     }
   }, [code]);
 
   useEffect(() => {
-    if (localStorage.getItem('proj-code')) {
+    if (updatedCode) {
       updateCodeFromLocal();
     }
-  }, [localStorageCode]);
+  }, [updatedCode]);
 
   const updateCodeFromLocal = async () => {
-    const localStorageCode = await localStorage.getItem('proj-code');
-    if (!localStorageCode) {
+    if (!updatedCode) {
       return;
     }
-    const parsedData = JSON.parse(localStorageCode);
+    const parsedData = JSON.parse(updatedCode);
     const iframe = document.getElementById('preview') as HTMLIFrameElement;
     const vm = await sdk.connect(iframe);
     const codeSnapShot = await vm.getFsSnapshot();
