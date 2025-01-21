@@ -8,6 +8,8 @@ import sdk from '@stackblitz/sdk';
 import { DiffCodeAndSendChanges } from '@/utils/stackblitz';
 
 function PreviewMain({ handleViewChange, code }: PreviewMainInterface) {
+  const localStorageCode = localStorage.getItem('proj-code');
+
   useEffect(() => {
     if (code && typeof code === 'object') {
       localStorage.removeItem('proj-code');
@@ -19,7 +21,7 @@ function PreviewMain({ handleViewChange, code }: PreviewMainInterface) {
     if (localStorage.getItem('proj-code')) {
       updateCodeFromLocal();
     }
-  }, [localStorage.getItem('proj-code')]);
+  }, [localStorageCode]);
 
   const updateCodeFromLocal = async () => {
     const localStorageCode = await localStorage.getItem('proj-code');
