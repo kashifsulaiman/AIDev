@@ -1,4 +1,4 @@
-import { Action } from "easy-peasy";
+import { Action } from 'easy-peasy';
 
 export type SignupModelType = {
   form: string;
@@ -24,7 +24,6 @@ export type UserModelTypes = {
   dateOfBirth: string;
   email: string;
 };
-
 
 export interface updatedCode {
   id: number;
