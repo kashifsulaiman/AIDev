@@ -10,14 +10,16 @@ const OverviewMain = ({
   code,
   content,
   loader,
+  view,
 }: OverviewMainInterface) => {
   return (
-    <div className="flex max-h-screen min-h-screen w-full max-sm:max-h-full max-sm:flex-col max-sm:gap-4">
-      <OverviewLeft content={content} loader={loader} />
+    <div className="flex max-h-screen min-h-screen w-full overflow-hidden max-sm:max-h-full max-sm:flex-col max-sm:gap-4">
+      <OverviewLeft content={content} loader={loader} view={view} />
       <OverviewRight
         code={code}
         loader={loader}
         handleViewChange={handleViewChange}
+        view={view}
       />
     </div>
   );

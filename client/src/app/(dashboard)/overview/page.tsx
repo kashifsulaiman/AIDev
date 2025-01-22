@@ -1,6 +1,6 @@
 import OverviewScreen from '@/components/DashboardCard/overview/OverviewScreen';
 
-const OverviewPage = () => {
+const page = () => {
   return (
     <div className="h-screen w-full">
       <OverviewScreen />
@@ -8,4 +8,4 @@ const OverviewPage = () => {
   );
 };
 
-export default OverviewPage;
+export default page;

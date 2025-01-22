@@ -1,8 +1,8 @@
 'use client';
 
 import OverviewMain from '@/components/DashboardCard/overview/OverviewMain';
-import PreviewMain from '@/components/DashboardCard/overview/PreviewMain';
 import { showToaster } from '@/components/Toaster';
+import { Project } from '@stackblitz/sdk';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -16,7 +16,7 @@ const OverviewScreen = () => {
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
 
   const [content, setContent] = useState('');
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState<Project | null>(null);
   const [loader, setLoader] = useState(true);
   const setPrompt = useStoreActions(
     (actions: any) => actions?.promptModel?.setPrompt
@@ -73,22 +73,17 @@ const OverviewScreen = () => {
   }, [prompt?.question]);
 
   return (
-    <>
-      <div className="h-full bg-opacity-25 bg-purple-white-gradient-opactity25">
-        <div style={{ display: view ? 'flex' : 'none' }}>
-          <OverviewMain
-            handleViewChange={handleViewChange}
-            code={code}
-            content={content}
-            loader={loader}
-          />
-        </div>
-
-        <div style={{ display: view ? 'none' : 'flex' }}>
-          <PreviewMain handleViewChange={handleViewChange} code={code} />
-        </div>
+    <div className="h-full bg-opacity-25 bg-purple-white-gradient-opactity25">
+      <div>
+        <OverviewMain
+          handleViewChange={handleViewChange}
+          code={code}
+          content={content}
+          loader={loader}
+          view={view}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
