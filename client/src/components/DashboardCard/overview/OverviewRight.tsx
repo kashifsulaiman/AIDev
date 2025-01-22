@@ -29,7 +29,7 @@ const OverviewRight = ({
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden">
+    <div className="relative flex h-full min-h-screen w-full flex-col items-center justify-center overflow-hidden">
       <div className="absolute right-6 top-4 z-10 flex items-end justify-end gap-4 rounded-lg border-4 border-white">
         <div className="group relative flex size-8 items-center justify-center rounded bg-custom-gradient p-2">
           {view ? (
