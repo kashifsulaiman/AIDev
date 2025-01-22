@@ -77,7 +77,7 @@ const OverviewScreen = () => {
   }, [prompt?.question]);
 
   return (
-    <div className="h-full bg-opacity-25 bg-purple-white-gradient-opactity25">
+    <div className="h-full bg-[#E6E6E6] bg-opacity-25">
       <div>
         <OverviewMain
           handleViewChange={handleViewChange}
