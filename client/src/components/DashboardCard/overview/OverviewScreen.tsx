@@ -2,8 +2,10 @@
 
 import OverviewMain from '@/components/DashboardCard/overview/OverviewMain';
 import { showToaster } from '@/components/Toaster';
+import { StoreModel } from '@/redux/model';
+import { Prompt } from '@/redux/model/promptModel';
 import { Project } from '@stackblitz/sdk';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreState, useStoreActions, Actions, State } from 'easy-peasy';
 import React, { useEffect, useRef, useState } from 'react';
 
 const OverviewScreen = () => {
@@ -13,13 +15,15 @@ const OverviewScreen = () => {
     setView(!view);
   };
 
-  const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
+  const prompt = useStoreState(
+    (state: State<StoreModel>) => state?.promptModel?.prompt
+  );
 
   const [content, setContent] = useState('');
   const [code, setCode] = useState<Project | null>(null);
   const [loader, setLoader] = useState(true);
   const setPrompt = useStoreActions(
-    (actions: any) => actions?.promptModel?.setPrompt
+    (actions: Actions<StoreModel>) => actions?.promptModel?.setPrompt
   );
   const apiCalledRef = useRef(false);
   const extractAttributes = (inputPrompt: string) => {
@@ -33,7 +37,7 @@ const OverviewScreen = () => {
       attributes.framework = allowedFrameworks[findFrameworkIndex];
     return attributes;
   };
-  const promtHandler = async (promptData: any) => {
+  const promtHandler = async (promptData: Prompt) => {
     const attributes = extractAttributes(promptData.question);
     try {
       const response = await fetch(
