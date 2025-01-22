@@ -25,3 +25,7 @@ export interface OverviewLeftInterface {
   loader: boolean;
   view: boolean;
 }
+
+export interface IconInterface {
+  classes?: string;
+}
