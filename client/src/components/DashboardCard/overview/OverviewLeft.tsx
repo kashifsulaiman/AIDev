@@ -60,6 +60,7 @@ const OverviewLeft = ({ content, loader, view }: OverviewLeftInterface) => {
       defaultSize={{
         width: '36%',
       }}
+      maxWidth={'70%'}
       className="flex max-h-screen flex-col justify-around overflow-hidden px-3 pt-[21px] shadow-2xl max-sm:w-full md:px-11"
     >
       <h4 className="mb-8 text-2xl font-semibold text-black md:mb-16">
