@@ -1,3 +1,7 @@
+import { VscPreview } from 'react-icons/vsc';
+import { TiArrowBack } from 'react-icons/ti';
+import { IconInterface } from '@/types/interface';
+
 const DropdownIcon = () => {
   return (
     <svg
@@ -2483,6 +2487,15 @@ const PreviewIcon = () => {
     </svg>
   );
 };
+
+const CodeIcon = ({ classes }: IconInterface) => {
+  return <VscPreview className={classes} />;
+};
+
+const BackArrowIcon = ({ classes }: IconInterface) => {
+  return <TiArrowBack className={classes} />;
+};
+
 export {
   Platform,
   ExploreStudio,
@@ -2527,4 +2540,6 @@ export {
   PortfolioWebsite,
   HistoryIcon,
   PreviewIcon,
+  CodeIcon,
+  BackArrowIcon,
 };
