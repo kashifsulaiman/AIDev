@@ -4,59 +4,36 @@ import React, { useEffect, useState, useRef } from 'react';
 import OverviewLeft from './OverviewLeft';
 import OverviewRight from './OverviewRight';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { showToaster } from '@/components/Toaster';
+import { ApiUrl } from '@/constants/apiUrl';
+import { POST } from '@/hooks/consts';
+import { useMutation } from '@/hooks/useMutation';
+import { extractAttributes } from '@/utils/utils';
 
 const OverviewMain = () => {
   const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
-
+  const setConversationIdAction = useStoreActions(
+    (actions: any) => actions.conversationModel.setConversationId
+  );
   const [content, setContent] = useState('');
   const [code, setCode] = useState('');
   const [loader, setLoader] = useState(true);
-  const setPrompt = useStoreActions(
-    (actions: any) => actions?.promptModel?.setPrompt
-  );
   const apiCalledRef = useRef(false);
-  const extractAttributes = (inputPrompt: string) => {
-    const allowedFrameworks = ['next', 'react', 'vue'];
-    const lowerCasePrompt = inputPrompt.toLowerCase();
-    const attributes = { framework: 'react' };
-    const findFrameworkIndex = allowedFrameworks.findIndex((item) =>
-      lowerCasePrompt.includes(item)
-    );
-    if (findFrameworkIndex !== -1)
-      attributes.framework = allowedFrameworks[findFrameworkIndex];
-    return attributes;
-  };
+  const { mutate } = useMutation<any>({
+    isToaster: false,
+    method: POST,
+    url: ApiUrl.GENERATE_AI_RESPONSE,
+    onSuccess: (res) => {
+      console.log("res", res);
+      const data = res?.data;
+      setConversationIdAction(data?.conversationId);
+      setCode(data?.appFiles);
+      setContent(data?.text);
+      setLoader(false)
+    },
+  });
   const promtHandler = async (promptData: any) => {
     const attributes = extractAttributes(promptData.question);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/generate`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            humanPrompt: promptData.question,
-            attributes,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      setCode(data?.data?.appFiles);
-      setContent(data?.data?.text);
-      setLoader(false);
-      promptData.code = data?.data?.appFiles;
-      setPrompt(promptData);
-    } catch (error: any) {
-      showToaster(error.message ?? 'Something went wrong', 'error');
-    }
+    mutate({humanPrompt: promptData.question, attributes});
   };
 
   useEffect(() => {

@@ -47,6 +47,7 @@ type UseMutationProps<T, K> = {
   isFileData?: boolean;
   isCloud?: boolean;
   isPlatform?: boolean;
+  isToaster?: boolean;
 };
 
 const returnPlatform = (isPlatform?: boolean) => {
@@ -66,6 +67,7 @@ export const useMutation = <T, K = T>({
   showSuccessToast = true,
   token,
   isPlatform,
+  isToaster = true,
 }: UseMutationProps<T, K>): UseMutationReturn<T, K> => {
   const userAction = useStoreActions((actions: any) => actions.userObj.add);
   const signupAction = useStoreActions((actions: any) => actions.signupObj.add);
@@ -118,7 +120,7 @@ export const useMutation = <T, K = T>({
     },
     {
       onSuccess: (newData) => {
-        if (newData && showSuccessToast && newData?.message) {
+        if (newData && showSuccessToast && newData?.message && isToaster) {
           showToaster(
             `${newData?.message ?? 'Something went wrong'}`,
             'success'

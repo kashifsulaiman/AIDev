@@ -13,8 +13,6 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const setPrompt = useStoreActions(
     (actions: any) => actions?.promptModel?.setPrompt
   );
@@ -58,13 +56,6 @@ const TextArea = ({
           !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
         } absolute bottom-1 right-2.5 z-[5] h-auto min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
         onClick={() => {
-          const current = new URLSearchParams(
-            Array.from(searchParams.entries())
-          );
-          current.delete('promptType');
-          const search = current.toString();
-          const query = search ? `?${search}` : '';
-          router.push(`${pathname}${query}`);
           setPrompt({ question: inputValue });
           router.push('/overview');
         }}

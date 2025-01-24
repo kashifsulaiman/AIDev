@@ -101,12 +101,12 @@ const OverviewLeft = ({ content, loader }: any) => {
               }}
             />
             <div className="leading-2 max-h-[459px] w-[100%] font-Jakarta text-[16px] font-normal text-black">
-              <TypingEffect speed={10}>{content ? content : null}</TypingEffect>
+              <TypingEffect speed={10}>{content}</TypingEffect>
             </div>
           </div>
 
           <div className="mt-auto">
-            <TextArea readOnly />
+            <TextArea />
           </div>
         </>
       )}
