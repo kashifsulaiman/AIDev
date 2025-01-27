@@ -11,5 +11,5 @@ export const StackblitzSettingMain: EmbedOptions = {
   hideExplorer: true,
   forceEmbedLayout: true,
   crossOriginIsolated: true,
-  clickToLoad: true
+  clickToLoad: true,
 };
