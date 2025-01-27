@@ -3,8 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
-import { useStoreActions } from 'easy-peasy';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useRouter } from 'next/navigation';
+import { ApiUrl } from '@/constants/apiUrl';
+import { POST } from '@/hooks/consts';
+import { useMutation } from '@/hooks/useMutation';
+import { extractAttributes } from '@/utils/utils';
+import { useParams } from 'next/navigation'
+import Loader from '@/Loader/loading';
 
 const TextArea = ({
   prompt,
@@ -13,14 +19,42 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
+  const params = useParams();
+  const conversationSessionId = params?.id;
+  const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
+  const conversationId = useStoreState((state: any) => state?.conversationModel?.conversationId);
   const setPrompt = useStoreActions(
     (actions: any) => actions?.promptModel?.setPrompt
   );
+   const setConversationIdAction = useStoreActions(
+      (actions: any) => actions.conversationModel.setConversationId
+  );
+  
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
 
+  const { mutate } = useMutation<any>({
+    isToaster: false,
+    method: POST,
+    url: ApiUrl.GENERATE_AI_RESPONSE,
+    onSuccess: (res) => {
+      const { conversationId, appFiles, text } = res?.data;
+      setConversationIdAction(conversationId);
+      setPrompt({ code: appFiles, content: text, loader: false });
+      router.push(`/overview/${conversationId}`);
+    },
+  });
+
+  const handleSubmit = () => {
+    setPrompt({ question: inputValue });
+    if (inputValue) {
+      setPrompt({ loader: true });
+      const attributes = extractAttributes(inputValue);
+      mutate({ humanPrompt: inputValue, attributes, conversationId: conversationId });
+    }
+  }
   return (
     <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
       <div className="flex w-full items-end">
@@ -51,16 +85,13 @@ const TextArea = ({
       </div>
 
       <Button
-        disabled={!inputValue}
+        disabled={!inputValue && promptData.loader}
         className={`${
           !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
         } absolute bottom-1 right-2.5 z-[5] h-auto min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
-        onClick={() => {
-          setPrompt({ question: inputValue });
-          router.push('/overview');
-        }}
+        onClick={handleSubmit}
       >
-        <span className="leading-none">Code</span>
+        <span className="leading-none">{promptData.loader ? <Loader Color="#bbb" height='30px' width='30px' /> : "Code"}</span>
       </Button>
     </div>
   );

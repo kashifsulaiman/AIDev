@@ -2,9 +2,11 @@ import React from 'react';
 
 interface LoaderProps {
   Color?: string;
+  width?: string;
+  height?: string;
 }
 
-const Loader: React.FC<LoaderProps> = ({ Color }) => {
+const Loader: React.FC<LoaderProps> = ({ Color, height, width }) => {
   return (
     <>
       <svg
@@ -17,8 +19,8 @@ const Loader: React.FC<LoaderProps> = ({ Color }) => {
           shapeRendering: 'auto',
           display: 'block',
           background: 'transparent',
-          height: '40px',
-          width: '40px',
+          height: width ? width : '40px',
+          width: height ? height : '40px',
         }}
       >
         <g>

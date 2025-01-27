@@ -4,8 +4,10 @@ import Loader from '@/Loader/loading';
 import 'prismjs/themes/prism-dark.css';
 import StackBlitzSDK from '@stackblitz/sdk';
 import { useEffect } from 'react';
+import { useStoreState } from 'easy-peasy';
 
-const OverviewRight = ({ code, loader }: any) => {
+const OverviewRight = () => {
+  const {loader, code} = useStoreState((state: any) => state?.promptModel?.prompt);
   useEffect(() => {
     if (code) {
       StackBlitzSDK.embedProject('embed', code, {

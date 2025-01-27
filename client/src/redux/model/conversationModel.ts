@@ -11,6 +11,7 @@ export interface ConversationModel {
   setConversationId: Action<ConversationModel, string | null>;
   addMessage: Action<ConversationModel, Message>;
   setMessages: Action<ConversationModel, Message[]>;
+  clearConversation: Action<ConversationModel, Message[]>;
 }
 
 const conversationModel: ConversationModel = {
@@ -20,6 +21,10 @@ const conversationModel: ConversationModel = {
   setConversationId: action((state, payload) => {
     state.conversationId = payload;
   }),
+  clearConversation: action((state) => {
+      state.conversationId = null;
+      state.messages = [];
+    }),
   addMessage: action((state, payload) => {
     state.messages.push({
       role: payload.role,
