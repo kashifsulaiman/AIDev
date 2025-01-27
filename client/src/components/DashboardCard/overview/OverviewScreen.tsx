@@ -11,6 +11,19 @@ import React, { useEffect, useRef, useState } from 'react';
 const OverviewScreen = () => {
   const [view, setView] = useState(true);
 
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js', { scope: '/' })
+        .then((registration) => {
+          console.log('Service Worker Registered:', registration);
+        })
+        .catch((error) => {
+          console.error('Service Worker Registration Failed:', error);
+        });
+    }
+  }, []);
+
   const handleViewChange = () => {
     setView(!view);
   };

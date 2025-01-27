@@ -9,4 +9,5 @@ export const StackblitzSettingMain: EmbedOptions = {
   theme: 'light',
   hideNavigation: true,
   hideExplorer: true,
+  forceEmbedLayout: true,
 };
