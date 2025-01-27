@@ -6,6 +6,6 @@ const page = () => {
       <OverviewScreen />
     </div>
   );
-}
+};
 
 export default page;
