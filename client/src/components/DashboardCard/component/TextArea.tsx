@@ -9,7 +9,6 @@ import { ApiUrl } from '@/constants/apiUrl';
 import { POST } from '@/hooks/consts';
 import { useMutation } from '@/hooks/useMutation';
 import { extractAttributes } from '@/utils/utils';
-import { useParams } from 'next/navigation'
 import Loader from '@/Loader/loading';
 
 const TextArea = ({
@@ -19,15 +18,14 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
-  const params = useParams();
-  const conversationSessionId = params?.id;
   const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
-  const conversationId = useStoreState((state: any) => state?.conversationModel?.conversationId);
+  const conversation = useStoreState((state: any) => state?.conversationModel?.conversation);
+  const user = useStoreState((state: any) => state?.userObj?.UserObj);
   const setPrompt = useStoreActions(
     (actions: any) => actions?.promptModel?.setPrompt
   );
-   const setConversationIdAction = useStoreActions(
-      (actions: any) => actions.conversationModel.setConversationId
+   const setConversation = useStoreActions(
+      (actions: any) => actions.conversationModel.setConversation
   );
   
   const [inputValue, setInputValue] = useState('');
@@ -35,14 +33,14 @@ const TextArea = ({
     setInputValue(prompt?.question || '');
   }, [prompt]);
 
-  const { mutate } = useMutation<any>({
+  const { mutate } = useMutation({
     isToaster: false,
     method: POST,
     url: ApiUrl.GENERATE_AI_RESPONSE,
     onSuccess: (res) => {
-      const { conversationId, appFiles, text } = res?.data;
-      setConversationIdAction(conversationId);
-      setPrompt({ code: appFiles, content: text, loader: false });
+      const { conversationId, project, text, messages } = res?.data;
+      setPrompt({ code: project, content: text, loader: false });   
+      setConversation({ _id: conversationId, userId: user.id, messages: messages });
       router.push(`/overview/${conversationId}`);
     },
   });
@@ -52,7 +50,13 @@ const TextArea = ({
     if (inputValue) {
       setPrompt({ loader: true });
       const attributes = extractAttributes(inputValue);
-      mutate({ humanPrompt: inputValue, attributes, conversationId: conversationId });
+      mutate({
+        humanPrompt: inputValue,
+        attributes,
+        conversationId: conversation.conversationId,
+        userId: user.id
+      });
+      setInputValue('');
     }
   }
   return (

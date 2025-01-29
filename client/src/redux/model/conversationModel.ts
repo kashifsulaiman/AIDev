@@ -4,35 +4,49 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
+interface ChatList {
+  _id: string;
+  userId: string;
+}
 
-export interface ConversationModel {
+interface Conversation {
   conversationId: string | null;
   messages: Message[];
-  setConversationId: Action<ConversationModel, string | null>;
+  chatList: ChatList[]
+}
+export interface ConversationModel {
+  conversation: Conversation;
+  setConversation:Action<ConversationModel, Conversation>
   addMessage: Action<ConversationModel, Message>;
   setMessages: Action<ConversationModel, Message[]>;
   clearConversation: Action<ConversationModel, Message[]>;
+  setChatList: Action<ConversationModel, ChatList[]>;
 }
 
+const initialState = {
+  conversationId: null,
+  messages:[],
+  chatList:[],
+}
 const conversationModel: ConversationModel = {
-  conversationId: null, 
-  messages: [], 
-
-  setConversationId: action((state, payload) => {
-    state.conversationId = payload;
+  conversation:initialState,
+  setConversation:action((state:any, payload:any) => {
+    state.conversation = {...state.conversation, ...payload};
+  }),
+  setChatList: action((state, payload) => {
+    state.conversation.chatList = [...payload];
   }),
   clearConversation: action((state) => {
-      state.conversationId = null;
-      state.messages = [];
+     state.conversation = initialState;
     }),
   addMessage: action((state, payload) => {
-    state.messages.push({
+    state.conversation.messages.push({
       role: payload.role,
       content: payload.content,
     });
   }),
   setMessages: action((state, payload) => {
-    state.messages = payload.map((message) => ({
+    state.conversation.messages = payload.map((message) => ({
       role: message.role,
       content: message.content,
     }));

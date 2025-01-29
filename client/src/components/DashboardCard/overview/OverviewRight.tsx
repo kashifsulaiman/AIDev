@@ -3,13 +3,14 @@
 import Loader from '@/Loader/loading';
 import 'prismjs/themes/prism-dark.css';
 import StackBlitzSDK from '@stackblitz/sdk';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useStoreState } from 'easy-peasy';
 
 const OverviewRight = () => {
   const {loader, code} = useStoreState((state: any) => state?.promptModel?.prompt);
+  const sdkRef = useRef(null);
   useEffect(() => {
-    if (code) {
+    if (code && sdkRef.current) {
       StackBlitzSDK.embedProject('embed', code, {
         height: 600,
         openFile: 'package.json',
@@ -32,7 +33,7 @@ const OverviewRight = () => {
         </div>
       ) : (
         <div className="relative h-full w-full overflow-y-auto bg-transparent">
-          <div className="h-full w-full" id="embed"></div>
+          <div className="h-full w-full" id="embed" ref={sdkRef}></div>
         </div>
       )}
     </div>

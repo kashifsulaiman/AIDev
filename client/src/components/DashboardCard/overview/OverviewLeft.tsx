@@ -2,7 +2,7 @@
 
 import GenericImage from '@/common/GenericImage';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import TextArea from '../component/TextArea';
 
@@ -15,7 +15,8 @@ import TypingEffect from '@/components/TypingEffect';
 import { Resizable } from 're-resizable';
 
 const OverviewLeft = () => {
-  const {title, content, loader} = useStoreState((state: any) => state?.promptModel?.prompt);
+  const {title, loader} = useStoreState((state: any) => state?.promptModel?.prompt);
+  const conversation = useStoreState((state: any) => state?.conversationModel?.conversation);
   const [generating, setGenerating] = useState(false);
 
   const [scanning, setScanning] = useState(false);
@@ -51,6 +52,12 @@ const OverviewLeft = () => {
       clearTimeout(finishingLoadingTime);
     };
   }, []);
+  const lastMsgRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (lastMsgRef.current) {
+      lastMsgRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [conversation.messages]);
 
   return (
     <Resizable
@@ -64,7 +71,7 @@ const OverviewLeft = () => {
         {title}
       </h4>
 
-      <div className="pb-12 md:pb-20">
+      <div className="pb-12 md:pb-2">
         {generating && (
           <Toptext
             text="Preparing Your Project Overview"
@@ -87,24 +94,33 @@ const OverviewLeft = () => {
         )}
       </div>
 
-      {loader ? (
+      {loader && conversation.messages.length < 0 ? (
         <div className="h-[550px]"></div>
       ) : (
         <>
-          <div className="Scroller-Class block h-screen items-start gap-2 overflow-y-auto md:flex">
-            <GenericImage
-              className="z-[3] mb-2 mt-2 h-5 w-8 md:mb-0"
-              alt="AC"
-              src="/asstes/images/ad-dashboard.png"
-              classNames={{
-                img: 'w-auto',
-              }}
-            />
-            <div className="leading-2 max-h-[459px] w-[100%] font-Jakarta text-[16px] font-normal text-black">
-              <TypingEffect speed={10}>{content}</TypingEffect>
-            </div>
-          </div>
-
+        <div className="Scroller-Class block h-screen items-start gap-2 overflow-y-auto md:flex flex-col">
+         {
+            conversation.messages.map((msg: any,index:number) => (
+              <div 
+              key={index}
+              ref={index === conversation.messages.length - 1 ? lastMsgRef : null} 
+              >
+                  <GenericImage
+                    className="z-[3] mb-2 mt-2 h-5 w-8 md:mb-0"
+                    alt="AC"
+                    src="/asstes/images/ad-dashboard.png"
+                    classNames={{
+                      img: 'w-auto',
+                    }}
+                  />
+                  <div className="leading-2 max-h-auto w-[100%] font-Jakarta text-[16px] font-normal text-black">
+                    {/* <TypingEffect speed={10}>{msg.content}</TypingEffect> */}
+                    {msg.content}
+                  </div>
+              </div>
+            ))
+          }
+         </div>
           <div className="mt-auto">
             <TextArea />
           </div>

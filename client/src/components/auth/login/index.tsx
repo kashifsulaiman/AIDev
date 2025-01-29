@@ -31,7 +31,12 @@ const Login = () => {
   const forgotPasswordAction = useStoreActions(
     (actions: any) => actions.forgotPasswordObj.add
   );
-
+  const clearPrompt = useStoreActions(
+    (actions: any) => actions?.promptModel?.clearPrompt
+  );
+  const clearConversation = useStoreActions(
+    (actions: any) => actions?.conversationModel?.clearConversation
+  );
   useLayoutEffect(() => {
     forgotPasswordAction({
       form: 'ForgotPassword',
@@ -41,6 +46,8 @@ const Login = () => {
       form: 'SignUpForm',
       email: '',
     });
+    clearPrompt();
+    clearConversation();
   }, []);
 
   const { mutate, isLoading } = useMutation<any>({

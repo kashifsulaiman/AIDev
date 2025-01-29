@@ -16,6 +16,7 @@ import { TbBrandBlogger } from 'react-icons/tb';
 import { LuCalculator } from 'react-icons/lu';
 import MenuSkeleton from '../Skeletons/MenuSkeleton';
 import { useAuthVerification } from '@/hooks/useAuthVerification';
+import ChatList from '@/components/chatList';
 
 const SidebarIconClasses = 'mx-auto max-sm:h-6 max-sm:w-6';
 
@@ -175,6 +176,10 @@ export default function MainSideBar() {
             onItemClick={handleItemClick}
           />
         )}
+        <Divider className="mt-3" />
+        <div className={`${isCollapsed ? 'hidden' : 'justify-between px-8'} flex items-center py-4`}>
+          <ChatList isCollapsed={isCollapsed} />
+        </div>
         <Divider className="mt-3" />
         <div className="mt-auto">
           {isLoading ? (
