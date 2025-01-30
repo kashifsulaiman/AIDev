@@ -10,5 +10,5 @@ export const ApiUrl = {
   VERIFY_TOKEN: 'users/verify-token',
   GENERATE_AI_RESPONSE: 'users/generate',
   GET_CHAT: 'users/chat',
-  GET_CHAT_LIST:"users/chat-list",
+  GET_CHAT_LIST: 'users/chat-list',
 };

@@ -19,15 +19,17 @@ const TextArea = ({
 }: any) => {
   const router = useRouter();
   const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
-  const conversation = useStoreState((state: any) => state?.conversationModel?.conversation);
+  const conversation = useStoreState(
+    (state: any) => state?.conversationModel?.conversation
+  );
   const user = useStoreState((state: any) => state?.userObj?.UserObj);
   const setPrompt = useStoreActions(
     (actions: any) => actions?.promptModel?.setPrompt
   );
-   const setConversation = useStoreActions(
-      (actions: any) => actions.conversationModel.setConversation
+  const setConversation = useStoreActions(
+    (actions: any) => actions.conversationModel.setConversation
   );
-  
+
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     setInputValue(prompt?.question || '');
@@ -38,9 +40,14 @@ const TextArea = ({
     method: POST,
     url: ApiUrl.GENERATE_AI_RESPONSE,
     onSuccess: (res) => {
-      const { conversationId, project, text, messages } = res?.data;
-      setPrompt({ code: project, content: text, loader: false });   
-      setConversation({ _id: conversationId, userId: user.id, messages: messages });
+      const { conversationId, project, text, messages, title } = res?.data;
+      setPrompt({ code: project, content: text, loader: false });
+      setConversation({
+        _id: conversationId,
+        userId: user.id,
+        messages: messages,
+        title: title,
+      });
       router.push(`/overview/${conversationId}`);
     },
   });
@@ -54,11 +61,11 @@ const TextArea = ({
         humanPrompt: inputValue,
         attributes,
         conversationId: conversation.conversationId,
-        userId: user.id
+        userId: user.id,
       });
       setInputValue('');
     }
-  }
+  };
   return (
     <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
       <div className="flex w-full items-end">
@@ -95,7 +102,13 @@ const TextArea = ({
         } absolute bottom-1 right-2.5 z-[5] h-auto min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
         onClick={handleSubmit}
       >
-        <span className="leading-none">{promptData.loader ? <Loader Color="#bbb" height='30px' width='30px' /> : "Code"}</span>
+        <span className="leading-none">
+          {promptData.loader ? (
+            <Loader Color="#bbb" height="30px" width="30px" />
+          ) : (
+            'Code'
+          )}
+        </span>
       </Button>
     </div>
   );

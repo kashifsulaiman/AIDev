@@ -177,7 +177,9 @@ export default function MainSideBar() {
           />
         )}
         <Divider className="mt-3" />
-        <div className={`${isCollapsed ? 'hidden' : 'justify-between px-8'} flex items-center py-4`}>
+        <div
+          className={`max-h-40 overflow-hidden ${isCollapsed ? 'hidden' : 'justify-between px-8'} flex items-center py-2`}
+        >
           <ChatList isCollapsed={isCollapsed} />
         </div>
         <Divider className="mt-3" />

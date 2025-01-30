@@ -7,7 +7,9 @@ import { useEffect, useRef } from 'react';
 import { useStoreState } from 'easy-peasy';
 
 const OverviewRight = () => {
-  const {loader, code} = useStoreState((state: any) => state?.promptModel?.prompt);
+  const { loader, code } = useStoreState(
+    (state: any) => state?.promptModel?.prompt
+  );
   const sdkRef = useRef(null);
   useEffect(() => {
     if (code && sdkRef.current) {

@@ -18,7 +18,7 @@ const model: StoreModel = persist(
     signupObj,
     forgotPasswordObj,
     promptModel,
-    conversationModel
+    conversationModel,
   },
   {
     storage: 'localStorage',

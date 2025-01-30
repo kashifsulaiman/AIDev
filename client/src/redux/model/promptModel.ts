@@ -12,8 +12,8 @@ interface Prompt {
 }
 
 export interface PromptModel {
-  prompt: Prompt | null; 
-  setPrompt: Action<PromptModel, Prompt>; 
+  prompt: Prompt | null;
+  setPrompt: Action<PromptModel, Prompt>;
   clearPrompt: Action<PromptModel, Prompt>;
 }
 
@@ -29,12 +29,12 @@ const initialPrompt: Prompt = {
 };
 
 const promptModel: PromptModel = {
-  prompt: initialPrompt, 
+  prompt: initialPrompt,
   setPrompt: action((state, payload) => {
-    state.prompt = {...state.prompt, ...payload};
+    state.prompt = { ...state.prompt, ...payload };
   }),
   clearPrompt: action((state) => {
-    state.prompt = {...initialPrompt, loader: false};
+    state.prompt = { ...initialPrompt, loader: false };
   }),
 };
 

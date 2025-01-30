@@ -10,13 +10,14 @@ interface ChatList {
 }
 
 interface Conversation {
+  title: string | null;
   conversationId: string | null;
   messages: Message[];
-  chatList: ChatList[]
+  chatList: ChatList[];
 }
 export interface ConversationModel {
   conversation: Conversation;
-  setConversation:Action<ConversationModel, Conversation>
+  setConversation: Action<ConversationModel, Conversation>;
   addMessage: Action<ConversationModel, Message>;
   setMessages: Action<ConversationModel, Message[]>;
   clearConversation: Action<ConversationModel, Message[]>;
@@ -24,21 +25,22 @@ export interface ConversationModel {
 }
 
 const initialState = {
+  title: '',
   conversationId: null,
-  messages:[],
-  chatList:[],
-}
+  messages: [],
+  chatList: [],
+};
 const conversationModel: ConversationModel = {
-  conversation:initialState,
-  setConversation:action((state:any, payload:any) => {
-    state.conversation = {...state.conversation, ...payload};
+  conversation: initialState,
+  setConversation: action((state, payload) => {
+    state.conversation = { ...state.conversation, ...payload };
   }),
   setChatList: action((state, payload) => {
     state.conversation.chatList = [...payload];
   }),
   clearConversation: action((state) => {
-     state.conversation = initialState;
-    }),
+    state.conversation = initialState;
+  }),
   addMessage: action((state, payload) => {
     state.conversation.messages.push({
       role: payload.role,

@@ -34,26 +34,27 @@ const DashboardCards = ({ data }: DashboardCardsProps) => {
     }
   };
 
-    const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
-    const clearPrompt = useStoreActions(
-      (actions: any) => actions?.promptModel?.clearPrompt
-    );
-    const clearConversation = useStoreActions(
-      (actions: any) => actions?.conversationModel?.clearConversation
-    );
-  
-    useEffect(() => {
-      clearPrompt();
-      clearConversation();
-    }, []);
+  const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
+  const clearPrompt = useStoreActions(
+    (actions: any) => actions?.promptModel?.clearPrompt
+  );
+  const clearConversation = useStoreActions(
+    (actions: any) => actions?.conversationModel?.clearConversation
+  );
 
-  if (promptData.loader) return (
-    <div className="mt-10 h-full flex size-full items-center justify-center">
+  useEffect(() => {
+    clearPrompt();
+    clearConversation();
+  }, []);
+
+  if (promptData.loader)
+    return (
+      <div className="mt-10 flex size-full h-full items-center justify-center">
         <div className="size-20">
-          <Loader Color="#961CBE"  height='50px' width='50px'/>
+          <Loader Color="#961CBE" height="50px" width="50px" />
         </div>
       </div>
-  );
+    );
 
   return (
     <div>
