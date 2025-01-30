@@ -97,14 +97,14 @@ const TextArea = ({
 
       <Button
         disabled={!inputValue && promptData.loader}
-        className={`${
+        className={`h-10 w-14 ${
           !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
-        } absolute bottom-1 right-2.5 z-[5] h-auto min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
+        } absolute bottom-1 right-2.5 z-[5] min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
         onClick={handleSubmit}
       >
         <span className="leading-none">
           {promptData.loader ? (
-            <Loader Color="#bbb" height="30px" width="30px" />
+            <Loader Color="#bbb" height="20px" width="20px" />
           ) : (
             'Code'
           )}

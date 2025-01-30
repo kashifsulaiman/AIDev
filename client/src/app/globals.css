@@ -160,9 +160,6 @@ input[type='number'] {
 .DashboardScroller::-webkit-scrollbar-thumb:hover {
   background: #8c54db;
 }
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
 
 @media (max-width: 1536px) {
   .swiper-button-prev {

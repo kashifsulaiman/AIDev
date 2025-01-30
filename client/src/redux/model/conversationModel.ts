@@ -6,6 +6,7 @@ interface Message {
 }
 interface ChatList {
   _id: string;
+  title: string;
   userId: string;
 }
 

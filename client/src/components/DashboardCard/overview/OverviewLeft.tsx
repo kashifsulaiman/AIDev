@@ -11,8 +11,9 @@ import Toptext from './Toptext';
 import { useStoreState } from 'easy-peasy';
 
 import { Resizable } from 're-resizable';
+import { OverviewLeftInterface } from '@/types/interface';
 
-const OverviewLeft = () => {
+const OverviewLeft = ({ view }: OverviewLeftInterface) => {
   const { title, loader } = useStoreState(
     (state: any) => state?.promptModel?.prompt
   );
@@ -64,9 +65,11 @@ const OverviewLeft = () => {
   return (
     <Resizable
       minWidth={300}
+      style={{ display: view ? 'flex' : 'none' }}
       defaultSize={{
-        width: '50%',
+        width: '36%',
       }}
+      maxWidth={'70%'}
       className="flex max-h-screen flex-col justify-around overflow-hidden px-3 pt-[21px] shadow-2xl max-sm:w-full md:px-11"
     >
       <h4 className="mb-8 text-2xl font-semibold text-black md:mb-16">

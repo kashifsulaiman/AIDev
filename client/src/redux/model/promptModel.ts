@@ -1,6 +1,6 @@
 import { Action, action } from 'easy-peasy';
 
-interface Prompt {
+export interface Prompt {
   id: number;
   title: string;
   description: string;

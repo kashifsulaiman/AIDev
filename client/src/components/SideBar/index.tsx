@@ -51,6 +51,9 @@ export default function MainSideBar() {
   const menuItems = [
     { label: 'Dashboard', href: '/main', icon: <DashBoard /> },
   ];
+  const conversation = useStoreState(
+    (state: any) => state?.conversationModel?.conversation
+  );
 
   useEffect(() => {
     const fetchPrompts = async () => {
@@ -178,11 +181,11 @@ export default function MainSideBar() {
         )}
         <Divider className="mt-3" />
         <div
-          className={`max-h-40 overflow-hidden ${isCollapsed ? 'hidden' : 'justify-between px-8'} flex items-center py-2`}
+          className={`max-h-56 overflow-hidden ${isCollapsed ? 'hidden' : 'justify-between px-8'} flex items-center py-2`}
         >
-          <ChatList isCollapsed={isCollapsed} />
+          <ChatList />
         </div>
-        <Divider className="mt-3" />
+        {conversation.chatList.length > 0 && <Divider />}
         <div className="mt-auto">
           {isLoading ? (
             <MenuSkeleton isCollapsed={isCollapsed} length={2} />
