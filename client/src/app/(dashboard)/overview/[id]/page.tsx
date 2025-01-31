@@ -29,13 +29,9 @@ const Page = () => {
     }
   }, [data, isLoading]);
   return (
-    <>
-      <div className="h-full bg-opacity-25 bg-purple-white-gradient-opactity25">
-        <div>
-          <OverviewMain />
-        </div>
-      </div>
-    </>
+    <div className="h-screen w-full overflow-hidden bg-opacity-25 bg-purple-white-gradient-opactity25">
+      <OverviewMain />
+    </div>
   );
 };
 

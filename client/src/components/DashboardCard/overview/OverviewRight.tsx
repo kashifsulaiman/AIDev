@@ -29,7 +29,7 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
   };
 
   return (
-    <div className="relative flex h-full min-h-screen w-full flex-col items-center justify-center overflow-hidden">
+    <div className="relative flex h-full min-h-screen w-full overflow-hidden">
       {loader ? (
         <div className="flex size-full items-center justify-center">
           <div className="size-10">
