@@ -6,21 +6,35 @@ export interface Prompt {
   description: string;
   template: string;
   apiKey: string;
-  code: string;
-  question: string;
+  code: any;
+  content: string;
+  loader: boolean;
 }
+
 export interface PromptModel {
   prompt: Prompt | null;
   setPrompt: Action<PromptModel, Prompt>;
-  getPrompt: Action<PromptModel, () => string[]>;
+  clearPrompt: Action<PromptModel, Prompt>;
 }
+
+const initialPrompt: Prompt = {
+  id: 0,
+  title: '',
+  description: '',
+  template: '',
+  apiKey: '',
+  code: null,
+  content: '',
+  loader: false,
+};
+
 const promptModel: PromptModel = {
-  prompt: null,
-  setPrompt: action((state: any, payload: any) => {
-    state.prompt = payload;
+  prompt: initialPrompt,
+  setPrompt: action((state, payload) => {
+    state.prompt = { ...state.prompt, ...payload };
   }),
-  getPrompt: action((state: any) => {
-    return state.prompt;
+  clearPrompt: action((state) => {
+    state.prompt = { ...initialPrompt, loader: false };
   }),
 };
 

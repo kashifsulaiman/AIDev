@@ -1,9 +1,8 @@
-import OverviewScreen from '@/components/DashboardCard/overview/OverviewScreen';
-
+import OverviewMain from '@/components/DashboardCard/overview/OverviewMain';
 const page = () => {
   return (
     <div className="h-screen w-full">
-      <OverviewScreen />
+      <OverviewMain />
     </div>
   );
 };

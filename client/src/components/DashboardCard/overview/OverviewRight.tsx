@@ -2,34 +2,34 @@
 
 import Loader from '@/Loader/loading';
 import 'prismjs/themes/prism-dark.css';
-import sdk from '@stackblitz/sdk';
-import { useEffect } from 'react';
+import StackBlitzSDK from '@stackblitz/sdk';
+import { useEffect, useRef } from 'react';
+import { useStoreState } from 'easy-peasy';
+import { OverviewRightInterface } from '@/types/interface';
 import { BackArrowIcon, CodeIcon } from '@/components/SVG';
 import { StackblitzSettingMain } from '@/constants/stackblitz';
-import { OverviewRightInterface } from '@/types/interface';
 
-const OverviewRight = ({
-  code,
-  loader,
-  handleViewChange,
-  view,
-}: OverviewRightInterface) => {
+const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
+  const { loader, code } = useStoreState(
+    (state: any) => state?.promptModel?.prompt
+  );
+  const sdkRef = useRef(null);
   useEffect(() => {
-    if (code) {
-      sdk.embedProject('embed', code, StackblitzSettingMain);
+    if (code && sdkRef.current) {
+      StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
     }
   }, [code]);
 
   const togglePreview = async (param: 'default' | 'preview') => {
     const iframe = document.getElementById('embed') as HTMLIFrameElement;
-    const vm = await sdk.connect(iframe);
+    const vm = await StackBlitzSDK.connect(iframe);
     vm.editor.setView(param);
     vm.editor.showSidebar(param !== 'preview');
     handleViewChange();
   };
 
   return (
-    <div className="relative flex h-full min-h-screen w-full flex-col items-center justify-center overflow-hidden">
+    <div className="relative flex h-full min-h-screen w-full overflow-hidden">
       {loader ? (
         <div className="flex size-full items-center justify-center">
           <div className="size-10">
@@ -67,7 +67,7 @@ const OverviewRight = ({
               height: 'calc(100vh + 32px)',
             }}
           >
-            <div className="h-full w-full" id="embed"></div>
+            <div className="h-full w-full" id="embed" ref={sdkRef}></div>
           </div>
         </>
       )}

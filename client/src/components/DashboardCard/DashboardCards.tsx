@@ -1,9 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import DashboardCard from './component/DashboardCard';
 import { Icons } from '../SideBar';
-
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import Loader from '@/Loader/loading';
 interface CardData {
   title: string;
   description: string;
@@ -32,6 +33,28 @@ const DashboardCards = ({ data }: DashboardCardsProps) => {
       setSelectedCard(description);
     }
   };
+
+  const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
+  const clearPrompt = useStoreActions(
+    (actions: any) => actions?.promptModel?.clearPrompt
+  );
+  const clearConversation = useStoreActions(
+    (actions: any) => actions?.conversationModel?.clearConversation
+  );
+
+  useEffect(() => {
+    clearPrompt();
+    clearConversation();
+  }, []);
+
+  if (promptData.loader)
+    return (
+      <div className="mt-10 flex size-full h-full items-center justify-center">
+        <div className="size-20">
+          <Loader Color="#961CBE" height="50px" width="50px" />
+        </div>
+      </div>
+    );
 
   return (
     <div>

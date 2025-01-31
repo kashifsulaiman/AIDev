@@ -16,6 +16,7 @@ import { TbBrandBlogger } from 'react-icons/tb';
 import { LuCalculator } from 'react-icons/lu';
 import MenuSkeleton from '../Skeletons/MenuSkeleton';
 import { useAuthVerification } from '@/hooks/useAuthVerification';
+import ChatList from '@/components/chatList';
 
 const SidebarIconClasses = 'mx-auto max-sm:h-6 max-sm:w-6';
 
@@ -50,6 +51,9 @@ export default function MainSideBar() {
   const menuItems = [
     { label: 'Dashboard', href: '/main', icon: <DashBoard /> },
   ];
+  const conversation = useStoreState(
+    (state: any) => state?.conversationModel?.conversation
+  );
 
   useEffect(() => {
     const fetchPrompts = async () => {
@@ -176,6 +180,12 @@ export default function MainSideBar() {
           />
         )}
         <Divider className="mt-3" />
+        <div
+          className={`max-h-56 overflow-hidden ${isCollapsed ? 'hidden' : 'justify-between px-8'} flex items-center py-2`}
+        >
+          <ChatList />
+        </div>
+        {conversation.chatList.length > 0 && <Divider />}
         <div className="mt-auto">
           {isLoading ? (
             <MenuSkeleton isCollapsed={isCollapsed} length={2} />

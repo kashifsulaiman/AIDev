@@ -1,26 +1,19 @@
 'use client';
 
-import React from 'react';
 import OverviewLeft from './OverviewLeft';
 import OverviewRight from './OverviewRight';
-import { OverviewMainInterface } from '@/types/interface';
+import React, { useState } from 'react';
 
-const OverviewMain = ({
-  handleViewChange,
-  code,
-  content,
-  loader,
-  view,
-}: OverviewMainInterface) => {
+const OverviewMain = () => {
+  const [view, setView] = useState(true);
+
+  const handleViewChange = () => {
+    setView(!view);
+  };
   return (
-    <div className="flex max-h-screen min-h-screen w-full overflow-hidden max-sm:max-h-full max-sm:flex-col max-sm:gap-4">
-      <OverviewLeft content={content} loader={loader} view={view} />
-      <OverviewRight
-        code={code}
-        loader={loader}
-        handleViewChange={handleViewChange}
-        view={view}
-      />
+    <div className="flex h-full w-full items-start justify-start overflow-hidden max-sm:max-h-full max-sm:flex-col max-sm:gap-4">
+      <OverviewLeft view={view} />
+      <OverviewRight handleViewChange={handleViewChange} view={view} />
     </div>
   );
 };

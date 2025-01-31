@@ -3,8 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
-import { useStoreActions } from 'easy-peasy';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useRouter } from 'next/navigation';
+import { ApiUrl } from '@/constants/apiUrl';
+import { POST } from '@/hooks/consts';
+import { useMutation } from '@/hooks/useMutation';
+import { extractAttributes } from '@/utils/utils';
+import Loader from '@/Loader/loading';
 
 const TextArea = ({
   prompt,
@@ -13,16 +18,54 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
+  const conversation = useStoreState(
+    (state: any) => state?.conversationModel?.conversation
+  );
+  const user = useStoreState((state: any) => state?.userObj?.UserObj);
   const setPrompt = useStoreActions(
     (actions: any) => actions?.promptModel?.setPrompt
   );
+  const setConversation = useStoreActions(
+    (actions: any) => actions.conversationModel.setConversation
+  );
+
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
 
+  const { mutate } = useMutation({
+    isToaster: false,
+    method: POST,
+    url: ApiUrl.GENERATE_AI_RESPONSE,
+    onSuccess: (res) => {
+      const { conversationId, project, text, messages, title } = res?.data;
+      setPrompt({ code: project, content: text, loader: false });
+      setConversation({
+        _id: conversationId,
+        userId: user.id,
+        messages: messages,
+        title: title,
+      });
+      router.push(`/overview/${conversationId}`);
+    },
+  });
+
+  const handleSubmit = () => {
+    setPrompt({ question: inputValue });
+    if (inputValue) {
+      setPrompt({ loader: true });
+      const attributes = extractAttributes(inputValue);
+      mutate({
+        humanPrompt: inputValue,
+        attributes,
+        conversationId: conversation.conversationId,
+        userId: user.id,
+      });
+      setInputValue('');
+    }
+  };
   return (
     <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
       <div className="flex w-full items-end">
@@ -53,23 +96,19 @@ const TextArea = ({
       </div>
 
       <Button
-        disabled={!inputValue}
-        className={`${
+        disabled={!inputValue && promptData.loader}
+        className={`h-10 w-14 ${
           !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
-        } absolute bottom-1 right-2.5 z-[5] h-auto min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
-        onClick={() => {
-          const current = new URLSearchParams(
-            Array.from(searchParams.entries())
-          );
-          current.delete('promptType');
-          const search = current.toString();
-          const query = search ? `?${search}` : '';
-          router.push(`${pathname}${query}`);
-          setPrompt({ question: inputValue });
-          router.push('/overview');
-        }}
+        } absolute bottom-1 right-2.5 z-[5] min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
+        onClick={handleSubmit}
       >
-        <span className="leading-none">Code</span>
+        <span className="leading-none">
+          {promptData.loader ? (
+            <Loader Color="#bbb" height="20px" width="20px" />
+          ) : (
+            'Code'
+          )}
+        </span>
       </Button>
     </div>
   );
