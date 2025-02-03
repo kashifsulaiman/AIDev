@@ -7,6 +7,7 @@ import { ApiUrl } from '@/constants/apiUrl';
 import { useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
 import { StoreModel } from '@/redux/model';
+import { ConversationIdApiResponse } from '@/redux/model/conversationModel';
 
 const Page = () => {
   const param = useParams();
@@ -17,7 +18,7 @@ const Page = () => {
   const setConversation = useStoreActions<StoreModel>(
     (actions) => actions?.conversationModel?.setConversation
   );
-  const { data, isLoading } = useQuery<any>({
+  const { data, isLoading } = useQuery<ConversationIdApiResponse>({
     queryKey: [conversationId],
     url: `${ApiUrl.GET_CHAT}/${conversationId}`,
     showToast: true,
