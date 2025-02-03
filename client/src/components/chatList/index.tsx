@@ -9,7 +9,9 @@ import { StoreModel } from '@/redux/model';
 
 const ChatList = () => {
   const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
-  const prompt = useStoreState<StoreModel>((state) => state?.promptModel?.prompt);
+  const prompt = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
+  );
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );

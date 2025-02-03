@@ -19,7 +19,9 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
-  const promptData = useStoreState<StoreModel>((state) => state?.promptModel?.prompt);
+  const promptData = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
+  );
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );
@@ -27,8 +29,8 @@ const TextArea = ({
   const setPrompt = useStoreActions<StoreModel>(
     (actions) => actions?.promptModel?.setPrompt
   );
-  const setConversation = useStoreActions<StoreModel>(
-    (actions) => actions.conversationModel.setConversation
+  const { setConversation, addMessage } = useStoreActions<StoreModel>(
+    (actions) => actions.conversationModel
   );
 
   const [inputValue, setInputValue] = useState('');
@@ -56,6 +58,10 @@ const TextArea = ({
   const handleSubmit = () => {
     setPrompt({ question: inputValue });
     if (inputValue) {
+      addMessage({
+        role: 'user',
+        content: inputValue,
+      });
       setPrompt({ loader: true });
       const attributes = extractAttributes(inputValue);
       mutate({

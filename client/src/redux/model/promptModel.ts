@@ -32,10 +32,10 @@ const initialPrompt: Prompt = {
 const promptModel: PromptModel = {
   prompt: initialPrompt,
   setPrompt: action((state, payload) => {
-    state.prompt = { ...state.prompt, ...payload } as Prompt;;
+    state.prompt = { ...state.prompt, ...payload } as Prompt;
   }),
   clearPrompt: action((state) => {
-    state.prompt = { ...initialPrompt};
+    state.prompt = { ...initialPrompt };
   }),
 };
 

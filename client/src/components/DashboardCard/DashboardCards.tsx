@@ -35,7 +35,9 @@ const DashboardCards = ({ data }: DashboardCardsProps) => {
     }
   };
 
-  const promptData = useStoreState<StoreModel>((state) => state?.promptModel?.prompt);
+  const promptData = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
+  );
   const clearPrompt = useStoreActions<StoreModel>(
     (actions) => actions?.promptModel?.clearPrompt
   );
