@@ -12,13 +12,14 @@ import { useStoreState } from 'easy-peasy';
 
 import { Resizable } from 're-resizable';
 import { OverviewLeftInterface } from '@/types/interface';
+import { StoreModel } from '@/redux/model';
 
 const OverviewLeft = ({ view }: OverviewLeftInterface) => {
-  const { title, loader } = useStoreState(
-    (state: any) => state?.promptModel?.prompt
+  const { title, loader } = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
   );
-  const conversation = useStoreState(
-    (state: any) => state?.conversationModel?.conversation
+  const conversation = useStoreState<StoreModel>(
+    (state) => state?.conversationModel?.conversation
   );
   const [generating, setGenerating] = useState(false);
 

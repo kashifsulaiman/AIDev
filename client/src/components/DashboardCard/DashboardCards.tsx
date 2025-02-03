@@ -5,6 +5,7 @@ import DashboardCard from './component/DashboardCard';
 import { Icons } from '../SideBar';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import Loader from '@/Loader/loading';
+import { StoreModel } from '@/redux/model';
 interface CardData {
   title: string;
   description: string;
@@ -34,12 +35,12 @@ const DashboardCards = ({ data }: DashboardCardsProps) => {
     }
   };
 
-  const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
-  const clearPrompt = useStoreActions(
-    (actions: any) => actions?.promptModel?.clearPrompt
+  const promptData = useStoreState<StoreModel>((state) => state?.promptModel?.prompt);
+  const clearPrompt = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel?.clearPrompt
   );
-  const clearConversation = useStoreActions(
-    (actions: any) => actions?.conversationModel?.clearConversation
+  const clearConversation = useStoreActions<StoreModel>(
+    (actions) => actions?.conversationModel?.clearConversation
   );
 
   useEffect(() => {

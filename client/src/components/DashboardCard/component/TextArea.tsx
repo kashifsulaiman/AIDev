@@ -10,6 +10,7 @@ import { POST } from '@/hooks/consts';
 import { useMutation } from '@/hooks/useMutation';
 import { extractAttributes } from '@/utils/utils';
 import Loader from '@/Loader/loading';
+import { StoreModel } from '@/redux/model';
 
 const TextArea = ({
   prompt,
@@ -18,16 +19,16 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
-  const promptData = useStoreState((state: any) => state?.promptModel?.prompt);
-  const conversation = useStoreState(
-    (state: any) => state?.conversationModel?.conversation
+  const promptData = useStoreState<StoreModel>((state) => state?.promptModel?.prompt);
+  const conversation = useStoreState<StoreModel>(
+    (state) => state?.conversationModel?.conversation
   );
-  const user = useStoreState((state: any) => state?.userObj?.UserObj);
-  const setPrompt = useStoreActions(
-    (actions: any) => actions?.promptModel?.setPrompt
+  const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
+  const setPrompt = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel?.setPrompt
   );
-  const setConversation = useStoreActions(
-    (actions: any) => actions.conversationModel.setConversation
+  const setConversation = useStoreActions<StoreModel>(
+    (actions) => actions.conversationModel.setConversation
   );
 
   const [inputValue, setInputValue] = useState('');

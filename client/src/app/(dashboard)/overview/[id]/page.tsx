@@ -6,15 +6,16 @@ import { useParams } from 'next/navigation';
 import { ApiUrl } from '@/constants/apiUrl';
 import { useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
+import { StoreModel } from '@/redux/model';
 
 const Page = () => {
   const param = useParams();
   const conversationId = param.id;
-  const setPrompt = useStoreActions(
-    (actions: any) => actions?.promptModel?.setPrompt
+  const setPrompt = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel?.setPrompt
   );
-  const setConversation = useStoreActions(
-    (actions: any) => actions?.conversationModel?.setConversation
+  const setConversation = useStoreActions<StoreModel>(
+    (actions) => actions?.conversationModel?.setConversation
   );
   const { data, isLoading } = useQuery<any>({
     queryKey: [conversationId],
