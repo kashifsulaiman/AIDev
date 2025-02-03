@@ -8,10 +8,11 @@ import { useStoreState } from 'easy-peasy';
 import { OverviewRightInterface } from '@/types/interface';
 import { BackArrowIcon, CodeIcon } from '@/components/SVG';
 import { StackblitzSettingMain } from '@/constants/stackblitz';
+import { StoreModel } from '@/redux/model';
 
 const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
-  const { loader, code } = useStoreState(
-    (state: any) => state?.promptModel?.prompt
+  const { loader, code } = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
   );
   const sdkRef = useRef(null);
   useEffect(() => {

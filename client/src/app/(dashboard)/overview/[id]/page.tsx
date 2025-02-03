@@ -6,17 +6,19 @@ import { useParams } from 'next/navigation';
 import { ApiUrl } from '@/constants/apiUrl';
 import { useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
+import { StoreModel } from '@/redux/model';
+import { ConversationIdApiResponse } from '@/redux/model/conversationModel';
 
 const Page = () => {
   const param = useParams();
   const conversationId = param.id;
-  const setPrompt = useStoreActions(
-    (actions: any) => actions?.promptModel?.setPrompt
+  const setPrompt = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel?.setPrompt
   );
-  const setConversation = useStoreActions(
-    (actions: any) => actions?.conversationModel?.setConversation
+  const setConversation = useStoreActions<StoreModel>(
+    (actions) => actions?.conversationModel?.setConversation
   );
-  const { data, isLoading } = useQuery<any>({
+  const { data, isLoading } = useQuery<ConversationIdApiResponse>({
     queryKey: [conversationId],
     url: `${ApiUrl.GET_CHAT}/${conversationId}`,
     showToast: true,

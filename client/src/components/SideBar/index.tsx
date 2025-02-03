@@ -17,6 +17,7 @@ import { LuCalculator } from 'react-icons/lu';
 import MenuSkeleton from '../Skeletons/MenuSkeleton';
 import { useAuthVerification } from '@/hooks/useAuthVerification';
 import ChatList from '@/components/chatList';
+import { StoreModel } from '@/redux/model';
 
 const SidebarIconClasses = 'mx-auto max-sm:h-6 max-sm:w-6';
 
@@ -51,8 +52,8 @@ export default function MainSideBar() {
   const menuItems = [
     { label: 'Dashboard', href: '/main', icon: <DashBoard /> },
   ];
-  const conversation = useStoreState(
-    (state: any) => state?.conversationModel?.conversation
+  const conversation = useStoreState<StoreModel>(
+    (state) => state?.conversationModel?.conversation
   );
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+import { Project } from '@stackblitz/sdk';
 import { Action, action } from 'easy-peasy';
 
 export interface Prompt {
@@ -6,15 +7,15 @@ export interface Prompt {
   description: string;
   template: string;
   apiKey: string;
-  code: any;
+  code: Project | null;
   content: string;
   loader: boolean;
 }
 
 export interface PromptModel {
   prompt: Prompt | null;
-  setPrompt: Action<PromptModel, Prompt>;
-  clearPrompt: Action<PromptModel, Prompt>;
+  setPrompt: Action<PromptModel, Partial<Prompt>>;
+  clearPrompt: Action<PromptModel, void>;
 }
 
 const initialPrompt: Prompt = {
@@ -31,10 +32,10 @@ const initialPrompt: Prompt = {
 const promptModel: PromptModel = {
   prompt: initialPrompt,
   setPrompt: action((state, payload) => {
-    state.prompt = { ...state.prompt, ...payload };
+    state.prompt = { ...state.prompt, ...payload } as Prompt;
   }),
   clearPrompt: action((state) => {
-    state.prompt = { ...initialPrompt, loader: false };
+    state.prompt = { ...initialPrompt };
   }),
 };
 

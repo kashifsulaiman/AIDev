@@ -24,7 +24,11 @@ export interface ConversationModel {
   clearConversation: Action<ConversationModel, Message[]>;
   setChatList: Action<ConversationModel, ChatList[]>;
 }
-
+export interface ConversationIdApiResponse {
+  _id: string;
+  code: string;
+  messages: Message[];
+}
 const initialState = {
   title: '',
   conversationId: null,

@@ -5,15 +5,18 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import Link from 'next/link';
 import Loader from '@/Loader/loading';
 import { Listbox, ListboxItem } from '@nextui-org/react';
+import { StoreModel } from '@/redux/model';
 
 const ChatList = () => {
-  const user = useStoreState((state: any) => state?.userObj?.UserObj);
-  const prompt = useStoreState((state: any) => state?.promptModel?.prompt);
-  const conversation = useStoreState(
-    (state: any) => state?.conversationModel?.conversation
+  const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
+  const prompt = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
   );
-  const setChatList = useStoreActions(
-    (state: any) => state?.conversationModel?.setChatList
+  const conversation = useStoreState<StoreModel>(
+    (state) => state?.conversationModel?.conversation
+  );
+  const setChatList = useStoreActions<StoreModel>(
+    (state) => state?.conversationModel?.setChatList
   );
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['chatlist'],

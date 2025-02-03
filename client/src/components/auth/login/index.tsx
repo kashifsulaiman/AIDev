@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect } from 'react';
 import Cookies from 'js-cookie';
+import { StoreModel } from '@/redux/model';
 
 interface LoginFormProps {
   email: string;
@@ -31,11 +32,11 @@ const Login = () => {
   const forgotPasswordAction = useStoreActions(
     (actions: any) => actions.forgotPasswordObj.add
   );
-  const clearPrompt = useStoreActions(
-    (actions: any) => actions?.promptModel?.clearPrompt
+  const clearPrompt = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel?.clearPrompt
   );
-  const clearConversation = useStoreActions(
-    (actions: any) => actions?.conversationModel?.clearConversation
+  const clearConversation = useStoreActions<StoreModel>(
+    (actions) => actions?.conversationModel?.clearConversation
   );
   useLayoutEffect(() => {
     forgotPasswordAction({
