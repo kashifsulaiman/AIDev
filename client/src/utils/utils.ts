@@ -1,5 +1,13 @@
 export const extractAttributes = (inputPrompt: string) => {
-  const allowedFrameworks = ['next', 'react', 'vue'];
+  const allowedFrameworks = [
+    'next',
+    'react',
+    'vue',
+    'angular',
+    'js',
+    'javascript',
+    'vanilla',
+  ];
   const lowerCasePrompt = inputPrompt.toLowerCase();
   const attributes = { framework: 'react' };
   const findFrameworkIndex = allowedFrameworks.findIndex((item) =>
