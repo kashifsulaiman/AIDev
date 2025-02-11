@@ -35,8 +35,10 @@ const TextArea = ({
     (actions) => actions.conversationModel
   );
 
-  const [inputValue, setInputValue] = useState(pathname.startsWith("/overview") ? promptData.question : '' );
-  let debouncedInput = useDebounce(inputValue, 2000);
+  const [inputValue, setInputValue] = useState(
+    pathname.startsWith('/overview') ? promptData.question : ''
+  );
+  const debouncedInput = useDebounce(inputValue, 2000);
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
