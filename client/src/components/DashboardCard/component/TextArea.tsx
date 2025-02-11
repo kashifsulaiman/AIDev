@@ -4,13 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { ApiUrl } from '@/constants/apiUrl';
 import { POST } from '@/hooks/consts';
 import { useMutation } from '@/hooks/useMutation';
 import { extractAttributes } from '@/utils/utils';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
+import { useDebounce } from '@/hooks/useDebounce';
 
 const TextArea = ({
   prompt,
@@ -19,6 +20,7 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
+  const pathname = usePathname();
   const promptData = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
@@ -26,17 +28,24 @@ const TextArea = ({
     (state) => state?.conversationModel?.conversation
   );
   const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
-  const setPrompt = useStoreActions<StoreModel>(
-    (actions) => actions?.promptModel?.setPrompt
+  const { setPrompt } = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel
   );
   const { setConversation, addMessage } = useStoreActions<StoreModel>(
     (actions) => actions.conversationModel
   );
 
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(pathname.startsWith("/overview") ? promptData.question : '' );
+  let debouncedInput = useDebounce(inputValue, 2000);
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
+  useEffect(() => {
+    if (debouncedInput) {
+      setPrompt({ question: debouncedInput });
+      setInputValue(debouncedInput);
+    }
+  }, [debouncedInput, setPrompt]);
 
   const { mutate } = useMutation({
     isToaster: false,
