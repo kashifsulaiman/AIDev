@@ -3,23 +3,45 @@
 import Loader from '@/Loader/loading';
 import 'prismjs/themes/prism-dark.css';
 import StackBlitzSDK from '@stackblitz/sdk';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStoreState } from 'easy-peasy';
 import { OverviewRightInterface } from '@/types/interface';
 import { BackArrowIcon, CodeIcon } from '@/components/SVG';
 import { StackblitzSettingMain } from '@/constants/stackblitz';
 import { StoreModel } from '@/redux/model';
+import { DiffCodeAndSendChanges } from '@/utils/stackblitz';
 
 const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
   const { loader, code } = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
+
   const sdkRef = useRef(null);
+  const [firstInstance, setFirstInstance] = useState<boolean>(false);
+
   useEffect(() => {
-    if (code && sdkRef.current) {
+    if (code && sdkRef.current && !firstInstance) {
       StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
+      setFirstInstance(true);
+    } else if (code && sdkRef.current) {
+      handleCheckDependencyAndCreateInstance();
     }
   }, [code]);
+
+  const handleCheckDependencyAndCreateInstance = async () => {
+    const iframe = document.getElementById('embed') as HTMLIFrameElement;
+    const vm = await StackBlitzSDK.connect(iframe);
+    const oldCode = await vm.getFsSnapshot();
+    if (!oldCode) {
+      return;
+    }
+    const updatedCode = DiffCodeAndSendChanges(oldCode, code.files);
+    if (updatedCode.create['package.json']) {
+      StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
+    } else {
+      vm.applyFsDiff(updatedCode);
+    }
+  };
 
   const togglePreview = async (param: 'default' | 'preview') => {
     const iframe = document.getElementById('embed') as HTMLIFrameElement;
@@ -31,7 +53,7 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
 
   return (
     <div className="relative flex h-full min-h-screen w-full overflow-hidden">
-      {loader ? (
+      {loader && !firstInstance ? (
         <div className="flex size-full items-center justify-center">
           <div className="size-10">
             <Loader Color="#961CBE" />
