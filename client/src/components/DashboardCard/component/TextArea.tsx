@@ -67,7 +67,6 @@ const TextArea = ({
   });
 
   const handleSubmit = () => {
-    setPrompt({ question: inputValue });
     if (inputValue) {
       addMessage({
         role: 'user',
