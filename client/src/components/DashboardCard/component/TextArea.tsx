@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
 import { useStoreActions, useStoreState } from 'easy-peasy';
@@ -38,16 +38,41 @@ const TextArea = ({
   const [inputValue, setInputValue] = useState(
     pathname.startsWith('/overview') ? promptData.question : ''
   );
-  const debouncedInput = useDebounce(inputValue, 2000);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const debouncedInput = useDebounce(inputValue, 1000);
+  const handleBlur = () => {
+    if (pathname.startsWith('/overview') && textareaRef.current) {
+      setTimeout(() => {
+        if (textareaRef.current && inputValue) {
+          textareaRef.current.focus();
+          textareaRef.current.setSelectionRange(
+            textareaRef.current.value.length,
+            textareaRef.current.value.length
+          );
+        }
+      }, 1000);
+    } 
+  };
   useEffect(() => {
-    setInputValue(prompt?.question || '');
+    if (pathname.startsWith('/overview') && textareaRef.current) {
+      textareaRef.current.focus();
+      textareaRef.current.setSelectionRange(
+        textareaRef.current.value.length,
+        textareaRef.current.value.length
+      );
+    }
+  }, [pathname]);
+  useEffect(() => {
+    if (prompt?.question) {
+      setInputValue(prompt?.question);
+    }
   }, [prompt]);
   useEffect(() => {
-    if (debouncedInput) {
+    if (debouncedInput && promptData.loader) {
       setPrompt({ question: debouncedInput });
       setInputValue(debouncedInput);
     }
-  }, [debouncedInput, setPrompt]);
+  }, [debouncedInput]);
 
   const { mutate } = useMutation({
     isToaster: false,
@@ -67,7 +92,7 @@ const TextArea = ({
   });
 
   const handleSubmit = () => {
-    if (inputValue) {
+    if (inputValue.length > 0) {
       addMessage({
         role: 'user',
         content: inputValue,
@@ -81,10 +106,11 @@ const TextArea = ({
         userId: user.id,
       });
       setInputValue('');
+      setPrompt({question:''});
     }
   };
   return (
-    <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
+    <div className="relative mt-10 flex w-full items-end justify-between flex-col xl:flex-row rounded-xl bg-white shadow-lg xl:mb-5 p-2">
       <div className="flex w-full items-end">
         <Button
           className={`${
@@ -94,29 +120,35 @@ const TextArea = ({
           <Addicon />
         </Button>
 
-        <Textarea
+        <textarea
+          ref={textareaRef}
+          onBlur={handleBlur}
+          id="custom-textarea"
           placeholder="Type '/' for commands"
-          className="max-w-full resize-none text-black shadow-none"
+          className="w-full resize-none text-black shadow-none !p-0 scrollbar-hide !rounded-none !min-h-[60px] !pl-[30px] !pr-[42px] focus:!outline-none focus:!ring-0 focus:!border-none"
           value={inputValue}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setInputValue(e.target.value)
           }
-          maxRows={6}
-          classNames={{
-            base: `!p-0 !bg-transparent ${classNames?.base}`,
-            innerWrapper: `flex items-center ${classNames?.innerWrapper}`,
-            input: `scrollbar-hide  !rounded-none !min-h-[60px] ${classNames?.input}`,
-            inputWrapper: `!pl-[30px] !pr-[42px] bg-transparent data-[hover=true]:bg-transparent data-[focus=true]:!bg-transparent shadow-none ${classNames?.inputWrapper}`,
+          onKeyDown={(e) => {
+            if (
+              e.key === "Enter" &&
+              !e.shiftKey &&
+              !promptData?.loader &&
+              inputValue.length > 0
+            ) {
+              e.preventDefault();
+              handleSubmit();
+            }
           }}
-          {...props}
         />
       </div>
 
       <Button
-        disabled={!inputValue && promptData.loader}
+        disabled={promptData.loader}
         className={`h-10 w-14 ${
-          !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
-        } absolute bottom-1 right-2.5 z-[5] min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
+          promptData.loader ? 'cursor-not-allowed bg-opacity-30' : ''
+        }  min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
         onClick={handleSubmit}
       >
         <span className="leading-none">
