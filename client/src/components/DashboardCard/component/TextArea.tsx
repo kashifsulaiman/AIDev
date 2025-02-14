@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Textarea, Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useRouter, usePathname } from 'next/navigation';
@@ -15,9 +15,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 
 const TextArea = ({
   prompt,
-  classNames,
   // isExpanded,
-  ...props
 }: any) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -51,7 +49,7 @@ const TextArea = ({
           );
         }
       }, 1000);
-    } 
+    }
   };
   useEffect(() => {
     if (pathname.startsWith('/overview') && textareaRef.current) {
@@ -106,11 +104,11 @@ const TextArea = ({
         userId: user.id,
       });
       setInputValue('');
-      setPrompt({question:''});
+      setPrompt({ question: '' });
     }
   };
   return (
-    <div className="relative mt-10 flex w-full items-end justify-between flex-col xl:flex-row rounded-xl bg-white shadow-lg xl:mb-5 p-2">
+    <div className="relative mt-10 flex w-full flex-col items-end justify-between rounded-xl bg-white p-2 shadow-lg xl:mb-5 xl:flex-row">
       <div className="flex w-full items-end">
         <Button
           className={`${
@@ -125,14 +123,14 @@ const TextArea = ({
           onBlur={handleBlur}
           id="custom-textarea"
           placeholder="Type '/' for commands"
-          className="w-full resize-none text-black shadow-none !p-0 scrollbar-hide !rounded-none !min-h-[60px] !pl-[30px] !pr-[42px] focus:!outline-none focus:!ring-0 focus:!border-none"
+          className="!min-h-[60px] w-full resize-none !rounded-none !p-0 !pl-[30px] !pr-[42px] text-black shadow-none scrollbar-hide focus:!border-none focus:!outline-none focus:!ring-0"
           value={inputValue}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setInputValue(e.target.value)
           }
           onKeyDown={(e) => {
             if (
-              e.key === "Enter" &&
+              e.key === 'Enter' &&
               !e.shiftKey &&
               !promptData?.loader &&
               inputValue.length > 0
@@ -148,7 +146,7 @@ const TextArea = ({
         disabled={promptData.loader}
         className={`h-10 w-14 ${
           promptData.loader ? 'cursor-not-allowed bg-opacity-30' : ''
-        }  min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
+        } min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
         onClick={handleSubmit}
       >
         <span className="leading-none">
