@@ -34,14 +34,14 @@ const TextArea = ({
   );
 
   const [inputValue, setInputValue] = useState(
-    pathname.startsWith('/overview') ? promptData.question : ''
+    pathname.startsWith('/overview') ? promptData.question.trim() : ''
   );
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const debouncedInput = useDebounce(inputValue, 1000);
   const handleBlur = () => {
-    if (pathname.startsWith('/overview') && textareaRef.current) {
+    if (textareaRef.current) {
       setTimeout(() => {
-        if (textareaRef.current && inputValue) {
+        if (textareaRef.current) {
           textareaRef.current.focus();
           textareaRef.current.setSelectionRange(
             textareaRef.current.value.length,
@@ -52,7 +52,7 @@ const TextArea = ({
     }
   };
   useEffect(() => {
-    if (pathname.startsWith('/overview') && textareaRef.current) {
+    if (textareaRef.current) {
       textareaRef.current.focus();
       textareaRef.current.setSelectionRange(
         textareaRef.current.value.length,
@@ -62,7 +62,7 @@ const TextArea = ({
   }, [pathname]);
   useEffect(() => {
     if (prompt?.question) {
-      setInputValue(prompt?.question);
+      setInputValue(prompt?.question.trim());
     }
   }, [prompt]);
   useEffect(() => {
