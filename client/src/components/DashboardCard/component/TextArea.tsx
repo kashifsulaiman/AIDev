@@ -38,6 +38,7 @@ const TextArea = ({
   );
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const debouncedInput = useDebounce(inputValue, 1000);
+
   const handleBlur = () => {
     if (textareaRef.current) {
       setTimeout(() => {
@@ -51,6 +52,7 @@ const TextArea = ({
       }, 1000);
     }
   };
+
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.focus();
@@ -60,11 +62,13 @@ const TextArea = ({
       );
     }
   }, [pathname]);
+
   useEffect(() => {
     if (prompt?.question) {
       setInputValue(prompt?.question.trim());
     }
   }, [prompt]);
+
   useEffect(() => {
     if (debouncedInput && promptData.loader) {
       setPrompt({ question: debouncedInput });
@@ -107,6 +111,7 @@ const TextArea = ({
       setPrompt({ question: '' });
     }
   };
+
   return (
     <div className="relative mt-10 flex w-full flex-col items-end justify-between rounded-xl bg-white p-2 shadow-lg xl:mb-5 xl:flex-row">
       <div className="flex w-full items-end">
