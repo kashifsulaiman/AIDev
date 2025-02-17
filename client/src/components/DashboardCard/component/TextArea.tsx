@@ -123,7 +123,7 @@ const TextArea = ({
           onBlur={handleBlur}
           id="custom-textarea"
           placeholder="Type '/' for commands"
-          className="!min-h-[60px] w-full resize-none !rounded-none !p-0 !pl-[30px] !pr-[42px] text-black shadow-none scrollbar-hide focus:!border-none focus:!outline-none focus:!ring-0"
+          className="!min-h-[90px] w-full resize-none !rounded-none !p-0 !pl-[30px] !pr-[42px] text-black shadow-none scrollbar-hide focus:!border-none focus:!outline-none focus:!ring-0"
           value={inputValue}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setInputValue(e.target.value)
