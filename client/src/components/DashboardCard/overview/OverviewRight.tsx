@@ -2,7 +2,7 @@
 
 import Loader from '@/Loader/loading';
 import 'prismjs/themes/prism-dark.css';
-import StackBlitzSDK from '@stackblitz/sdk';
+import StackBlitzSDK, { Project } from '@stackblitz/sdk';
 import { useEffect, useRef, useState } from 'react';
 import { useStoreState } from 'easy-peasy';
 import { OverviewRightInterface } from '@/types/interface';

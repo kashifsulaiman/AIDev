@@ -1,9 +1,13 @@
+import { Project } from '@stackblitz/sdk';
 import { Action, action } from 'easy-peasy';
 
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
+export interface Message {
+  userPrompt: string;
+  aiResponse: string;
+  code: Project;
+  _id: string;
 }
+
 interface ChatList {
   _id: string;
   title: string;
@@ -16,20 +20,22 @@ interface Conversation {
   messages: Message[];
   chatList: ChatList[];
 }
+
 export interface ConversationModel {
   conversation: Conversation;
   setConversation: Action<ConversationModel, Conversation>;
   addMessage: Action<ConversationModel, Message>;
   setMessages: Action<ConversationModel, Message[]>;
-  clearConversation: Action<ConversationModel, Message[]>;
+  clearConversation: Action<ConversationModel>;
   setChatList: Action<ConversationModel, ChatList[]>;
 }
+
 export interface ConversationIdApiResponse {
   _id: string;
-  code: string;
+  code: Record<string, any>;
   messages: Message[];
 }
-const initialState = {
+const initialState: Conversation = {
   title: '',
   conversationId: null,
   messages: [],
@@ -48,14 +54,18 @@ const conversationModel: ConversationModel = {
   }),
   addMessage: action((state, payload) => {
     state.conversation.messages.push({
-      role: payload.role,
-      content: payload.content,
+      userPrompt: payload.userPrompt,
+      aiResponse: payload.aiResponse,
+      code: payload.code,
+      _id: payload._id,
     });
   }),
   setMessages: action((state, payload) => {
     state.conversation.messages = payload.map((message) => ({
-      role: message.role,
-      content: message.content,
+      userPrompt: message.userPrompt,
+      aiResponse: message.aiResponse,
+      code: message.code,
+      _id: message._id,
     }));
   }),
 };
