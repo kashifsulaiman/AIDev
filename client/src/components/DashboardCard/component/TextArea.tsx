@@ -43,8 +43,12 @@ const TextArea = ({
     method: POST,
     url: ApiUrl.GENERATE_AI_RESPONSE,
     onSuccess: (res) => {
-      const { conversationId, project, text, messages, title } = res?.data;
-      setPrompt({ code: project, content: text, loader: false });
+      const { conversationId, messages, title } = res?.data;
+      setPrompt({
+        code: messages[messages.length - 1].code,
+        content: messages[messages.length - 1].userPrompt,
+        loader: false,
+      });
       setConversation({
         _id: conversationId,
         userId: user.id,
@@ -56,22 +60,22 @@ const TextArea = ({
   });
 
   const handleSubmit = () => {
-    setPrompt({ question: inputValue });
-    if (inputValue) {
-      addMessage({
-        role: 'user',
-        content: inputValue,
-      });
-      setPrompt({ loader: true });
-      const attributes = extractAttributes(inputValue);
-      mutate({
-        humanPrompt: inputValue,
-        attributes,
-        conversationId: conversation.conversationId,
-        userId: user.id,
-      });
-      setInputValue('');
-    }
+    if (!inputValue) return;
+    setPrompt({ question: inputValue, loader: true });
+    const attributes = extractAttributes(inputValue);
+    mutate({
+      humanPrompt: inputValue,
+      attributes,
+      conversationId: conversation.conversationId,
+      userId: user.id,
+    });
+    addMessage({
+      userPrompt: inputValue,
+      aiResponse: '',
+      code: {},
+      id: '',
+    });
+    setInputValue('');
   };
   return (
     <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">

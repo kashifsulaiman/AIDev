@@ -11,4 +11,5 @@ export const ApiUrl = {
   GENERATE_AI_RESPONSE: 'users/generate',
   GET_CHAT: 'users/chat',
   GET_CHAT_LIST: 'users/chat-list',
+  ROLLBACK_MESSAGE: 'users/rollback',
 };

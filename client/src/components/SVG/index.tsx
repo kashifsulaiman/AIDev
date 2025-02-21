@@ -1,6 +1,7 @@
 import { VscPreview } from 'react-icons/vsc';
 import { TiArrowBack } from 'react-icons/ti';
 import { IconInterface } from '@/types/interface';
+import { TbArrowBack } from 'react-icons/tb';
 
 const DropdownIcon = () => {
   return (
@@ -2496,6 +2497,10 @@ const BackArrowIcon = ({ classes }: IconInterface) => {
   return <TiArrowBack className={classes} />;
 };
 
+const RollbackIcon = ({ classes }: IconInterface) => {
+  return <TbArrowBack className={classes} />;
+};
+
 export {
   Platform,
   ExploreStudio,
@@ -2542,4 +2547,5 @@ export {
   PreviewIcon,
   CodeIcon,
   BackArrowIcon,
+  RollbackIcon,
 };
