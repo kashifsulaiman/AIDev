@@ -80,9 +80,9 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
     url: ApiUrl.ROLLBACK_MESSAGE,
     onSuccess: (res) => {
       const { messages } = res.data;
-      const message =  messages[messages.length - 1]
+      const message = messages[messages.length - 1];
       setConversation({ messages });
-      setPrompt({code: message.code, content: message.userPrompt });
+      setPrompt({ code: message.code, content: message.userPrompt });
     },
   });
 
@@ -90,7 +90,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
     if (!conversation.conversationId && !project) return;
     mutate({
       conversationId: conversation.conversationId,
-      messageId: project._id.toString()
+      messageId: project._id.toString(),
     });
   };
 
