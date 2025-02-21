@@ -10,7 +10,6 @@ export interface Prompt {
   code: Project | null;
   content: string;
   loader: boolean;
-  question: string | null;
 }
 
 export interface PromptModel {
@@ -28,7 +27,6 @@ const initialPrompt: Prompt = {
   code: null,
   content: '',
   loader: false,
-  question: '',
 };
 
 const promptModel: PromptModel = {
@@ -37,7 +35,7 @@ const promptModel: PromptModel = {
     state.prompt = { ...state.prompt, ...payload } as Prompt;
   }),
   clearPrompt: action((state) => {
-    state.prompt = initialPrompt;
+    state.prompt = { ...initialPrompt };
   }),
 };
 
