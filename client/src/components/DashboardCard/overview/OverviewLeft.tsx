@@ -80,20 +80,17 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
     url: ApiUrl.ROLLBACK_MESSAGE,
     onSuccess: (res) => {
       const { messages } = res.data;
+      const message =  messages[messages.length - 1]
       setConversation({ messages });
-      setPrompt({
-        code: messages[messages.length - 1].code,
-        content: messages[messages.length - 1].userPrompt,
-      });
+      setPrompt({code: message.code, content: message.userPrompt });
     },
   });
 
-  const handleRollback = (project: Message, index: number) => {
-    if (!conversation.conversationId && !project && !index) return;
+  const handleRollback = (project: Message) => {
+    if (!conversation.conversationId && !project) return;
     mutate({
       conversationId: conversation.conversationId,
-      messageId: project._id,
-      index,
+      messageId: project._id.toString()
     });
   };
 
@@ -168,7 +165,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                       <button
                         className="text-white"
                         onClick={() => {
-                          handleRollback(msg, index);
+                          handleRollback(msg);
                         }}
                       >
                         <RollbackIcon classes="size-6" />

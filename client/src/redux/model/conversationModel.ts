@@ -29,7 +29,6 @@ export interface ConversationModel {
 }
 export interface ConversationIdApiResponse {
   _id: string;
-  code: Record<string, any>;
   messages: Message[];
 }
 const initialState: Conversation = {
