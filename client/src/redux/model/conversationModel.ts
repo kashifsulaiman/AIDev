@@ -1,7 +1,7 @@
 import { Project } from '@stackblitz/sdk';
 import { Action, action } from 'easy-peasy';
 
-export interface Message {
+export interface MessageInterface {
   userPrompt: string;
   aiResponse: string;
   code: Project;
@@ -16,20 +16,20 @@ interface ChatList {
 interface Conversation {
   title: string | null;
   conversationId: string | null;
-  messages: Message[];
+  messages: MessageInterface[];
   chatList: ChatList[];
 }
 export interface ConversationModel {
   conversation: Conversation;
   setConversation: Action<ConversationModel, Conversation>;
-  addMessage: Action<ConversationModel, Message>;
-  setMessages: Action<ConversationModel, Message[]>;
+  addMessage: Action<ConversationModel, MessageInterface>;
+  setMessages: Action<ConversationModel, MessageInterface[]>;
   clearConversation: Action<ConversationModel>;
   setChatList: Action<ConversationModel, ChatList[]>;
 }
 export interface ConversationIdApiResponse {
   _id: string;
-  messages: Message[];
+  messages: MessageInterface[];
 }
 const initialState: Conversation = {
   title: '',

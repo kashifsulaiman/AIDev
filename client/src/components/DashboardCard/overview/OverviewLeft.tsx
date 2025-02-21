@@ -14,7 +14,7 @@ import { Resizable } from 're-resizable';
 import { OverviewLeftInterface } from '@/types/interface';
 import { StoreModel } from '@/redux/model';
 import { RollbackIcon } from '@/components/SVG';
-import { Message } from '@/redux/model/conversationModel';
+import { MessageInterface } from '@/redux/model/conversationModel';
 import { useMutation } from '@/hooks/useMutation';
 import { POST } from '@/hooks/consts';
 import { ApiUrl } from '@/constants/apiUrl';
@@ -82,16 +82,21 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
       const { messages } = res.data;
       const message = messages[messages.length - 1];
       setConversation({ messages });
-      setPrompt({ code: message.code, content: message.userPrompt });
+      const newPrompt = {
+        code: message.code,
+        content: message.userPrompt
+      }
+      setPrompt(newPrompt);
     },
   });
 
-  const handleRollback = (project: Message) => {
+  const handleRollback = (project: MessageInterface) => {
     if (!conversation.conversationId && !project) return;
-    mutate({
+    const mutationInput = {
       conversationId: conversation.conversationId,
-      messageId: project._id.toString(),
-    });
+      messageId: project._id.toString()
+    }
+    mutate(mutationInput);
   };
 
   return (
@@ -136,7 +141,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
       ) : (
         <>
           <div className="Scroller-Class block h-screen w-full flex-col items-start gap-4 overflow-y-auto pb-8 md:flex">
-            {conversation.messages.map((msg: Message, index: number) => (
+            {conversation.messages.map((msg: MessageInterface, index: number) => (
               <div
                 className="relative mt-2 w-full"
                 key={index}

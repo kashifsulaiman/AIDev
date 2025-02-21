@@ -44,37 +44,42 @@ const TextArea = ({
     url: ApiUrl.GENERATE_AI_RESPONSE,
     onSuccess: (res) => {
       const { conversationId, messages, title } = res?.data;
-      setPrompt({
-        code: messages[messages.length - 1].code,
-        content: messages[messages.length - 1].userPrompt,
-        loader: false,
-      });
-      setConversation({
+      const lastMessage = messages[messages.length - 1]
+      const newPrompt = {
+        code: lastMessage.code,
+        content: lastMessage.userPrompt,
+        loader: false
+      }
+      const newConversation = {
         _id: conversationId,
         userId: user.id,
-        messages: messages,
-        title: title,
-      });
+        messages,
+        title
+      }
+      setPrompt(newPrompt);
+      setConversation(newConversation);
       router.push(`/overview/${conversationId}`);
     },
   });
 
   const handleSubmit = () => {
     if (inputValue.length < 1) return;
-    addMessage({
+    const newMessages = {
       userPrompt: inputValue,
       aiResponse: '',
       code: {},
-      id: '',
-    });
+      id: ''
+    }
+    addMessage(newMessages);
     setPrompt({ question: inputValue, loader: true });
     const attributes = extractAttributes(inputValue);
-    mutate({
+    const mutationInput = {
       humanPrompt: inputValue,
       attributes,
       conversationId: conversation.conversationId,
-      userId: user.id,
-    });
+      userId: user.id
+    }
+    mutate(mutationInput);
     setInputValue('');
   };
   return (
