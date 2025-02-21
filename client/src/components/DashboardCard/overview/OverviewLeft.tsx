@@ -84,8 +84,8 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
       setConversation({ messages });
       const newPrompt = {
         code: message.code,
-        content: message.userPrompt
-      }
+        content: message.userPrompt,
+      };
       setPrompt(newPrompt);
     },
   });
@@ -94,8 +94,8 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
     if (!conversation.conversationId && !project) return;
     const mutationInput = {
       conversationId: conversation.conversationId,
-      messageId: project._id.toString()
-    }
+      messageId: project._id.toString(),
+    };
     mutate(mutationInput);
   };
 
@@ -141,47 +141,51 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
       ) : (
         <>
           <div className="Scroller-Class block h-screen w-full flex-col items-start gap-4 overflow-y-auto pb-8 md:flex">
-            {conversation.messages.map((msg: MessageInterface, index: number) => (
-              <div
-                className="relative mt-2 w-full"
-                key={index}
-                ref={
-                  index === conversation.messages.length - 1 ? lastMsgRef : null
-                }
-              >
-                <GenericImage
-                  className="z-[3] mb-2 mt-2 h-5 w-8 md:mb-0"
-                  alt="AC"
-                  src="/asstes/images/ad-dashboard.png"
-                  classNames={{
-                    img: 'w-auto',
-                  }}
-                />
-                <div className="leading-2 max-h-auto w-[100%] font-Jakarta text-[16px] font-normal text-black">
-                  {/* <TypingEffect speed={10}>{msg.content}</TypingEffect> */}
-                  {msg.userPrompt}
-                </div>
-                {conversation.messages &&
-                  !loader &&
-                  code &&
-                  conversation.messages.length > 1 &&
-                  !(code === msg.code) && (
-                    <div className="group absolute -bottom-8 right-4 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
-                      <button
-                        className="text-white"
-                        onClick={() => {
-                          handleRollback(msg);
-                        }}
-                      >
-                        <RollbackIcon classes="size-6" />
-                      </button>
-                      <div className="absolute -top-10 left-1/2 mt-2 w-max -translate-x-1/2 scale-0 transform rounded bg-gray-800 p-1 text-xs text-white opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
-                        Rollback
+            {conversation.messages.map(
+              (msg: MessageInterface, index: number) => (
+                <div
+                  className="relative mt-2 w-full"
+                  key={index}
+                  ref={
+                    index === conversation.messages.length - 1
+                      ? lastMsgRef
+                      : null
+                  }
+                >
+                  <GenericImage
+                    className="z-[3] mb-2 mt-2 h-5 w-8 md:mb-0"
+                    alt="AC"
+                    src="/asstes/images/ad-dashboard.png"
+                    classNames={{
+                      img: 'w-auto',
+                    }}
+                  />
+                  <div className="leading-2 max-h-auto w-[100%] font-Jakarta text-[16px] font-normal text-black">
+                    {/* <TypingEffect speed={10}>{msg.content}</TypingEffect> */}
+                    {msg.userPrompt}
+                  </div>
+                  {conversation.messages &&
+                    !loader &&
+                    code &&
+                    conversation.messages.length > 1 &&
+                    !(code === msg.code) && (
+                      <div className="group absolute -bottom-8 right-4 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
+                        <button
+                          className="text-white"
+                          onClick={() => {
+                            handleRollback(msg);
+                          }}
+                        >
+                          <RollbackIcon classes="size-6" />
+                        </button>
+                        <div className="absolute -top-10 left-1/2 mt-2 w-max -translate-x-1/2 scale-0 transform rounded bg-gray-800 p-1 text-xs text-white opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+                          Rollback
+                        </div>
                       </div>
-                    </div>
-                  )}
-              </div>
-            ))}
+                    )}
+                </div>
+              )
+            )}
           </div>
           <div className="mt-auto">
             <TextArea />

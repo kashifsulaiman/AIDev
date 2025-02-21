@@ -44,18 +44,18 @@ const TextArea = ({
     url: ApiUrl.GENERATE_AI_RESPONSE,
     onSuccess: (res) => {
       const { conversationId, messages, title } = res?.data;
-      const lastMessage = messages[messages.length - 1]
+      const lastMessage = messages[messages.length - 1];
       const newPrompt = {
         code: lastMessage.code,
         content: lastMessage.userPrompt,
-        loader: false
-      }
+        loader: false,
+      };
       const newConversation = {
         _id: conversationId,
         userId: user.id,
         messages,
-        title
-      }
+        title,
+      };
       setPrompt(newPrompt);
       setConversation(newConversation);
       router.push(`/overview/${conversationId}`);
@@ -68,8 +68,8 @@ const TextArea = ({
       userPrompt: inputValue,
       aiResponse: '',
       code: {},
-      id: ''
-    }
+      id: '',
+    };
     addMessage(newMessages);
     setPrompt({ question: inputValue, loader: true });
     const attributes = extractAttributes(inputValue);
@@ -77,8 +77,8 @@ const TextArea = ({
       humanPrompt: inputValue,
       attributes,
       conversationId: conversation.conversationId,
-      userId: user.id
-    }
+      userId: user.id,
+    };
     mutate(mutationInput);
     setInputValue('');
   };
