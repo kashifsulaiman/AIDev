@@ -43,35 +43,44 @@ const TextArea = ({
     method: POST,
     url: ApiUrl.GENERATE_AI_RESPONSE,
     onSuccess: (res) => {
-      const { conversationId, project, text, messages, title } = res?.data;
-      setPrompt({ code: project, content: text, loader: false });
-      setConversation({
+      const { conversationId, messages, title } = res?.data;
+      const lastMessage = messages[messages.length - 1];
+      const newPrompt = {
+        code: lastMessage.code,
+        content: lastMessage.userPrompt,
+        loader: false,
+      };
+      const newConversation = {
         _id: conversationId,
         userId: user.id,
-        messages: messages,
-        title: title,
-      });
+        messages,
+        title,
+      };
+      setPrompt(newPrompt);
+      setConversation(newConversation);
       router.push(`/overview/${conversationId}`);
     },
   });
 
   const handleSubmit = () => {
-    setPrompt({ question: inputValue });
-    if (inputValue) {
-      addMessage({
-        role: 'user',
-        content: inputValue,
-      });
-      setPrompt({ loader: true });
-      const attributes = extractAttributes(inputValue);
-      mutate({
-        humanPrompt: inputValue,
-        attributes,
-        conversationId: conversation.conversationId,
-        userId: user.id,
-      });
-      setInputValue('');
-    }
+    if (inputValue.length < 1) return;
+    const newMessages = {
+      userPrompt: inputValue,
+      aiResponse: '',
+      code: {},
+      id: '',
+    };
+    addMessage(newMessages);
+    setPrompt({ question: inputValue, loader: true });
+    const attributes = extractAttributes(inputValue);
+    const mutationInput = {
+      humanPrompt: inputValue,
+      attributes,
+      conversationId: conversation.conversationId,
+      userId: user.id,
+    };
+    mutate(mutationInput);
+    setInputValue('');
   };
   return (
     <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">

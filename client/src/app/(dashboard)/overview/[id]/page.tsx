@@ -25,8 +25,8 @@ const Page = () => {
   });
   useEffect(() => {
     if (data && !isLoading) {
-      const { _id, code, messages } = data;
-      setPrompt({ code: code, loader: false });
+      const { _id, messages } = data;
+      setPrompt({ code: messages[messages.length - 1].code, loader: false });
       setConversation({ conversationId: _id, messages: messages });
     }
   }, [data, isLoading]);
