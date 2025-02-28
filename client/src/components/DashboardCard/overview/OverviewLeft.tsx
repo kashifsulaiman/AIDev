@@ -175,20 +175,16 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                       classNames={{ img: 'w-8' }}
                     />
 
-                    {msg.aiResponse.length > 0 ? (
+                    {msg.aiResponse.length ? (
                       <div className="leading-2 max-h-auto ml-8 w-full rounded-2xl rounded-ss-none bg-slate-100 p-4 font-Jakarta text-[16px] font-normal text-black">
                         {msg.textResponse ? msg.textResponse : 'Done'}
                       </div>
-                    ) : loader ? (
-                      <DotsLoader />
-                    ) : (
-                      <></>
-                    )}
+                    ) : (loader && <DotsLoader/>) }
                   </div>
                   {conversation.messages &&
                     !loader &&
                     code &&
-                    conversation.messages.length > 1 &&
+                    conversation.messages.length &&
                     !(code === msg.code) && (
                       <div className="group absolute -bottom-4 right-10 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
                         <button
