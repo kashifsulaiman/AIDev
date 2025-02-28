@@ -179,7 +179,9 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                       <div className="leading-2 max-h-auto ml-8 w-full rounded-2xl rounded-ss-none bg-slate-100 p-4 font-Jakarta text-[16px] font-normal text-black">
                         {msg.textResponse ? msg.textResponse : 'Done'}
                       </div>
-                    ) : (loader && <DotsLoader/>) }
+                    ) : (
+                      loader && <DotsLoader />
+                    )}
                   </div>
                   {conversation.messages &&
                     !loader &&
