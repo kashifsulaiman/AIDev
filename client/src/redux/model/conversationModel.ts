@@ -6,6 +6,7 @@ export interface MessageInterface {
   aiResponse: string;
   code: Project;
   _id: string;
+  textResponse: string;
 }
 interface ChatList {
   _id: string;
@@ -54,6 +55,7 @@ const conversationModel: ConversationModel = {
       aiResponse: payload.aiResponse,
       code: payload.code,
       _id: payload._id,
+      textResponse: payload.textResponse,
     });
   }),
   setMessages: action((state, payload) => {
@@ -62,6 +64,7 @@ const conversationModel: ConversationModel = {
       aiResponse: message.aiResponse,
       code: message.code,
       _id: message._id,
+      textResponse: message.textResponse,
     }));
   }),
 };
