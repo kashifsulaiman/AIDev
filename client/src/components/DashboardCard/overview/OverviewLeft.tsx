@@ -18,6 +18,7 @@ import { MessageInterface } from '@/redux/model/conversationModel';
 import { useMutation } from '@/hooks/useMutation';
 import { POST } from '@/hooks/consts';
 import { ApiUrl } from '@/constants/apiUrl';
+import DotsLoader from '../component/DotsLoader';
 
 const OverviewLeft = ({ view }: OverviewLeftInterface) => {
   const { title, loader, code } = useStoreState<StoreModel>(
@@ -156,7 +157,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                     <GenericImage
                       className="z-[3] mb-2 mt-2 size-8 rounded-full md:mb-0"
                       alt="profile avatar"
-                      src="https://dc3yp5a9dizw2.cloudfront.net/images/profile-avatar.jpg"
+                      src="/asstes/images/profile-avatar.jpg"
                       classNames={{
                         img: 'w-9',
                       }}
@@ -179,11 +180,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                         {msg.textResponse ? msg.textResponse : 'Done'}
                       </div>
                     ) : loader ? (
-                      <div className="ml-8 flex w-fit items-center justify-center gap-1 rounded-2xl rounded-ss-none bg-slate-100 p-4">
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-custom-purple [animation-delay:-0.2s]"></span>
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-custom-purple [animation-delay:-0.1s]"></span>
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-custom-purple"></span>
-                      </div>
+                      <DotsLoader />
                     ) : (
                       <></>
                     )}
