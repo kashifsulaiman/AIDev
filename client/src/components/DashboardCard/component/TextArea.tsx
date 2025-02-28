@@ -61,7 +61,29 @@ const TextArea = ({
       router.push(`/overview/${conversationId}`);
     },
   });
-
+  const { mutate: questionMutate } = useMutation({
+    isToaster: false,
+    method: POST,
+    url: ApiUrl.GENERATE_AI_QUESTIONS,
+    onSuccess: (res) => {
+      const { conversationId, messages, title } = res?.data;
+      const lastMessage = messages[messages.length - 1];
+      const newPrompt = {
+        code: lastMessage.code,
+        content: lastMessage.userPrompt,
+        loader: false,
+      };
+      const newConversation = {
+        _id: conversationId,
+        userId: user.id,
+        messages,
+        title,
+      };
+      setPrompt(newPrompt);
+      setConversation(newConversation);
+      router.push(`/overview/${conversationId}`);
+    },
+  });
   const handleSubmit = () => {
     if (inputValue.length < 1) return;
     const newMessages = {
@@ -79,7 +101,8 @@ const TextArea = ({
       conversationId: conversation.conversationId,
       userId: user.id,
     };
-    mutate(mutationInput);
+    // mutate(mutationInput);
+    questionMutate(mutationInput);
     setInputValue('');
   };
   return (
