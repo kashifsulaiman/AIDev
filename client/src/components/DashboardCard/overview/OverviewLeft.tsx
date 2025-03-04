@@ -103,7 +103,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
 
   return (
     <Resizable
-      minWidth={300}
+      minWidth={400}
       style={{ display: view ? 'flex' : 'none' }}
       defaultSize={{
         width: '36%',
@@ -115,31 +115,34 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
         {title}
       </h4>
 
-      <div className="absolute left-11 top-5">
-        <ModelSelector />
-      </div>
 
-      <div className="pb-12 md:pb-2">
-        {generating && (
-          <Toptext
-            text="Preparing Your Project Overview"
-            loading={isGenratingLoading}
-          />
-        )}
+      <div className='flex items-start gap-2 flex-wrap w-full justify-between pb-12 md:pb-2'>
+        <div className="">
+          {generating && (
+            <Toptext
+              text="Preparing Your Project Overview"
+              loading={isGenratingLoading}
+            />
+          )}
 
-        {scanning && (
-          <Toptext
-            text="Generating a Live Preview"
-            loading={isScanningLoading}
-          />
-        )}
+          {scanning && (
+            <Toptext
+              text="Generating a Live Preview"
+              loading={isScanningLoading}
+            />
+          )}
 
-        {finishing && (
-          <Toptext
-            text="Finalizing and Displaying Content"
-            loading={isFinishingLoading || loader}
-          />
-        )}
+          {finishing && (
+            <Toptext
+              text="Finalizing and Displaying Content"
+              loading={isFinishingLoading || loader}
+            />
+          )}
+        </div>
+
+        {/* <div className=""> */}
+          <ModelSelector />
+        {/* </div> */}
       </div>
 
       {loader && conversation.messages.length < 0 ? (
