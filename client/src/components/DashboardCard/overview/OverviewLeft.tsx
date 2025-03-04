@@ -19,6 +19,7 @@ import { useMutation } from '@/hooks/useMutation';
 import { POST } from '@/hooks/consts';
 import { ApiUrl } from '@/constants/apiUrl';
 import DotsLoader from '../component/DotsLoader';
+import ModelSelector from '../component/ModelDropdown';
 
 const OverviewLeft = ({ view }: OverviewLeftInterface) => {
   const { title, loader, code } = useStoreState<StoreModel>(
@@ -108,11 +109,15 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
         width: '36%',
       }}
       maxWidth={'70%'}
-      className="flex max-h-screen flex-col justify-around overflow-hidden px-3 pt-[21px] shadow-2xl max-sm:w-full md:px-11"
+      className="relative flex max-h-screen flex-col justify-around overflow-hidden px-3 pt-[21px] shadow-2xl max-sm:w-full md:px-11"
     >
       <h4 className="mb-8 text-2xl font-semibold text-black md:mb-16">
         {title}
       </h4>
+
+      <div className="absolute left-11 top-5">
+        <ModelSelector />
+      </div>
 
       <div className="pb-12 md:pb-2">
         {generating && (

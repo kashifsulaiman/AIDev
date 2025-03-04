@@ -38,6 +38,10 @@ const TextArea = ({
     setInputValue(prompt?.question || '');
   }, [prompt]);
 
+  const currentModel = useStoreState<StoreModel>(
+    (state) => state.aiModel.model
+  );
+
   const { mutate } = useMutation({
     isToaster: false,
     method: POST,
@@ -78,6 +82,7 @@ const TextArea = ({
       attributes,
       conversationId: conversation.conversationId,
       userId: user.id,
+      currentModel: currentModel.value,
     };
     mutate(mutationInput);
     setInputValue('');

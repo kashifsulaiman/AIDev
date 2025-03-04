@@ -22,3 +22,9 @@ export type UserModelTypes = {
   dateOfBirth: string;
   email: string;
 };
+
+export type AIModelType = {
+  value: string;
+  label: string;
+  img: string;
+};
