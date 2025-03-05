@@ -115,7 +115,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
         {title}
       </h4>
 
-      <div className='flex items-start gap-2 flex-wrap w-full justify-between pb-12 md:pb-2'>
+      <div className="flex w-full flex-wrap items-start justify-between gap-2 pb-12 md:pb-2">
         <div>
           {generating && (
             <Toptext
@@ -138,8 +138,8 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
             />
           )}
         </div>
-        
-          <ModelSelector />
+
+        <ModelSelector />
       </div>
 
       {loader && conversation.messages.length < 0 ? (
