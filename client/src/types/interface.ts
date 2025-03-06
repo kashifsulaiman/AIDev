@@ -28,4 +28,4 @@ export interface DropdownInterface {
   items: DropdownItemType[];
   selectedItem: DropdownItemType;
   onSelect: (item: DropdownItemType) => void;
-};
+}
