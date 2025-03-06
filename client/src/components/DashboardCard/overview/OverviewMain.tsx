@@ -2,14 +2,30 @@
 
 import OverviewLeft from './OverviewLeft';
 import OverviewRight from './OverviewRight';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import { StoreModel } from '@/redux/model';
+import { useStoreActions } from 'easy-peasy';
 
 const OverviewMain = () => {
   const [view, setView] = useState(true);
-
+ 
   const handleViewChange = () => {
     setView(!view);
   };
+  const clearPrompt = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel?.clearPrompt
+  );
+  const clearConversation = useStoreActions<StoreModel>(
+    (actions) => actions?.conversationModel?.clearConversation
+  );
+
+  useEffect(() => {
+    return () => {
+      clearPrompt();
+      clearConversation();
+    }
+  }, []);
+
   return (
     <div className="flex h-full w-full items-start justify-start overflow-hidden max-sm:max-h-full max-sm:flex-col max-sm:gap-4">
       <OverviewLeft view={view} />
