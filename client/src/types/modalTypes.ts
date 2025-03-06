@@ -28,3 +28,9 @@ export type AIModelType = {
   label: string;
   img: string;
 };
+
+export type DropdownItemType = {
+  value: string;
+  label: string;
+  img?: string;
+};

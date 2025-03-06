@@ -8,7 +8,7 @@ export interface AIModel {
 }
 
 const aiModel: AIModel = {
-  model: AIModelData[0],
+  model: AIModelData[2],
   setModel: action((state, payload) => {
     state.model = { ...state.model, ...payload };
   }),
