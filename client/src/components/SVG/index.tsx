@@ -2,6 +2,8 @@ import { VscPreview } from 'react-icons/vsc';
 import { TiArrowBack } from 'react-icons/ti';
 import { IconInterface } from '@/types/interface';
 import { TbArrowBack } from 'react-icons/tb';
+import { FaCheck } from 'react-icons/fa';
+import { IoMdArrowDropdown } from 'react-icons/io';
 
 const DropdownIcon = () => {
   return (
@@ -2501,6 +2503,14 @@ const RollbackIcon = ({ classes }: IconInterface) => {
   return <TbArrowBack className={classes} />;
 };
 
+const ArrowDropdownIcon = ({ classes }: IconInterface) => {
+  return <IoMdArrowDropdown className={classes} />;
+};
+
+const DropdownCheckIcon = ({ classes }: IconInterface) => {
+  return <FaCheck className={classes} />;
+};
+
 export {
   Platform,
   ExploreStudio,
@@ -2548,4 +2558,6 @@ export {
   CodeIcon,
   BackArrowIcon,
   RollbackIcon,
+  ArrowDropdownIcon,
+  DropdownCheckIcon,
 };
