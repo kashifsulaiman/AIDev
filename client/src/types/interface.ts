@@ -1,4 +1,5 @@
 import { Project } from '@stackblitz/sdk';
+import { DropdownItemType } from './modalTypes';
 
 export interface PreviewMainInterface {
   handleViewChange: () => void;
@@ -21,4 +22,10 @@ export interface OverviewLeftInterface {
 
 export interface IconInterface {
   classes?: string;
+}
+
+export interface DropdownInterface {
+  items: DropdownItemType[];
+  selectedItem: DropdownItemType;
+  onSelect: (item: DropdownItemType) => void;
 }

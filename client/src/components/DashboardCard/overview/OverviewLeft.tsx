@@ -102,13 +102,13 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
 
   return (
     <Resizable
-      minWidth={300}
+      minWidth={400}
       style={{ display: view ? 'flex' : 'none' }}
       defaultSize={{
         width: '36%',
       }}
       maxWidth={'70%'}
-      className="flex max-h-screen flex-col justify-around overflow-hidden px-3 pt-[21px] shadow-2xl max-sm:w-full md:px-11"
+      className="relative flex max-h-screen flex-col justify-around overflow-hidden px-3 pt-[21px] shadow-2xl max-sm:w-full md:px-11"
     >
       <h4 className="mb-8 text-2xl font-semibold text-black md:mb-16">
         {title}

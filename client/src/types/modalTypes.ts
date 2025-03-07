@@ -22,3 +22,19 @@ export type UserModelTypes = {
   dateOfBirth: string;
   email: string;
 };
+
+export type AIModelType = {
+  provider: string;
+  reasoning: boolean;
+  model: string;
+  label: string;
+  img: string;
+};
+
+export type DropdownItemType = {
+  provider: string;
+  reasoning: boolean;
+  model: string;
+  label: string;
+  img: string;
+};
