@@ -159,8 +159,8 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                       : null
                   }
                 >
-                  {/* Case 1: Q&A Mode - Show AI Question First */}
-                  {(msg.aiResponse || msg.textResponse) && (
+
+                  {(msg.isQuestion && msg.aiResponse && msg.textResponse) && (
                     <div className="mr-20 flex flex-col items-start">
                       <GenericImage
                         className="z-[3] mb-2 mt-2 w-6 md:mb-0"
@@ -175,7 +175,6 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                     </div>
                   )}
 
-                  {/* Show User's Response (If It Exists) */}
                   {msg.userPrompt && (
                     <div className="ml-20 flex flex-col items-end">
                       <GenericImage
@@ -190,21 +189,25 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                     </div>
                   )}
 
-                  {/* Case 2: Normal Mode - Show AI Answer After User Prompt */}
-                  {!(msg.aiResponse || msg.textResponse) && msg.aiResponse && (
-                    <div className="mr-20 flex flex-col items-start">
-                      <GenericImage
-                        className="z-[3] mb-2 mt-2 w-6 md:mb-0"
-                        alt="AC"
-                        src="/asstes/images/ad-dashboard.png"
-                        classNames={{ img: 'w-8' }}
-                      />
-
-                      <div className="leading-2 max-h-auto ml-8 w-full rounded-2xl rounded-ss-none bg-slate-100 p-4 font-Jakarta text-[16px] font-normal text-black">
-                        {msg.aiResponse}
+                  {
+                    (!msg.isQuestion && index !== 0) && (
+                      <div className="mr-20 flex flex-col items-start">
+                        <GenericImage
+                          className="z-[3] mb-2 mt-2 w-6 md:mb-0"
+                          alt="AC"
+                          src="/asstes/images/ad-dashboard.png"
+                          classNames={{ img: 'w-8' }}
+                        />
+                        {msg.aiResponse.length ? (
+                          <div className="leading-2 max-h-auto ml-8 w-full rounded-2xl rounded-ss-none bg-slate-100 p-4 font-Jakarta text-[16px] font-normal text-black">
+                            {msg.textResponse ? msg.textResponse : 'Done'}
+                          </div>
+                        ) : (
+                          loader && <DotsLoader />
+                        )}
                       </div>
-                    </div>
-                  )}
+                    )
+                  }
                   {conversation.messages &&
                     !loader &&
                     code &&
