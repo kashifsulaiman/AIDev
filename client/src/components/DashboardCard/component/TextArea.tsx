@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ApiUrl } from '@/constants/apiUrl';
 import { POST } from '@/hooks/consts';
 import { useMutation } from '@/hooks/useMutation';
@@ -19,6 +19,8 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const promptData = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
@@ -85,7 +87,7 @@ const TextArea = ({
         (msg: any) => msg.isQuestion && !msg.userPrompt
       );
       const newConversation = {
-        _id: conversationId,
+        conversationId: conversationId,
         userId: user.id,
         messages,
         title,
@@ -98,7 +100,6 @@ const TextArea = ({
       if (questionStatus === 'completed') {
         generateCode();
       }
-      router.push(`/overview/${conversationId}`);
     },
   });
 
@@ -139,6 +140,11 @@ const TextArea = ({
       conversationId: conversation?.conversationId,
       conversationMessages: conversation?.messages,
       userId: user.id,
+      model: {
+        provider: currentModel.provider,
+        reasoning: currentModel.reasoning,
+        aiModel: currentModel.model,
+      },
     };
     setPrompt({ question: inputValue, loader: true });
     questionMutate(mutationInput);
@@ -171,7 +177,13 @@ const TextArea = ({
         generateCode();
       }
     } else {
-      console.log('generateQuestion');
+      if (pathname.endsWith('main')) {
+        const current = new URLSearchParams(Array.from(searchParams.entries()));
+        current.delete('promptType');
+        const search = current.toString();
+        const query = search ? `?${search}` : '';
+        router.push(`${pathname}${query}`);
+      }
       generateQuestion();
     }
   };
