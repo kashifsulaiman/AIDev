@@ -144,9 +144,9 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
           <div className="Scroller-Class block h-screen w-full flex-col items-start gap-4 overflow-y-auto overflow-x-hidden pb-8 md:flex">
             {conversation.messages
             .filter((msg: MessageInterface, index: number) => {
-              if (index === 0) return true; // Always show the first message
-              if (msg.isQuestion && msg.userPrompt === "") return index <= conversation.unansweredQuestionIndex; // Show all answered questions + current question
-              return true; // Keep other messages (answers) visible
+              if (index === 0) return true; 
+              if (msg.isQuestion && msg.userPrompt === "") return index <= conversation.unansweredQuestionIndex;
+              return true; 
             })
             .map(
               (msg: MessageInterface, index: number) => (
@@ -228,6 +228,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                         </div>
                       </div>
                     )}
+                    <div ref={lastMsgRef}></div>
                 </div>
               )
             )}
