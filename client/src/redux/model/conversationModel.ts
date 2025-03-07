@@ -32,7 +32,7 @@ export interface ConversationModel {
   clearConversation: Action<ConversationModel>;
   setChatList: Action<ConversationModel, ChatList[]>;
   setUnansweredQuestions: Action<ConversationModel, MessageInterface[]>;
-  setUnansweredQuestionIndex: Action<ConversationModel, number>; 
+  setUnansweredQuestionIndex: Action<ConversationModel, number>;
 }
 export interface ConversationIdApiResponse {
   _id: string;
@@ -46,7 +46,7 @@ const initialState: Conversation = {
   chatList: [],
   unansweredQuestions: [],
   unansweredQuestionIndex: 0,
-  questionStatus: "pending",
+  questionStatus: 'pending',
 };
 
 const conversationModel: ConversationModel = {
@@ -86,7 +86,6 @@ const conversationModel: ConversationModel = {
   setUnansweredQuestionIndex: action((state, payload) => {
     state.conversation.unansweredQuestionIndex = payload;
   }),
-
 };
 
 export default conversationModel;

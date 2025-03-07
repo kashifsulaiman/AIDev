@@ -75,10 +75,10 @@ const TextArea = ({
         loader: false,
       };
       const unansweredQuestions = messages.filter(
-        (msg:any) => msg.isQuestion && !msg.userPrompt
+        (msg: any) => msg.isQuestion && !msg.userPrompt
       );
       const unansweredQuestionIndex = messages.findIndex(
-        (msg:any) => msg.isQuestion && !msg.userPrompt
+        (msg: any) => msg.isQuestion && !msg.userPrompt
       );
       const newConversation = {
         _id: conversationId,
@@ -87,17 +87,17 @@ const TextArea = ({
         title,
         unansweredQuestions,
         unansweredQuestionIndex,
-        questionStatus
+        questionStatus,
       };
       setPrompt(newPrompt);
       setConversation(newConversation);
-      if(questionStatus === "completed") {
+      if (questionStatus === 'completed') {
         generateCode();
       }
       router.push(`/overview/${conversationId}`);
     },
   });
-  
+
   const generateCode = async () => {
     const attributes = extractAttributes(inputValue);
     const mutationInput = {
@@ -107,14 +107,14 @@ const TextArea = ({
       userId: user.id,
       conversationMessages: conversation.messages,
     };
-    if( conversation.unansweredQuestionIndex === -1) { 
+    if (conversation.unansweredQuestionIndex === -1) {
       const newMessages = {
         userPrompt: inputValue,
         aiResponse: '',
         code: null,
         id: '',
         textResponse: '',
-        isQuestion: false
+        isQuestion: false,
       };
       addMessage(newMessages);
     }
@@ -124,42 +124,47 @@ const TextArea = ({
   };
 
   const generateQuestion = async () => {
-    const attributes = extractAttributes(inputValue); 
+    const attributes = extractAttributes(inputValue);
     const mutationInput = {
       humanPrompt: inputValue,
       attributes,
       conversationId: conversation?.conversationId,
       conversationMessages: conversation?.messages,
       userId: user.id,
-    };  
+    };
     setPrompt({ question: inputValue, loader: true });
-    questionMutate(mutationInput);  
-    setInputValue('');              
+    questionMutate(mutationInput);
+    setInputValue('');
   };
-  
+
   const handleSubmit = () => {
     if (inputValue.length < 1) return;
     if (conversation.conversationId) {
-      if (conversation.questionStatus === "pending") {
+      if (conversation.questionStatus === 'pending') {
         const updatedMessages = [...conversation.messages];
-        updatedMessages[conversation.unansweredQuestionIndex].userPrompt = inputValue;
+        updatedMessages[conversation.unansweredQuestionIndex].userPrompt =
+          inputValue;
         const nextUnansweredIndex = conversation.unansweredQuestionIndex + 1;
-        const allAnswered = nextUnansweredIndex > conversation.unansweredQuestions.length;
+        const allAnswered =
+          nextUnansweredIndex > conversation.unansweredQuestions.length;
         setConversation({
           ...conversation,
           messages: updatedMessages,
           unansweredQuestionIndex: allAnswered ? -1 : nextUnansweredIndex,
         });
         setInputValue('');
-        if(allAnswered) {
-        generateQuestion();
+        if (allAnswered) {
+          generateQuestion();
         }
-      } else if (conversation.questionStatus === "completed" || conversation.questionStatus === "saved") {
+      } else if (
+        conversation.questionStatus === 'completed' ||
+        conversation.questionStatus === 'saved'
+      ) {
         generateCode();
       }
     } else {
-      console.log("generateQuestion");
-      generateQuestion()
+      console.log('generateQuestion');
+      generateQuestion();
     }
   };
 

@@ -2,13 +2,13 @@
 
 import OverviewLeft from './OverviewLeft';
 import OverviewRight from './OverviewRight';
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StoreModel } from '@/redux/model';
 import { useStoreActions } from 'easy-peasy';
 
 const OverviewMain = () => {
   const [view, setView] = useState(true);
- 
+
   const handleViewChange = () => {
     setView(!view);
   };
@@ -23,7 +23,7 @@ const OverviewMain = () => {
     return () => {
       clearPrompt();
       clearConversation();
-    }
+    };
   }, []);
 
   return (
