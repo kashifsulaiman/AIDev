@@ -38,7 +38,7 @@ export default function Dropdown({
       <DropdownMenu aria-label="Model Selection" className="w-72">
         {items.map((item) => (
           <DropdownItem
-            key={item.value}
+            key={item.label}
             startContent={
               <Avatar
                 src={item.img}
@@ -50,14 +50,14 @@ export default function Dropdown({
             }
             onClick={() => onSelect(item)}
             className={
-              selectedItem.value === item.value
+              selectedItem.label === item.label
                 ? 'bg-indigo-50 text-indigo-900'
                 : 'text-gray-900'
             }
           >
             <span className="relative flex w-full items-center gap-4">
               {item.label}
-              {selectedItem.value === item.value && (
+              {selectedItem.label === item.label && (
                 <DropdownCheckIcon classes=" h-5 w-5 text-custom-purple absolute right-2" />
               )}
             </span>

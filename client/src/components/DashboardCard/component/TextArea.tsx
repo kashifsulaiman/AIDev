@@ -82,7 +82,11 @@ const TextArea = ({
       attributes,
       conversationId: conversation.conversationId,
       userId: user.id,
-      currentModel: currentModel.value,
+      model: {
+        provider: currentModel.provider,
+        reasoning: currentModel.reasoning,
+        aiModel: currentModel.model,
+      },
     };
     mutate(mutationInput);
     setInputValue('');

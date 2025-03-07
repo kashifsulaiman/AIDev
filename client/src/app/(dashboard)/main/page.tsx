@@ -2,6 +2,8 @@ import ModelSelector from '@/components/DashboardCard/component/ModelDropdown';
 import TextArea from '@/components/DashboardCard/component/TextArea';
 import DashboardCards from '@/components/DashboardCard/DashboardCards';
 import { allPrompts } from '@/config/api.config';
+import { StoreModel } from '@/redux/model';
+import { useStoreState } from 'easy-peasy';
 import React from 'react';
 
 const DashBoard = async ({ searchParams }: any) => {
@@ -10,6 +12,10 @@ const DashBoard = async ({ searchParams }: any) => {
   const selectedPrompt = prompts.find(
     (prompt: any) => prompt.template === promptType
   );
+  const promptData = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
+  );
+
   return (
     <div>
       <div className="min-h-screen bg-purple-white-gradient-opactity25">
@@ -31,9 +37,11 @@ const DashBoard = async ({ searchParams }: any) => {
             <div>
               <TextArea prompt={selectedPrompt} />
             </div>
-            <div className="absolute left-0 top-12">
-              <ModelSelector />
-            </div>
+            {!promptData.loader && (
+              <div className="absolute left-0 top-12">
+                <ModelSelector />
+              </div>
+            )}
           </div>
         </div>
       </div>
