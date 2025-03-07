@@ -7,7 +7,6 @@ export interface MessageInterface {
   code: Project;
   _id: string;
   textResponse: string;
-  isQuestion: boolean;
 }
 interface ChatList {
   _id: string;
@@ -20,9 +19,6 @@ interface Conversation {
   conversationId: string | null;
   messages: MessageInterface[];
   chatList: ChatList[];
-  questionStatus: 'pending' | 'completed' | 'saved';
-  unansweredQuestions: MessageInterface[];
-  unansweredQuestionIndex: number;
 }
 export interface ConversationModel {
   conversation: Conversation;
@@ -31,24 +27,17 @@ export interface ConversationModel {
   setMessages: Action<ConversationModel, MessageInterface[]>;
   clearConversation: Action<ConversationModel>;
   setChatList: Action<ConversationModel, ChatList[]>;
-  setUnansweredQuestions: Action<ConversationModel, MessageInterface[]>;
-  setUnansweredQuestionIndex: Action<ConversationModel, number>;
 }
 export interface ConversationIdApiResponse {
   _id: string;
   messages: MessageInterface[];
-  questionStatus: true;
 }
 const initialState: Conversation = {
   title: '',
   conversationId: null,
   messages: [],
   chatList: [],
-  unansweredQuestions: [],
-  unansweredQuestionIndex: 0,
-  questionStatus: 'pending',
 };
-
 const conversationModel: ConversationModel = {
   conversation: initialState,
   setConversation: action((state, payload) => {
@@ -67,7 +56,6 @@ const conversationModel: ConversationModel = {
       code: payload.code,
       _id: payload._id,
       textResponse: payload.textResponse,
-      isQuestion: false,
     });
   }),
   setMessages: action((state, payload) => {
@@ -77,14 +65,7 @@ const conversationModel: ConversationModel = {
       code: message.code,
       _id: message._id,
       textResponse: message.textResponse,
-      isQuestion: false,
     }));
-  }),
-  setUnansweredQuestions: action((state, payload) => {
-    state.conversation.unansweredQuestions = payload;
-  }),
-  setUnansweredQuestionIndex: action((state, payload) => {
-    state.conversation.unansweredQuestionIndex = payload;
   }),
 };
 

@@ -1,9 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import DashboardCard from './component/DashboardCard';
 import { Icons } from '../SideBar';
-import { useStoreState } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
 interface CardData {
@@ -38,6 +38,17 @@ const DashboardCards = ({ data }: DashboardCardsProps) => {
   const promptData = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
+  const clearPrompt = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel?.clearPrompt
+  );
+  const clearConversation = useStoreActions<StoreModel>(
+    (actions) => actions?.conversationModel?.clearConversation
+  );
+
+  useEffect(() => {
+    clearPrompt();
+    clearConversation();
+  }, []);
 
   if (promptData.loader)
     return (

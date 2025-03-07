@@ -25,21 +25,9 @@ const Page = () => {
   });
   useEffect(() => {
     if (data && !isLoading) {
-      const { _id, messages, questionStatus } = data;
+      const { _id, messages } = data;
       setPrompt({ code: messages[messages.length - 1].code, loader: false });
-      const unansweredQuestions = messages.filter(
-        (msg: any) => msg.isQuestion && !msg.userPrompt
-      );
-      const unansweredQuestionIndex = messages.findIndex(
-        (msg: any) => msg.isQuestion && !msg.userPrompt
-      );
-      setConversation({
-        conversationId: _id,
-        messages: messages,
-        unansweredQuestions,
-        unansweredQuestionIndex,
-        questionStatus,
-      });
+      setConversation({ conversationId: _id, messages: messages });
     }
   }, [data, isLoading]);
   return (

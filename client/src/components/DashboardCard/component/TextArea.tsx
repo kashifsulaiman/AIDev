@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ApiUrl } from '@/constants/apiUrl';
 import { POST } from '@/hooks/consts';
 import { useMutation } from '@/hooks/useMutation';
@@ -19,8 +19,6 @@ const TextArea = ({
   ...props
 }: any) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
   const promptData = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
@@ -68,42 +66,16 @@ const TextArea = ({
     },
   });
 
-  const { mutate: questionMutate } = useMutation({
-    isToaster: false,
-    method: POST,
-    url: ApiUrl.GENERATE_AI_QUESTIONS,
-    onSuccess: (res) => {
-      const { conversationId, messages, title, questionStatus } = res?.data;
-      const lastMessage = messages[messages.length - 1];
-      const newPrompt = {
-        code: lastMessage.code,
-        content: lastMessage.userPrompt,
-        loader: false,
-      };
-      const unansweredQuestions = messages.filter(
-        (msg: any) => msg.isQuestion && !msg.userPrompt
-      );
-      const unansweredQuestionIndex = messages.findIndex(
-        (msg: any) => msg.isQuestion && !msg.userPrompt
-      );
-      const newConversation = {
-        conversationId: conversationId,
-        userId: user.id,
-        messages,
-        title,
-        unansweredQuestions,
-        unansweredQuestionIndex,
-        questionStatus,
-      };
-      setPrompt(newPrompt);
-      setConversation(newConversation);
-      if (questionStatus === 'completed') {
-        generateCode();
-      }
-    },
-  });
-
-  const generateCode = async () => {
+  const handleSubmit = () => {
+    if (inputValue.length < 1) return;
+    const newMessages = {
+      userPrompt: inputValue,
+      aiResponse: '',
+      code: {},
+      id: '',
+    };
+    addMessage(newMessages);
+    setPrompt({ question: inputValue, loader: true });
     const attributes = extractAttributes(inputValue);
     const mutationInput = {
       humanPrompt: inputValue,
@@ -116,78 +88,9 @@ const TextArea = ({
         aiModel: currentModel.model,
       },
     };
-    if (conversation.unansweredQuestionIndex === -1) {
-      const newMessages = {
-        userPrompt: inputValue,
-        aiResponse: '',
-        code: null,
-        id: '',
-        textResponse: '',
-        isQuestion: false,
-      };
-      addMessage(newMessages);
-    }
-    setPrompt({ question: inputValue, loader: true });
     mutate(mutationInput);
     setInputValue('');
   };
-
-  const generateQuestion = async () => {
-    const attributes = extractAttributes(inputValue);
-    const mutationInput = {
-      humanPrompt: inputValue,
-      attributes,
-      conversationId: conversation?.conversationId,
-      conversationMessages: conversation?.messages,
-      userId: user.id,
-      model: {
-        provider: currentModel.provider,
-        reasoning: currentModel.reasoning,
-        aiModel: currentModel.model,
-      },
-    };
-    setPrompt({ question: inputValue, loader: true });
-    questionMutate(mutationInput);
-    setInputValue('');
-  };
-
-  const handleSubmit = () => {
-    if (inputValue.length < 1) return;
-    if (conversation.conversationId) {
-      if (conversation.questionStatus === 'pending') {
-        const updatedMessages = [...conversation.messages];
-        updatedMessages[conversation.unansweredQuestionIndex].userPrompt =
-          inputValue;
-        const nextUnansweredIndex = conversation.unansweredQuestionIndex + 1;
-        const allAnswered =
-          nextUnansweredIndex > conversation.unansweredQuestions.length;
-        setConversation({
-          ...conversation,
-          messages: updatedMessages,
-          unansweredQuestionIndex: allAnswered ? -1 : nextUnansweredIndex,
-        });
-        setInputValue('');
-        if (allAnswered) {
-          generateQuestion();
-        }
-      } else if (
-        conversation.questionStatus === 'completed' ||
-        conversation.questionStatus === 'saved'
-      ) {
-        generateCode();
-      }
-    } else {
-      if (pathname.endsWith('main')) {
-        const current = new URLSearchParams(Array.from(searchParams.entries()));
-        current.delete('promptType');
-        const search = current.toString();
-        const query = search ? `?${search}` : '';
-        router.push(`${pathname}${query}`);
-      }
-      generateQuestion();
-    }
-  };
-
   return (
     <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
       <div className="flex w-full items-end">
