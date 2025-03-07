@@ -142,14 +142,8 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
       ) : (
         <>
           <div className="Scroller-Class block h-screen w-full flex-col items-start gap-4 overflow-y-auto overflow-x-hidden pb-8 md:flex">
-            {conversation.messages
-              .filter((msg: MessageInterface, index: number) => {
-                if (index === 0) return true;
-                if (msg.isQuestion && msg.userPrompt === '')
-                  return index <= conversation.unansweredQuestionIndex;
-                return true;
-              })
-              .map((msg: MessageInterface, index: number) => (
+            {conversation.messages.map(
+              (msg: MessageInterface, index: number) => (
                 <div
                   className="relative mt-6 w-full"
                   key={index}
@@ -159,58 +153,41 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                       : null
                   }
                 >
-                  {msg.isQuestion && msg.aiResponse && msg.textResponse && (
-                    <div className="mr-20 flex flex-col items-start">
-                      <GenericImage
-                        className="z-[3] mb-2 mt-2 w-6 md:mb-0"
-                        alt="AC"
-                        src="/asstes/images/ad-dashboard.png"
-                        classNames={{ img: 'w-8' }}
-                      />
+                  <div className="ml-20 flex flex-col items-end">
+                    <GenericImage
+                      className="z-[3] mb-2 mt-2 size-8 rounded-full md:mb-0"
+                      alt="profile avatar"
+                      src="/asstes/images/profile-avatar.jpg"
+                      classNames={{
+                        img: 'w-9',
+                      }}
+                    />
+                    <div className="leading-2 max-h-auto mr-8 w-[100%] rounded-2xl rounded-se-none bg-custom-purple p-4 font-Jakarta text-[16px] font-normal text-white">
+                      {/* <TypingEffect speed={10}>{msg.content}</TypingEffect> */}
+                      {msg.userPrompt}
+                    </div>
+                  </div>
+                  <div className="mr-20 flex flex-col items-start">
+                    <GenericImage
+                      className="z-[3] mb-2 mt-2 w-6 md:mb-0"
+                      alt="AC"
+                      src="/asstes/images/ad-dashboard.png"
+                      classNames={{ img: 'w-8' }}
+                    />
 
+                    {msg.aiResponse.length ? (
                       <div className="leading-2 max-h-auto ml-8 w-full rounded-2xl rounded-ss-none bg-slate-100 p-4 font-Jakarta text-[16px] font-normal text-black">
-                        {msg.textResponse ? msg.textResponse : msg.aiResponse}
+                        {msg.textResponse ? msg.textResponse : 'Done'}
                       </div>
-                    </div>
-                  )}
-
-                  {msg.userPrompt && (
-                    <div className="ml-20 flex flex-col items-end">
-                      <GenericImage
-                        className="z-[3] mb-2 mt-2 size-8 rounded-full md:mb-0"
-                        alt="profile avatar"
-                        src="/asstes/images/profile-avatar.jpg"
-                        classNames={{ img: 'w-9' }}
-                      />
-                      <div className="leading-2 max-h-auto mr-8 w-[100%] rounded-2xl rounded-se-none bg-custom-purple p-4 font-Jakarta text-[16px] font-normal text-white">
-                        {msg.userPrompt}
-                      </div>
-                    </div>
-                  )}
-
-                  {!msg.isQuestion && index !== 0 && (
-                    <div className="mr-20 flex flex-col items-start">
-                      <GenericImage
-                        className="z-[3] mb-2 mt-2 w-6 md:mb-0"
-                        alt="AC"
-                        src="/asstes/images/ad-dashboard.png"
-                        classNames={{ img: 'w-8' }}
-                      />
-                      {msg.aiResponse.length ? (
-                        <div className="leading-2 max-h-auto ml-8 w-full rounded-2xl rounded-ss-none bg-slate-100 p-4 font-Jakarta text-[16px] font-normal text-black">
-                          {msg.textResponse ? msg.textResponse : 'Done'}
-                        </div>
-                      ) : (
-                        loader && <DotsLoader />
-                      )}
-                    </div>
-                  )}
+                    ) : (
+                      loader && <DotsLoader />
+                    )}
+                  </div>
                   {conversation.messages &&
                     !loader &&
                     code &&
                     conversation.messages.length &&
-                    !(code === msg.code) &&
-                    !msg.isQuestion && (
+                    !(code === msg.code) && (
                       <div className="group absolute -bottom-4 right-10 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
                         <button
                           className="text-white"
@@ -225,9 +202,9 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
                         </div>
                       </div>
                     )}
-                  <div ref={lastMsgRef}></div>
                 </div>
-              ))}
+              )
+            )}
           </div>
           <div className="mt-auto">
             <TextArea />
