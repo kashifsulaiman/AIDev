@@ -128,8 +128,9 @@ const TextArea = ({
       <div className="absolute bottom-1 right-2.5 z-[5] flex min-w-fit flex-col items-start">
         <Button
           disabled={!inputValue && promptData.loader}
-          className={`h-10 w-14 ${!inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
-            } min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
+          className={`h-10 w-14 ${
+            !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
+          } min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
           onClick={handleSubmit}
         >
           <span className="leading-none">
