@@ -2512,12 +2512,12 @@ const DropdownCheckIcon = ({ classes }: IconInterface) => {
 };
 
 const GithubIcon = ({ classes }: IconInterface) => {
-  return <TbBrandGithubFilled className={classes} />
-}
+  return <TbBrandGithubFilled className={classes} />;
+};
 
 const CheckMarkIcon = ({ classes }: IconInterface) => {
-  return <FaCheck className={classes} />
-}
+  return <FaCheck className={classes} />;
+};
 
 export {
   Platform,

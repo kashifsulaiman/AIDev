@@ -117,16 +117,16 @@ const TextArea = ({
         />
       </div>
 
-      <div className='absolute bottom-20 right-1 z-[5]'>
+      <div className="absolute bottom-[5.25rem] left-0 z-[5]">
         <GitHubAuthButton />
       </div>
 
-      <div className='absolute bottom-1 right-2.5 z-[5] flex flex-col items-start min-w-fit'>
+      <div className="absolute bottom-1 right-2.5 z-[5] flex min-w-fit flex-col items-start">
         <Button
           disabled={!inputValue && promptData.loader}
           className={`h-10 w-14 ${
             !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
-          }  min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
+          } min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
           onClick={handleSubmit}
         >
           <span className="leading-none">
