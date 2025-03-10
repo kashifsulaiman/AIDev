@@ -13,12 +13,17 @@ export default function ModelSelector() {
   const setSelectedModel = useStoreActions<StoreModel>(
     (actions) => actions.aiModel.setModel
   );
-
-  return (
-    <Dropdown
-      items={AIModelData}
-      selectedItem={selectedModel}
-      onSelect={setSelectedModel}
-    />
+  const promptData = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
   );
+
+  if (!promptData.loader) {
+    return (
+      <Dropdown
+        items={AIModelData}
+        selectedItem={selectedModel}
+        onSelect={setSelectedModel}
+      />
+    );
+  }
 }

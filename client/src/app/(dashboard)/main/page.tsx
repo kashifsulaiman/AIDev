@@ -10,6 +10,7 @@ const DashBoard = async ({ searchParams }: any) => {
   const selectedPrompt = prompts.find(
     (prompt: any) => prompt.template === promptType
   );
+
   return (
     <div>
       <div className="min-h-screen bg-purple-white-gradient-opactity25">
@@ -31,7 +32,7 @@ const DashBoard = async ({ searchParams }: any) => {
             <div>
               <TextArea prompt={selectedPrompt} />
             </div>
-            <div className="absolute left-0 top-12">
+            <div className="absolute left-0 top-12 z-0">
               <ModelSelector />
             </div>
           </div>

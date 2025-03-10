@@ -24,13 +24,17 @@ export type UserModelTypes = {
 };
 
 export type AIModelType = {
-  value: string;
+  provider: string;
+  reasoning: boolean;
+  model: string;
   label: string;
   img: string;
 };
 
 export type DropdownItemType = {
-  value: string;
+  provider: string;
+  reasoning: boolean;
+  model: string;
   label: string;
-  img?: string;
+  img: string;
 };

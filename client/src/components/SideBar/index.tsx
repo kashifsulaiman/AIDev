@@ -99,16 +99,12 @@ export default function MainSideBar() {
     const handleOutsideClick = (event: MouseEvent) => {
       const drawer = document.getElementById('custom-drawer');
       const sidebar = document.querySelector('.sidebar');
-      const isSmallScreen = window.innerWidth <= 1280;
+      if (drawer && !drawer.contains(event.target as Node)) {
+        setIsDrawerOpen(false);
+      }
 
-      if (isSmallScreen) {
-        if (drawer && !drawer.contains(event.target as Node)) {
-          setIsDrawerOpen(false);
-        }
-
-        if (sidebar && !sidebar.contains(event.target as Node)) {
-          setIsCollapsed(true);
-        }
+      if (sidebar && !sidebar.contains(event.target as Node)) {
+        setIsCollapsed(true);
       }
     };
 

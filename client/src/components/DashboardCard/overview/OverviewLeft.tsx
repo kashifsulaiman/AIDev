@@ -19,7 +19,6 @@ import { useMutation } from '@/hooks/useMutation';
 import { POST } from '@/hooks/consts';
 import { ApiUrl } from '@/constants/apiUrl';
 import DotsLoader from '../component/DotsLoader';
-import ModelSelector from '../component/ModelDropdown';
 
 const OverviewLeft = ({ view }: OverviewLeftInterface) => {
   const { title, loader, code } = useStoreState<StoreModel>(
@@ -115,31 +114,27 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
         {title}
       </h4>
 
-      <div className="flex w-full flex-wrap items-start justify-between gap-2 pb-12 md:pb-2">
-        <div>
-          {generating && (
-            <Toptext
-              text="Preparing Your Project Overview"
-              loading={isGenratingLoading}
-            />
-          )}
+      <div className="pb-12 md:pb-2">
+        {generating && (
+          <Toptext
+            text="Preparing Your Project Overview"
+            loading={isGenratingLoading}
+          />
+        )}
 
-          {scanning && (
-            <Toptext
-              text="Generating a Live Preview"
-              loading={isScanningLoading}
-            />
-          )}
+        {scanning && (
+          <Toptext
+            text="Generating a Live Preview"
+            loading={isScanningLoading}
+          />
+        )}
 
-          {finishing && (
-            <Toptext
-              text="Finalizing and Displaying Content"
-              loading={isFinishingLoading || loader}
-            />
-          )}
-        </div>
-
-        <ModelSelector />
+        {finishing && (
+          <Toptext
+            text="Finalizing and Displaying Content"
+            loading={isFinishingLoading || loader}
+          />
+        )}
       </div>
 
       {loader && conversation.messages.length < 0 ? (
