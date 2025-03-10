@@ -30,7 +30,7 @@ const DashBoard = async ({ searchParams }: any) => {
             <div>
               <TextArea prompt={selectedPrompt} />
             </div>
-            <div className="absolute left-0 top-12">
+            <div className="absolute left-0 top-12 z-0">
               <ModelSelector />
             </div>
           </div>
