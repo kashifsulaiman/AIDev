@@ -8,7 +8,7 @@ import { useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
 import { StoreModel } from '@/redux/model';
 import { ConversationIdApiResponse } from '@/redux/model/conversationModel';
-
+import { MessageInterface } from '@/redux/model/conversationModel';
 const Page = () => {
   const param = useParams();
   const conversationId = param.id;
@@ -28,14 +28,14 @@ const Page = () => {
       const { _id, messages, questionStatus } = data;
       setPrompt({ code: messages[messages.length - 1].code, loader: false });
       const unansweredQuestions = messages.filter(
-        (msg: any) => msg.isQuestion && !msg.userPrompt
+        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
       );
       const unansweredQuestionIndex = messages.findIndex(
-        (msg: any) => msg.isQuestion && !msg.userPrompt
+        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
       );
       setConversation({
         conversationId: _id,
-        messages: messages,
+        messages,
         unansweredQuestions,
         unansweredQuestionIndex,
         questionStatus,
