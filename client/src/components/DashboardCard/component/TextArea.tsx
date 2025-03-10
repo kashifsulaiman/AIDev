@@ -11,6 +11,7 @@ import { useMutation } from '@/hooks/useMutation';
 import { extractAttributes } from '@/utils/utils';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
+import GitHubAuthButton from './GithubAuthButton';
 
 const TextArea = ({
   prompt,
@@ -116,21 +117,27 @@ const TextArea = ({
         />
       </div>
 
-      <Button
-        disabled={!inputValue && promptData.loader}
-        className={`h-10 w-14 ${
-          !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
-        } absolute bottom-1 right-2.5 z-[5] min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
-        onClick={handleSubmit}
-      >
-        <span className="leading-none">
-          {promptData.loader ? (
-            <Loader Color="#bbb" height="20px" width="20px" />
-          ) : (
-            'Code'
-          )}
-        </span>
-      </Button>
+      <div className='absolute bottom-20 right-1 z-[5]'>
+        <GitHubAuthButton />
+      </div>
+
+      <div className='absolute bottom-1 right-2.5 z-[5] flex flex-col items-start min-w-fit'>
+        <Button
+          disabled={!inputValue && promptData.loader}
+          className={`h-10 w-14 ${
+            !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
+          }  min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
+          onClick={handleSubmit}
+        >
+          <span className="leading-none">
+            {promptData.loader ? (
+              <Loader Color="#bbb" height="20px" width="20px" />
+            ) : (
+              'Code'
+            )}
+          </span>
+        </Button>
+      </div>
     </div>
   );
 };
