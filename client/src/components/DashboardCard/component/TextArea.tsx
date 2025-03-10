@@ -98,7 +98,7 @@ const TextArea = ({
         <Button
           className={`${
             !prompt?.question ? 'cursor-not-allowed bg-opacity-30' : ''
-            } absolute left-1 z-[5] w-auto min-w-fit bg-transparent p-0`}
+          } absolute left-1 z-[5] w-auto min-w-fit bg-transparent p-0`}
         >
           <Addicon />
         </Button>
