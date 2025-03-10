@@ -96,7 +96,8 @@ const TextArea = ({
     <div className="relative mt-14 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
       <div className="flex w-full items-end">
         <Button
-          className={`${!prompt?.question ? 'cursor-not-allowed bg-opacity-30' : ''
+          className={`${
+            !prompt?.question ? 'cursor-not-allowed bg-opacity-30' : ''
             } absolute left-1 z-[5] w-auto min-w-fit bg-transparent p-0`}
         >
           <Addicon />
