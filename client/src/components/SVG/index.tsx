@@ -1,7 +1,7 @@
 import { VscPreview } from 'react-icons/vsc';
 import { TiArrowBack } from 'react-icons/ti';
 import { IconInterface } from '@/types/interface';
-import { TbArrowBack } from 'react-icons/tb';
+import { TbArrowBack, TbBrandGithubFilled } from 'react-icons/tb';
 import { FaCheck } from 'react-icons/fa';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
@@ -2511,6 +2511,10 @@ const DropdownCheckIcon = ({ classes }: IconInterface) => {
   return <FaCheck className={classes} />;
 };
 
+const GithubIcon = ({ classes }: IconInterface) => {
+  return <TbBrandGithubFilled className={classes} />;
+};
+
 export {
   Platform,
   ExploreStudio,
@@ -2560,4 +2564,5 @@ export {
   RollbackIcon,
   ArrowDropdownIcon,
   DropdownCheckIcon,
+  GithubIcon,
 };
