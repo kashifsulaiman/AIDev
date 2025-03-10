@@ -83,17 +83,13 @@ const TextArea = ({
       attributes,
       conversationId: conversation.conversationId,
       userId: user.id,
-      model: {
-        provider: currentModel.provider,
-        reasoning: currentModel.reasoning,
-        aiModel: currentModel.model,
-      },
+      currentModel: currentModel.value,
     };
     mutate(mutationInput);
     setInputValue('');
   };
   return (
-    <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
+    <div className="relative mt-14 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
       <div className="flex w-full items-end">
         <Button
           className={`${
@@ -114,14 +110,14 @@ const TextArea = ({
           classNames={{
             base: `!p-0 !bg-transparent ${classNames?.base}`,
             innerWrapper: `flex items-center ${classNames?.innerWrapper}`,
-            input: `scrollbar-hide  !rounded-none !min-h-[60px] ${classNames?.input}`,
+            input: `scrollbar-hide  !rounded-none !max-h-[60px] ${classNames?.input}`,
             inputWrapper: `!pl-[30px] !pr-[42px] bg-transparent data-[hover=true]:bg-transparent data-[focus=true]:!bg-transparent shadow-none ${classNames?.inputWrapper}`,
           }}
           {...props}
         />
       </div>
 
-      <div className="absolute bottom-[5.25rem] left-0 z-[5]">
+      <div className="absolute bottom-[5.125rem] left-0 z-[5]">
         <GitHubAuthButton />
       </div>
 

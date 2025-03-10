@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckMarkIcon, GithubIcon } from '@/components/SVG';
+import { DropdownCheckIcon, GithubIcon } from '@/components/SVG';
 import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function GitHubAuthButton() {
@@ -15,7 +15,7 @@ export default function GitHubAuthButton() {
         >
           <GithubIcon classes="size-7" />
           <div className="absolute -right-1.5 -top-1.5 z-10 flex size-[1.2em] items-center justify-center rounded-full bg-green-900 p-1">
-            <CheckMarkIcon classes="text-white w-full h-full" />
+            <DropdownCheckIcon classes="text-white w-full h-full" />
           </div>
         </button>
       ) : (

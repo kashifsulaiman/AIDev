@@ -2515,10 +2515,6 @@ const GithubIcon = ({ classes }: IconInterface) => {
   return <TbBrandGithubFilled className={classes} />;
 };
 
-const CheckMarkIcon = ({ classes }: IconInterface) => {
-  return <FaCheck className={classes} />;
-};
-
 export {
   Platform,
   ExploreStudio,
@@ -2569,5 +2565,4 @@ export {
   ArrowDropdownIcon,
   DropdownCheckIcon,
   GithubIcon,
-  CheckMarkIcon,
 };
