@@ -1,7 +1,7 @@
 'use client';
 
 import DashboardCards from '../DashboardCards';
-import AiQuestions from './AiQuestions';
+import Messages from './Messages';
 import { useStoreState } from 'easy-peasy';
 import { StoreModel } from '@/redux/model';
 interface DashboardCenterProps {
@@ -22,7 +22,7 @@ const DashboardCenter = ({ prompts }: DashboardCenterProps) => {
   return (
     <div className="Scroller-Class max-h-[350px] overflow-y-auto">
       {conversation?.conversationId ? (
-        <AiQuestions />
+        <Messages />
       ) : (
         <DashboardCards data={Array.isArray(prompts) ? prompts : []} />
       )}

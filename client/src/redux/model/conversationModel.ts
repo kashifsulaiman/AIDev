@@ -48,7 +48,6 @@ const initialState: Conversation = {
   unansweredQuestionIndex: 0,
   questionStatus: 'pending',
 };
-
 const conversationModel: ConversationModel = {
   conversation: initialState,
   setConversation: action((state, payload) => {
@@ -58,7 +57,10 @@ const conversationModel: ConversationModel = {
     state.conversation.chatList = [...payload];
   }),
   clearConversation: action((state) => {
-    state.conversation = initialState;
+    state.conversation = {
+      ...initialState,
+      chatList: state.conversation.chatList,
+    };
   }),
   addMessage: action((state, payload) => {
     state.conversation.messages.push({

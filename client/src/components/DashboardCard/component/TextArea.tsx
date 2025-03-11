@@ -11,6 +11,7 @@ import { useMutation } from '@/hooks/useMutation';
 import { extractAttributes } from '@/utils/utils';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
+import { MessageInterface } from '@/redux/model/conversationModel';
 
 const TextArea = ({
   prompt,
@@ -81,13 +82,13 @@ const TextArea = ({
         loader: false,
       };
       const unansweredQuestions = messages.filter(
-        (msg: any) => msg.isQuestion && !msg.userPrompt
+        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
       );
       const unansweredQuestionIndex = messages.findIndex(
-        (msg: any) => msg.isQuestion && !msg.userPrompt
+        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
       );
       const newConversation = {
-        conversationId: conversationId,
+        conversationId,
         userId: user.id,
         messages,
         title,
@@ -152,7 +153,7 @@ const TextArea = ({
   };
 
   const handleSubmit = () => {
-    if (inputValue.length < 1) return;
+    if (!inputValue.length) return;
     if (conversation.conversationId) {
       if (conversation.questionStatus === 'pending') {
         const updatedMessages = [...conversation.messages];
