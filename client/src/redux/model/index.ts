@@ -6,6 +6,9 @@ import forgotPasswordObj, { ForgotPasswordModel } from './forgotPasswodModal';
 import promptModel, { PromptModel } from './promptModel';
 import conversationModel, { ConversationModel } from './conversationModel';
 import aiModel, { AIModel } from './aiModel';
+import promptingStrategyModel, {
+  PromptingStrategyModel,
+} from './promptStrategy';
 export interface StoreModel {
   userObj: UserModel;
   signupObj: SignupModel;
@@ -13,6 +16,7 @@ export interface StoreModel {
   promptModel: PromptModel;
   conversationModel: ConversationModel;
   aiModel: AIModel;
+  promptingStrategyModel: PromptingStrategyModel;
 }
 const model: StoreModel = persist(
   {
@@ -22,6 +26,7 @@ const model: StoreModel = persist(
     promptModel,
     conversationModel,
     aiModel,
+    promptingStrategyModel,
   },
   {
     storage: 'localStorage',

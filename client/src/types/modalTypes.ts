@@ -32,9 +32,16 @@ export type AIModelType = {
 };
 
 export type DropdownItemType = {
-  provider: string;
-  reasoning: boolean;
-  model: string;
+  id?: string;
+  provider?: string;
+  reasoning?: boolean;
+  model?: string;
   label: string;
-  img: string;
+  img?: string;
+  description?: string;
 };
+export interface PromptingStrategyType {
+  id: string;
+  label: string;
+  description?: string;
+}
