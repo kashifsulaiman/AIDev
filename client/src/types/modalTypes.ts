@@ -31,6 +31,11 @@ export type AIModelType = {
   img: string;
 };
 
+export type GithubAuthModelType = {
+  token: string | null;
+  username: string | null;
+};
+
 export type DropdownItemType = {
   provider: string;
   reasoning: boolean;

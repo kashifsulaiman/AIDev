@@ -93,7 +93,7 @@ const TextArea = ({
     setInputValue('');
   };
   return (
-    <div className="relative mt-14 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
+    <div className="relative mt-2 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
       <div className="flex w-full items-end">
         <Button
           className={`${

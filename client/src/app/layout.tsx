@@ -4,7 +4,6 @@ import { NextUIProvider } from '@nextui-org/react';
 import ReactQueryProvider from '@/providers/ReactQueryProvider';
 import ReduxStoreProvider from '@/providers/StoreProvider';
 import { Toastify } from '@/components/Toaster';
-import AuthSessionProvider from '@/providers/AuthSessionProvider';
 
 export async function generateMetadata(): Promise<Metadata> {
   const siteTitle = 'AI Dev - Powering Your Future';
@@ -50,9 +49,7 @@ export default function RootLayout({
           <ReactQueryProvider>
             <ReduxStoreProvider>
               <Toastify />
-              <AuthSessionProvider>
-                <main>{children}</main>
-              </AuthSessionProvider>
+              <main>{children}</main>
             </ReduxStoreProvider>
           </ReactQueryProvider>
         </NextUIProvider>
