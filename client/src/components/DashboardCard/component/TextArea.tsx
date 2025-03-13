@@ -35,7 +35,9 @@ const TextArea = ({
   const { setConversation, addMessage } = useStoreActions<StoreModel>(
     (actions) => actions.conversationModel
   );
-
+  const selectedStrategy = useStoreState<StoreModel>(
+    (state) => state.promptingStrategyModel.strategy
+  );
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     setInputValue(prompt?.question || '');
@@ -116,6 +118,7 @@ const TextArea = ({
         reasoning: currentModel.reasoning,
         aiModel: currentModel.model,
       },
+      promptingStrategy: selectedStrategy.id
     };
     if (conversation.unansweredQuestionIndex === -1) {
       const newMessages = {
@@ -152,40 +155,45 @@ const TextArea = ({
     setInputValue('');
   };
 
+  const updateUnansweredQuestion = () => {
+    const updatedMessages = [...conversation.messages];
+    updatedMessages[conversation.unansweredQuestionIndex].userPrompt =inputValue;
+    const nextUnansweredIndex = conversation.unansweredQuestionIndex + 1;
+    const allAnswered =nextUnansweredIndex > conversation.unansweredQuestions.length;
+    setConversation({
+      ...conversation,
+      messages: updatedMessages,
+      unansweredQuestionIndex: allAnswered ? -1 : nextUnansweredIndex,
+    });
+    setInputValue('');
+    if (allAnswered) generateQuestion();
+  };
+  
+  const handleQuestions = () => {
+    if (!conversation.conversationId) {
+      if (pathname.endsWith('main')) {
+        const current = new URLSearchParams(searchParams.toString());
+        current.delete('promptType');
+        router.push(`${pathname}${current.toString() ? `?${current}` : ''}`);
+      }
+      return generateQuestion();
+    }
+  
+    if (conversation.questionStatus === 'pending') {
+      return updateUnansweredQuestion();
+    }
+  
+    if (['completed', 'saved'].includes(conversation.questionStatus)) {
+      return generateCode();
+    }
+  }
+
   const handleSubmit = () => {
     if (!inputValue.length) return;
-    if (conversation.conversationId) {
-      if (conversation.questionStatus === 'pending') {
-        const updatedMessages = [...conversation.messages];
-        updatedMessages[conversation.unansweredQuestionIndex].userPrompt =
-          inputValue;
-        const nextUnansweredIndex = conversation.unansweredQuestionIndex + 1;
-        const allAnswered =
-          nextUnansweredIndex > conversation.unansweredQuestions.length;
-        setConversation({
-          ...conversation,
-          messages: updatedMessages,
-          unansweredQuestionIndex: allAnswered ? -1 : nextUnansweredIndex,
-        });
-        setInputValue('');
-        if (allAnswered) {
-          generateQuestion();
-        }
-      } else if (
-        conversation.questionStatus === 'completed' ||
-        conversation.questionStatus === 'saved'
-      ) {
-        generateCode();
-      }
-    } else {
-      if (pathname.endsWith('main')) {
-        const current = new URLSearchParams(Array.from(searchParams.entries()));
-        current.delete('promptType');
-        const search = current.toString();
-        const query = search ? `?${search}` : '';
-        router.push(`${pathname}${query}`);
-      }
-      generateQuestion();
+    if (selectedStrategy.id === 'prompt-refinement') {
+      generateCode();
+    } else if (selectedStrategy.id === 'guided-prompting') {
+      handleQuestions();
     }
   };
 
