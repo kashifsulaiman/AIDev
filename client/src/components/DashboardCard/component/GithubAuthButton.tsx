@@ -43,7 +43,9 @@ export default function GitHubAuthButton() {
   const signOut = () => {
     setGithubAuth({ token: null, username: null });
   };
-  if (!promptData.loader) { return }
+  if (!promptData.loader) {
+    return;
+  }
 
   return (
     <div className="flex items-center">
