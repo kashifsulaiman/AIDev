@@ -11,6 +11,7 @@ import { useMutation } from '@/hooks/useMutation';
 import { extractAttributes } from '@/utils/utils';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
+import GitHubAuthButton from './GithubAuthButton';
 import { MessageInterface } from '@/redux/model/conversationModel';
 
 const TextArea = ({
@@ -200,7 +201,7 @@ const TextArea = ({
   };
 
   return (
-    <div className="relative mt-10 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
+    <div className="relative mt-2 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
       <div className="flex w-full items-end">
         <Button
           className={`${
@@ -221,28 +222,34 @@ const TextArea = ({
           classNames={{
             base: `!p-0 !bg-transparent ${classNames?.base}`,
             innerWrapper: `flex items-center ${classNames?.innerWrapper}`,
-            input: `scrollbar-hide  !rounded-none !min-h-[60px] ${classNames?.input}`,
+            input: `scrollbar-hide  !rounded-none !max-h-[60px] ${classNames?.input}`,
             inputWrapper: `!pl-[30px] !pr-[42px] bg-transparent data-[hover=true]:bg-transparent data-[focus=true]:!bg-transparent shadow-none ${classNames?.inputWrapper}`,
           }}
           {...props}
         />
       </div>
 
-      <Button
-        disabled={!inputValue && promptData.loader}
-        className={`h-10 w-14 ${
-          !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
-        } absolute bottom-1 right-2.5 z-[5] min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
-        onClick={handleSubmit}
-      >
-        <span className="leading-none">
-          {promptData.loader ? (
-            <Loader Color="#bbb" height="20px" width="20px" />
-          ) : (
-            'Code'
-          )}
-        </span>
-      </Button>
+      <div className="absolute bottom-[5.125rem] left-0 z-[5]">
+        <GitHubAuthButton />
+      </div>
+
+      <div className="absolute bottom-1 right-2.5 z-[5] flex min-w-fit flex-col items-start">
+        <Button
+          disabled={!inputValue && promptData.loader}
+          className={`h-10 w-14 ${
+            !inputValue ? 'cursor-not-allowed bg-opacity-30' : ''
+          } min-w-fit rounded-md bg-custom-gradient px-3 py-2.5 text-white group-hover:bg-custom-white`}
+          onClick={handleSubmit}
+        >
+          <span className="leading-none">
+            {promptData.loader ? (
+              <Loader Color="#bbb" height="20px" width="20px" />
+            ) : (
+              'Code'
+            )}
+          </span>
+        </Button>
+      </div>
     </div>
   );
 };

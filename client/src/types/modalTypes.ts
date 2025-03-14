@@ -36,3 +36,8 @@ export type PromptingStrategyType = {
   label: string;
   description?: string;
 };
+
+export type GithubAuthModelType = {
+  token: string | null;
+  username: string | null;
+};
