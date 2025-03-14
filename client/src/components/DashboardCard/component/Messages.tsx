@@ -24,6 +24,9 @@ const AiQuestions = () => {
   const setConversation = useStoreActions<StoreModel>(
     (actions) => actions.conversationModel.setConversation
   );
+  const selectedStrategy = useStoreState<StoreModel>(
+    (state) => state.promptingStrategyModel.strategy
+  );
   const lastMsgRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (lastMsgRef.current) {
@@ -101,23 +104,29 @@ const AiQuestions = () => {
               </div>
             )}
 
-            {!msg.isQuestion && !!index && (
-              <div className="mr-20 flex flex-col items-start">
-                <GenericImage
-                  className="z-[3] mb-2 mt-2 w-6 md:mb-0"
-                  alt="AD"
-                  src="/asstes/images/ad-dashboard.png"
-                  classNames={{ img: 'w-8' }}
-                />
-                {msg.aiResponse.length ? (
-                  <div className="leading-2 max-h-auto ml-8 w-full rounded-2xl rounded-ss-none bg-slate-100 p-4 font-Jakarta text-[16px] font-normal text-black">
-                    {msg.textResponse || 'Done'}
-                  </div>
-                ) : (
-                  loader && <DotsLoader />
-                )}
-              </div>
-            )}
+            {!msg.isQuestion &&
+              !(
+                (selectedStrategy.id === 'guided-prompting' ||
+                  selectedStrategy.id === 'self-prompting') &&
+                index === 0 &&
+                !msg.textResponse
+              ) && (
+                <div className="mr-20 flex flex-col items-start">
+                  <GenericImage
+                    className="z-[3] mb-2 mt-2 w-6 md:mb-0"
+                    alt="AD"
+                    src="/asstes/images/ad-dashboard.png"
+                    classNames={{ img: 'w-8' }}
+                  />
+                  {msg.aiResponse.length ? (
+                    <div className="leading-2 max-h-auto ml-8 w-full rounded-2xl rounded-ss-none bg-slate-100 p-4 font-Jakarta text-[16px] font-normal text-black">
+                      {msg.textResponse || 'Done'}
+                    </div>
+                  ) : (
+                    loader && <DotsLoader />
+                  )}
+                </div>
+              )}
 
             {conversation.messages &&
               !loader &&

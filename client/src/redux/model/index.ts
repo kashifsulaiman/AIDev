@@ -6,6 +6,9 @@ import forgotPasswordObj, { ForgotPasswordModel } from './forgotPasswodModal';
 import promptModel, { PromptModel } from './promptModel';
 import conversationModel, { ConversationModel } from './conversationModel';
 import aiModel, { AIModel } from './aiModel';
+import promptingStrategyModel, {
+  PromptingStrategyModel,
+} from './promptStrategy';
 import githubAuthModel, { GithubAuthModel } from './githubAuthModel';
 export interface StoreModel {
   userObj: UserModel;
@@ -14,6 +17,7 @@ export interface StoreModel {
   promptModel: PromptModel;
   conversationModel: ConversationModel;
   aiModel: AIModel;
+  promptingStrategyModel: PromptingStrategyModel;
   githubAuthModel: GithubAuthModel;
 }
 const model: StoreModel = persist(
@@ -24,6 +28,7 @@ const model: StoreModel = persist(
     promptModel,
     conversationModel,
     aiModel,
+    promptingStrategyModel,
     githubAuthModel,
   },
   {
