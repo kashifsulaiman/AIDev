@@ -25,8 +25,8 @@ const AiQuestions = () => {
     (actions) => actions.conversationModel.setConversation
   );
   const selectedStrategy = useStoreState<StoreModel>(
-      (state) => state.promptingStrategyModel.strategy
-    );
+    (state) => state.promptingStrategyModel.strategy
+  );
   const lastMsgRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (lastMsgRef.current) {
@@ -106,7 +106,8 @@ const AiQuestions = () => {
 
             {!msg.isQuestion &&
               !(
-                (selectedStrategy.id === 'guided-prompting' || selectedStrategy.id === 'self-prompting') &&
+                (selectedStrategy.id === 'guided-prompting' ||
+                  selectedStrategy.id === 'self-prompting') &&
                 index === 0 &&
                 !msg.textResponse
               ) && (

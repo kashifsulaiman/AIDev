@@ -14,7 +14,6 @@ export default function Dropdown<T extends { label: string; img?: string }>({
   selectedItem,
   onSelect,
 }: DropdownInterface<T>) {
-  console.log('selectedItem: ', selectedItem);
   return (
     <NextDropDown>
       <DropdownTrigger>
@@ -23,16 +22,18 @@ export default function Dropdown<T extends { label: string; img?: string }>({
           size="lg"
           className="flex w-72 items-center justify-between rounded-md bg-white px-2 text-left text-sm font-medium text-gray-700 focus:outline-none"
         >
-          {selectedItem.img && (
+          {selectedItem?.img && (
             <Avatar
-              src={selectedItem.img}
+              src={selectedItem?.img}
               classNames={{
                 base: 'bg-transparent',
                 img: '!size-8 !rounded-full',
               }}
             />
           )}
-          <span className="px-4 py-4">{selectedItem.label}</span>
+          <span className={` ${!selectedItem?.img && 'px-4'} py-4`}>
+            {selectedItem.label}
+          </span>
           <ArrowDropdownIcon classes="ml-2 h-4 w-4 my-4" />
         </Button>
       </DropdownTrigger>

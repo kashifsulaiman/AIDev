@@ -11,9 +11,4 @@ export const PromptingStrategyData: PromptingStrategyType[] = [
     label: 'Guided Prompting',
     description: 'User answers AI-generated questions',
   },
-  // {
-  //   id: 'self-prompting',
-  //   label: 'Self-Prompting',
-  //   description: 'AI generates and refines prompts',
-  // },
 ];

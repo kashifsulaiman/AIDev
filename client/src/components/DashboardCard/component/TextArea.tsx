@@ -118,7 +118,7 @@ const TextArea = ({
         reasoning: currentModel.reasoning,
         aiModel: currentModel.model,
       },
-      promptingStrategy: selectedStrategy.id
+      promptingStrategy: selectedStrategy.id,
     };
     if (conversation.unansweredQuestionIndex === -1) {
       const newMessages = {
@@ -157,9 +157,11 @@ const TextArea = ({
 
   const updateUnansweredQuestion = () => {
     const updatedMessages = [...conversation.messages];
-    updatedMessages[conversation.unansweredQuestionIndex].userPrompt =inputValue;
+    updatedMessages[conversation.unansweredQuestionIndex].userPrompt =
+      inputValue;
     const nextUnansweredIndex = conversation.unansweredQuestionIndex + 1;
-    const allAnswered =nextUnansweredIndex > conversation.unansweredQuestions.length;
+    const allAnswered =
+      nextUnansweredIndex > conversation.unansweredQuestions.length;
     setConversation({
       ...conversation,
       messages: updatedMessages,
@@ -168,7 +170,7 @@ const TextArea = ({
     setInputValue('');
     if (allAnswered) generateQuestion();
   };
-  
+
   const handleQuestions = () => {
     if (!conversation.conversationId) {
       if (pathname.endsWith('main')) {
@@ -178,15 +180,15 @@ const TextArea = ({
       }
       return generateQuestion();
     }
-  
+
     if (conversation.questionStatus === 'pending') {
       return updateUnansweredQuestion();
     }
-  
+
     if (['completed', 'saved'].includes(conversation.questionStatus)) {
       return generateCode();
     }
-  }
+  };
 
   const handleSubmit = () => {
     if (!inputValue.length) return;
