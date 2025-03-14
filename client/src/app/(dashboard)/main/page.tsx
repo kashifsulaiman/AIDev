@@ -4,6 +4,7 @@ import TextArea from '@/components/DashboardCard/component/TextArea';
 import { allPrompts } from '@/config/api.config';
 import React from 'react';
 import PromptStrategySelector from '@/components/DashboardCard/component/PromptStrategySelector';
+import GitHubAuthButton from '@/components/DashboardCard/component/GithubAuthButton';
 
 const DashBoard = async ({ searchParams }: any) => {
   const prompts = await allPrompts();
@@ -34,8 +35,9 @@ const DashBoard = async ({ searchParams }: any) => {
             <div className="absolute left-0 top-12 z-0">
               <ModelSelector />
             </div>
-            <div className="absolute right-0 top-12 z-0">
+            <div className="absolute right-0 top-12 z-0 flex items-center gap-2 pr-2">
               <PromptStrategySelector />
+              <GitHubAuthButton />
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import { Resizable } from 're-resizable';
 import { OverviewLeftInterface } from '@/types/interface';
 import { StoreModel } from '@/redux/model';
 import Messages from '../component/Messages';
+import GitHubAuthButton from '../component/GithubAuthButton';
 
 const OverviewLeft = ({ view }: OverviewLeftInterface) => {
   const { title, loader } = useStoreState<StoreModel>(
@@ -70,7 +71,11 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
         {title}
       </h4>
 
-      <div className="pb-12 md:pb-2">
+      <div className="relative pb-12 md:pb-2">
+        <div className="absolute right-0 top-0 z-[5]">
+          <GitHubAuthButton />
+        </div>
+
         {generating && (
           <Toptext
             text="Preparing Your Project Overview"

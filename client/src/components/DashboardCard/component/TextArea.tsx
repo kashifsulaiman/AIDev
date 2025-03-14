@@ -11,7 +11,6 @@ import { useMutation } from '@/hooks/useMutation';
 import { extractAttributes } from '@/utils/utils';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
-import GitHubAuthButton from './GithubAuthButton';
 import { MessageInterface } from '@/redux/model/conversationModel';
 
 const TextArea = ({
@@ -227,10 +226,6 @@ const TextArea = ({
           }}
           {...props}
         />
-      </div>
-
-      <div className="absolute bottom-[5.125rem] left-0 z-[5]">
-        <GitHubAuthButton />
       </div>
 
       <div className="absolute bottom-1 right-2.5 z-[5] flex min-w-fit flex-col items-start">
