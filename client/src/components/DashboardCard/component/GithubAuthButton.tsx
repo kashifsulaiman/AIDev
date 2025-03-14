@@ -20,6 +20,9 @@ export default function GitHubAuthButton() {
   const setGithubAuth = useStoreActions<StoreModel>(
     (actions) => actions?.githubAuthModel.setGithubModel
   );
+  const promptData = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
+  );
 
   useEffect(() => {
     if (!token || !username || !isValidGitHubToken(token)) return;
@@ -40,6 +43,7 @@ export default function GitHubAuthButton() {
   const signOut = () => {
     setGithubAuth({ token: null, username: null });
   };
+  if (!promptData.loader) { return }
 
   return (
     <div className="flex items-center">
