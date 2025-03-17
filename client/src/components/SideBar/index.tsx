@@ -55,6 +55,12 @@ export default function MainSideBar() {
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );
+  const clearPrompt = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel?.clearPrompt
+  );
+  const clearConversation = useStoreActions<StoreModel>(
+    (actions) => actions?.conversationModel?.clearConversation
+  );
 
   useEffect(() => {
     const fetchPrompts = async () => {
@@ -82,7 +88,11 @@ export default function MainSideBar() {
     { label: 'Settings', href: '/coming-soon', icon: <Settings /> },
   ];
 
-  const handleItemClick = () => {
+  const handleItemClick = (label: string) => {
+    if (label === 'Dashboard') {
+      clearPrompt();
+      clearConversation();
+    }
     setPrompt(null);
     if (window.innerWidth < 992) {
       setIsCollapsed(false);
@@ -99,16 +109,12 @@ export default function MainSideBar() {
     const handleOutsideClick = (event: MouseEvent) => {
       const drawer = document.getElementById('custom-drawer');
       const sidebar = document.querySelector('.sidebar');
-      const isSmallScreen = window.innerWidth <= 1280;
+      if (drawer && !drawer.contains(event.target as Node)) {
+        setIsDrawerOpen(false);
+      }
 
-      if (isSmallScreen) {
-        if (drawer && !drawer.contains(event.target as Node)) {
-          setIsDrawerOpen(false);
-        }
-
-        if (sidebar && !sidebar.contains(event.target as Node)) {
-          setIsCollapsed(true);
-        }
+      if (sidebar && !sidebar.contains(event.target as Node)) {
+        setIsCollapsed(true);
       }
     };
 

@@ -9,29 +9,31 @@ import {
 import { ArrowDropdownIcon, DropdownCheckIcon } from '@/components/SVG';
 import { DropdownInterface } from '@/types/interface';
 
-export default function Dropdown({
+export default function Dropdown<T extends { label: string; img?: string }>({
   items,
   selectedItem,
   onSelect,
-}: DropdownInterface) {
+}: DropdownInterface<T>) {
   return (
     <NextDropDown>
       <DropdownTrigger>
         <Button
           variant="bordered"
           size="lg"
-          className="flex w-72 items-center justify-between rounded-md px-2 text-left text-sm font-medium text-gray-700 focus:outline-none"
+          className="flex w-72 items-center justify-between rounded-md bg-white px-2 text-left text-sm font-medium text-gray-700 focus:outline-none"
         >
-          {selectedItem.img && (
+          {selectedItem?.img && (
             <Avatar
-              src={selectedItem.img}
+              src={selectedItem?.img}
               classNames={{
                 base: 'bg-transparent',
                 img: '!size-8 !rounded-full',
               }}
             />
           )}
-          <span className="py-4">{selectedItem.label}</span>
+          <span className={` ${!selectedItem?.img && 'px-4'} py-4`}>
+            {selectedItem.label}
+          </span>
           <ArrowDropdownIcon classes="ml-2 h-4 w-4 my-4" />
         </Button>
       </DropdownTrigger>
@@ -40,13 +42,15 @@ export default function Dropdown({
           <DropdownItem
             key={item.label}
             startContent={
-              <Avatar
-                src={item.img}
-                classNames={{
-                  base: 'bg-transparent',
-                  img: '!size-8 !rounded-full',
-                }}
-              />
+              item.img && (
+                <Avatar
+                  src={item.img}
+                  classNames={{
+                    base: 'bg-transparent',
+                    img: '!size-8 !rounded-full',
+                  }}
+                />
+              )
             }
             onClick={() => onSelect(item)}
             className={

@@ -11,7 +11,7 @@ interface MenuItem {
 interface SidebarMenuProps {
   items: MenuItem[];
   isCollapsed: boolean;
-  onItemClick: () => void;
+  onItemClick: (label: string) => void;
 }
 
 const SidebarMenu: React.FC<SidebarMenuProps> = ({
@@ -39,7 +39,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             className={`flex items-center gap-3 rounded-[99px] transition-all duration-300 ${isCollapsed ? 'justify-center px-2 py-2.5' : 'px-4 py-3'} transition-colors hover:!bg-purple-white-gradient hover:!text-white ${
               isCollapsed ? 'h-12 w-12' : ''
             }`}
-            onClick={onItemClick}
+            onClick={() => onItemClick(item.label)}
           >
             <span
               className={` ${isCollapsed ? 'size-7 text-[28px]' : 'size-[20px] text-xl'}`}
