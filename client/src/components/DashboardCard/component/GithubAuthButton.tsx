@@ -43,7 +43,7 @@ export default function GitHubAuthButton() {
   const signOut = () => {
     setGithubAuth({ token: null, username: null });
   };
-  if (!promptData.loader) {
+  if (promptData.loader) {
     return;
   }
 
