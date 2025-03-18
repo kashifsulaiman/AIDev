@@ -22,4 +22,25 @@ export const AIModelData: AIModelType[] = [
     label: 'Open AI o3-mini (Thinking)',
     img: '/asstes/images/openai-icon.png',
   },
+  {
+    provider: 'openai',
+    reasoning: false,
+    model: 'gpt-4.5-preview',
+    label: 'GPT-4.5 Preview',
+    img: '/asstes/images/openai-icon.png',
+  },
+  {
+    provider: 'openai',
+    reasoning: false,
+    model: 'gpt-4o',
+    label: 'GPT-4o',
+    img: '/asstes/images/openai-icon.png',
+  },
+  {
+    provider: 'openai',
+    reasoning: false,
+    model: 'chatgpt-4o',
+    label: 'ChatGPT-4o',
+    img: '/asstes/images/openai-icon.png',
+  },
 ];
