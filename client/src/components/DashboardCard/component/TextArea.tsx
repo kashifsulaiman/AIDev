@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
 import { useStoreActions, useStoreState } from 'easy-peasy';
@@ -19,6 +19,7 @@ const TextArea = ({
   // isExpanded,
   ...props
 }: any) => {
+  const [inputValue, setInputValue] = useState('');
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -38,32 +39,78 @@ const TextArea = ({
   const { strategy: selectedStrategy } = useStoreState<StoreModel>(
     (state) => state.promptingStrategyModel
   );
-  const { selfPromptingIteration: {selectedIteration,isGenerating,iterationCount, lastGeneratedIteration} } = useStoreState<StoreModel>(
+  const { selfPromptingIteration: { selectedIteration, isGenerating, iterationCount, lastGeneratedIteration, isOldApiCalled } } = useStoreState<StoreModel>(
     (state) => state.selfPromptingModel
   );
-  const { setGenerating, setIterationCount, setLastGeneratedIteration  } = useStoreActions<StoreModel>(
+  const { setGenerating, setIterationCount, setLastGeneratedIteration, setIsOldApiCalled } = useStoreActions<StoreModel>(
     (actions) => actions.selfPromptingModel
   );
-  const [inputValue, setInputValue] = useState('');
+
+  const hasRun = useRef(false);
+
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
 
-  useEffect(() => {
-    if (!isGenerating || iterationCount > selectedIteration) {
+  // useEffect(() => {
+  //   console.log("isGenerating: ", isGenerating);
+  //   if (!isGenerating || hasRun.current) return; // Stop if not generating
+  
+  //   if (iterationCount > selectedIteration) {
+  //     setGenerating(false);
+  //     return;
+  //   }
+  
+  //   if (lastGeneratedIteration < iterationCount) {
+  //     console.log(`Starting iteration ${iterationCount}: Generating suggestion...`);
+
+  //     generateSelfPromptingSuggestion()
+  //       .then(() => {
+  //         setLastGeneratedIteration(iterationCount);
+  //         if (conversation.conversationId) {
+  //           generateCode(conversation.conversationId);
+  //         }
+  //         // ✅ Move to the next iteration
+  //         setIterationCount((prev: number) => {
+  //           console.log(`Iteration ${prev} completed.`);
+  //           return prev + 1;
+  //         });
+  //       });
+  //   }
+  // }, [isGenerating, iterationCount, conversation.conversationId]);
+
+  const runIteration = async () => {
+    console.log("isGenerating: ", isGenerating);
+    if (!isGenerating) return; // Stop if not generating
+    if (iterationCount > selectedIteration) {
       setGenerating(false);
       return;
     }
-  
-    if (lastGeneratedIteration >= iterationCount) {
-      console.log("Iteration completed, moving to next iteration...");
-      setIterationCount(iterationCount + 1); // Move to the next iteration
-    } else if (lastGeneratedIteration < iterationCount) {
-      console.log(`Starting iteration ${iterationCount}...`);
-      generateCode(conversation.conversationId);
+    console.log(`Starting iteration ${iterationCount}: Generating suggestion...`);
+    console.log(`last iteration ${lastGeneratedIteration}:`);
+    if (lastGeneratedIteration < iterationCount) {
+      try {
+        await generateSelfPromptingSuggestion();
+        setLastGeneratedIteration(iterationCount);
+        if (conversation.conversationId) {
+          await generateCode(conversation.conversationId);
+        }
+        // ✅ Move to the next iteration only after completion
+        setIterationCount(iterationCount + 1);
+      } catch (error) {
+        console.error("Error during iteration:", error);
+        setGenerating(false); // Stop on error
+      }
     }
-  }, [isGenerating, iterationCount, lastGeneratedIteration]);
+  };
 
+  useEffect(() => {
+    if (isOldApiCalled) {
+      return
+    }
+    runIteration();
+  }, [isGenerating, iterationCount, conversation.conversationId]);
+  
   
   const currentModel = useStoreState<StoreModel>(
     (state) => state.aiModel.model
@@ -82,17 +129,17 @@ const TextArea = ({
         loader: false,
       };
       const newConversation = {
-        _id: conversationId,
-        userId: user.id,
+        conversationId,
         messages,
         title,
       };
       setPrompt(newPrompt);
       setConversation(newConversation);
-      router.push(`/overview/${conversationId}`);
       if(selectedStrategy.id === 'self-prompting') {
+        setIsOldApiCalled(true);
         setLastGeneratedIteration(iterationCount);
       }
+      router.push(`/overview/${conversationId}`);
     },
     onError: (err) => {
       if(selectedStrategy.id === 'self-prompting') {
@@ -122,7 +169,6 @@ const TextArea = ({
       );
       const newConversation = {
         conversationId,
-        userId: user.id,
         messages,
         title,
         unansweredQuestions,
@@ -151,23 +197,21 @@ const TextArea = ({
       };
       const newConversation = {
         conversationId: conversationId,
-        userId: user.id,
         messages,
         title,
       };
       setPrompt(newPrompt);
       setConversation(newConversation);
-      // console.log(" suggestionMutate conversation: ", conversation)
+      console.log(" suggestionMutate conversation: ", conversation)
     },
   });
 
   const generateCode = async (conversationId?: string) => {
-    // console.log(" generateCode conversation: ", conversation)
     const attributes = extractAttributes(inputValue);
     const mutationInput = {
       humanPrompt: inputValue,
       attributes,
-      conversationId: conversationId ? conversationId : conversation.conversationId,
+      conversationId: conversationId || conversation.conversationId,
       userId: user.id,
       model: {
         provider: currentModel.provider,
@@ -176,17 +220,15 @@ const TextArea = ({
       },
       promptingStrategy: selectedStrategy.id,
     };
-    if (conversation.unansweredQuestionIndex === -1) {
-      const newMessages = {
-        userPrompt: inputValue,
-        aiResponse: '',
-        code: null,
-        id: '',
-        textResponse: '',
-        isQuestion: false,
-      };
-      addMessage(newMessages);
-    }
+    const newMessages = {
+      userPrompt: inputValue,
+      aiResponse: '',
+      code: null,
+      id: '',
+      textResponse: '',
+      isQuestion: false,
+    };
+    addMessage(newMessages);
     setPrompt({ question: inputValue, loader: true });
     mutate(mutationInput);
     setInputValue('');
@@ -247,7 +289,6 @@ const TextArea = ({
       humanPrompt: inputValue,
       attributes,
       conversationId: conversation.conversationId,
-      userId: user.id,
       model: {
         provider: currentModel.provider,
         reasoning: currentModel.reasoning,
@@ -256,79 +297,19 @@ const TextArea = ({
       promptingStrategy: selectedStrategy.id,
     };
     setPrompt({ question: inputValue, loader: true });
-    await suggestionMutate(mutationInput);
+    try {
+      await suggestionMutate(mutationInput);
+    } catch (error) {
+      console.error("Error generating suggestion:", error);
+      setGenerating(false); // Stop if error
+    }
   };
 
-  const executeSelfPromptingFlow = async (iteration = 1, conversationId:string) => {
-    console.log(selectedStrategy.id, conversationId)
-    if (iteration > selectedIteration) {
-      return; // Stop when we reach the max iteration count
-    }
-  
-    let currentConversationId = conversationId; // Keep track of the conversationId
-  
-    if (!currentConversationId) {
-      console.log("No conversationId found. Creating a new conversation...");
-  
-      const initialMutationInput = {
-        humanPrompt: inputValue,
-        attributes: extractAttributes(inputValue),
-        userId: user.id,
-        model: {
-          provider: currentModel.provider,
-          reasoning: currentModel.reasoning,
-          aiModel: currentModel.model,
-        },
-        promptingStrategy: selectedStrategy.id,
-      };
-  
-      // Perform the first mutation to get a new conversationId
-      const response = await suggestionMutate(initialMutationInput);
-      console.log("response", response)
-      if (response?.data?.conversationId) {
-        currentConversationId = response.data.conversationId; // Assign the new conversationId
-        setConversation({
-          ...conversation,
-          conversationId: currentConversationId, // Update global state
-          messages: response.data.messages,
-          title: response.data.title,
-        });
-      } else {
-        console.error("Failed to create a new conversation. Stopping execution.");
-        return;
-      }
-    }
-  
-    // Prepare input for the next iteration
-    const mutationInput = {
-      humanPrompt: inputValue,
-      attributes: extractAttributes(inputValue),
-      conversationId: currentConversationId, // Use updated conversationId
-      userId: user.id,
-      model: {
-        provider: currentModel.provider,
-        reasoning: currentModel.reasoning,
-        aiModel: currentModel.model,
-      },
-      promptingStrategy: selectedStrategy.id,
-    };
-  
-    setPrompt({ question: inputValue, loader: true });
-  
-    await suggestionMutate(mutationInput); // Generate AI suggestion
-  
-    await generateCode(currentConversationId);
-  
-    // Proceed to the next iteration with the updated conversationId
-    setTimeout(() => executeSelfPromptingFlow(iteration + 1, currentConversationId), 1000);
-  };
-
-  const handleSelfPrompting = async () => {
+  const handleSelfPromptingFlow = async () => {
     setGenerating(true);
     setIterationCount(1);
-    setConversation(conversation.conversationId);
-    setLastGeneratedIteration(0); 
-  }
+    setLastGeneratedIteration(0);
+  };
   
   const handleSubmit = async() => {
     if (!inputValue.length) return;
@@ -344,11 +325,9 @@ const TextArea = ({
     } else if (selectedStrategy.id === 'guided-prompting') {
       handleQuestions();
     } else if (selectedStrategy.id === 'self-prompting') {
-      // executeSelfPromptingFlow(1, conversation.conversationId)
-      handleSelfPrompting();
+      handleSelfPromptingFlow();
     }
   };
-
 
   return (
     <div className="relative mt-2 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">

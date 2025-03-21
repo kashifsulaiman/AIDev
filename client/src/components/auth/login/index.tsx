@@ -38,6 +38,9 @@ const Login = () => {
   const clearConversation = useStoreActions<StoreModel>(
     (actions) => actions?.conversationModel?.clearConversation
   );
+  const clearSelfPromptingIteration = useStoreActions<StoreModel>(
+    (actions) => actions?.selfPromptingModel?.clearSelfPromptingIteration
+  );
   useLayoutEffect(() => {
     forgotPasswordAction({
       form: 'ForgotPassword',
@@ -49,6 +52,7 @@ const Login = () => {
     });
     clearPrompt();
     clearConversation();
+    clearSelfPromptingIteration()
   }, []);
 
   const { mutate, isLoading } = useMutation<any>({

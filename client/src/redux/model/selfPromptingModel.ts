@@ -10,6 +10,8 @@ export interface SelfPromptingModel {
   setConversationId: Action<SelfPromptingModel, string | null>;
   setLastGeneratedIteration: Action<SelfPromptingModel, number>;
   setSelectedIteration:  Action<SelfPromptingModel, number>
+  clearSelfPromptingIteration: Action<SelfPromptingModel>
+  setIsOldApiCalled: Action<SelfPromptingModel, boolean>;
 }
 
 const selfPromptingModel: SelfPromptingModel = {
@@ -29,6 +31,12 @@ const selfPromptingModel: SelfPromptingModel = {
   setLastGeneratedIteration: action((state, payload) => {
     state.selfPromptingIteration.lastGeneratedIteration = payload;
   }),
+  clearSelfPromptingIteration: action((state) => {
+    state.selfPromptingIteration = selfPromptingIteration;  
+  }),
+  setIsOldApiCalled: action((state, payload) => {
+    state.selfPromptingIteration.isOldApiCalled = payload;  
+  })
 };
 
 export default selfPromptingModel;

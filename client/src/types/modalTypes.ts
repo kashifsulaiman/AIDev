@@ -51,4 +51,5 @@ export type SelfPromptingIterationType = {
   selectedIteration: number;
   conversationId: string | null;
   lastGeneratedIteration: number;
+  isOldApiCalled: boolean;
 }
