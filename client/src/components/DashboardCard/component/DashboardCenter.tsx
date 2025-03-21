@@ -19,9 +19,12 @@ const DashboardCenter = ({ prompts }: DashboardCenterProps) => {
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );
+  const { strategy } = useStoreState<StoreModel>(
+      (state) => state.promptingStrategyModel
+    );
   return (
     <div className="Scroller-Class max-h-[350px] overflow-y-auto">
-      {conversation?.conversationId ? (
+      {strategy.id === 'guided-prompting' && conversation?.conversationId ? (
         <Messages />
       ) : (
         <DashboardCards data={Array.isArray(prompts) ? prompts : []} />

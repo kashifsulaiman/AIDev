@@ -35,14 +35,36 @@ const TextArea = ({
   const { setConversation, addMessage } = useStoreActions<StoreModel>(
     (actions) => actions.conversationModel
   );
-  const selectedStrategy = useStoreState<StoreModel>(
-    (state) => state.promptingStrategyModel.strategy
+  const { strategy: selectedStrategy } = useStoreState<StoreModel>(
+    (state) => state.promptingStrategyModel
+  );
+  const { selfPromptingIteration: {selectedIteration,isGenerating,iterationCount, lastGeneratedIteration} } = useStoreState<StoreModel>(
+    (state) => state.selfPromptingModel
+  );
+  const { setGenerating, setIterationCount, setLastGeneratedIteration  } = useStoreActions<StoreModel>(
+    (actions) => actions.selfPromptingModel
   );
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
 
+  useEffect(() => {
+    if (!isGenerating || iterationCount > selectedIteration) {
+      setGenerating(false);
+      return;
+    }
+  
+    if (lastGeneratedIteration >= iterationCount) {
+      console.log("Iteration completed, moving to next iteration...");
+      setIterationCount(iterationCount + 1); // Move to the next iteration
+    } else if (lastGeneratedIteration < iterationCount) {
+      console.log(`Starting iteration ${iterationCount}...`);
+      generateCode(conversation.conversationId);
+    }
+  }, [isGenerating, iterationCount, lastGeneratedIteration]);
+
+  
   const currentModel = useStoreState<StoreModel>(
     (state) => state.aiModel.model
   );
@@ -68,6 +90,15 @@ const TextArea = ({
       setPrompt(newPrompt);
       setConversation(newConversation);
       router.push(`/overview/${conversationId}`);
+      if(selectedStrategy.id === 'self-prompting') {
+        setLastGeneratedIteration(iterationCount);
+      }
+    },
+    onError: (err) => {
+      if(selectedStrategy.id === 'self-prompting') {
+        console.error("Failed to generate code:", err);
+        setGenerating(false); // Stop the process if an error occurs
+      }
     },
   });
 
@@ -106,12 +137,37 @@ const TextArea = ({
     },
   });
 
-  const generateCode = async () => {
+  const { mutateAsync: suggestionMutate } = useMutation({
+    isToaster: false,
+    method: POST,
+    url: ApiUrl.GENERATE_AI_SUGGESTIONS,
+    onSuccess: (res) => {
+      const { conversationId, messages, title } = res?.data;
+      const lastMessage = messages[messages.length - 1];
+      const newPrompt = {
+        code: lastMessage.code,
+        content: lastMessage.userPrompt,
+        loader: false,
+      };
+      const newConversation = {
+        conversationId: conversationId,
+        userId: user.id,
+        messages,
+        title,
+      };
+      setPrompt(newPrompt);
+      setConversation(newConversation);
+      // console.log(" suggestionMutate conversation: ", conversation)
+    },
+  });
+
+  const generateCode = async (conversationId?: string) => {
+    // console.log(" generateCode conversation: ", conversation)
     const attributes = extractAttributes(inputValue);
     const mutationInput = {
       humanPrompt: inputValue,
       attributes,
-      conversationId: conversation.conversationId,
+      conversationId: conversationId ? conversationId : conversation.conversationId,
       userId: user.id,
       model: {
         provider: currentModel.provider,
@@ -173,11 +229,6 @@ const TextArea = ({
 
   const handleQuestions = () => {
     if (!conversation.conversationId) {
-      if (pathname.endsWith('main')) {
-        const current = new URLSearchParams(searchParams.toString());
-        current.delete('promptType');
-        router.push(`${pathname}${current.toString() ? `?${current}` : ''}`);
-      }
       return generateQuestion();
     }
 
@@ -190,14 +241,114 @@ const TextArea = ({
     }
   };
 
-  const handleSubmit = () => {
+  const generateSelfPromptingSuggestion = async () => {
+    const attributes = extractAttributes(inputValue);
+    const mutationInput = {
+      humanPrompt: inputValue,
+      attributes,
+      conversationId: conversation.conversationId,
+      userId: user.id,
+      model: {
+        provider: currentModel.provider,
+        reasoning: currentModel.reasoning,
+        aiModel: currentModel.model,
+      },
+      promptingStrategy: selectedStrategy.id,
+    };
+    setPrompt({ question: inputValue, loader: true });
+    await suggestionMutate(mutationInput);
+  };
+
+  const executeSelfPromptingFlow = async (iteration = 1, conversationId:string) => {
+    console.log(selectedStrategy.id, conversationId)
+    if (iteration > selectedIteration) {
+      return; // Stop when we reach the max iteration count
+    }
+  
+    let currentConversationId = conversationId; // Keep track of the conversationId
+  
+    if (!currentConversationId) {
+      console.log("No conversationId found. Creating a new conversation...");
+  
+      const initialMutationInput = {
+        humanPrompt: inputValue,
+        attributes: extractAttributes(inputValue),
+        userId: user.id,
+        model: {
+          provider: currentModel.provider,
+          reasoning: currentModel.reasoning,
+          aiModel: currentModel.model,
+        },
+        promptingStrategy: selectedStrategy.id,
+      };
+  
+      // Perform the first mutation to get a new conversationId
+      const response = await suggestionMutate(initialMutationInput);
+      console.log("response", response)
+      if (response?.data?.conversationId) {
+        currentConversationId = response.data.conversationId; // Assign the new conversationId
+        setConversation({
+          ...conversation,
+          conversationId: currentConversationId, // Update global state
+          messages: response.data.messages,
+          title: response.data.title,
+        });
+      } else {
+        console.error("Failed to create a new conversation. Stopping execution.");
+        return;
+      }
+    }
+  
+    // Prepare input for the next iteration
+    const mutationInput = {
+      humanPrompt: inputValue,
+      attributes: extractAttributes(inputValue),
+      conversationId: currentConversationId, // Use updated conversationId
+      userId: user.id,
+      model: {
+        provider: currentModel.provider,
+        reasoning: currentModel.reasoning,
+        aiModel: currentModel.model,
+      },
+      promptingStrategy: selectedStrategy.id,
+    };
+  
+    setPrompt({ question: inputValue, loader: true });
+  
+    await suggestionMutate(mutationInput); // Generate AI suggestion
+  
+    await generateCode(currentConversationId);
+  
+    // Proceed to the next iteration with the updated conversationId
+    setTimeout(() => executeSelfPromptingFlow(iteration + 1, currentConversationId), 1000);
+  };
+
+  const handleSelfPrompting = async () => {
+    setGenerating(true);
+    setIterationCount(1);
+    setConversation(conversation.conversationId);
+    setLastGeneratedIteration(0); 
+  }
+  
+  const handleSubmit = async() => {
     if (!inputValue.length) return;
+
+    if (pathname.endsWith('main')) {
+      const current = new URLSearchParams(searchParams.toString());
+      current.delete('promptType');
+      router.push(`${pathname}${current.toString() ? `?${current}` : ''}`);
+    }
+
     if (selectedStrategy.id === 'prompt-refinement') {
       generateCode();
     } else if (selectedStrategy.id === 'guided-prompting') {
       handleQuestions();
+    } else if (selectedStrategy.id === 'self-prompting') {
+      // executeSelfPromptingFlow(1, conversation.conversationId)
+      handleSelfPrompting();
     }
   };
+
 
   return (
     <div className="relative mt-2 flex w-full items-end justify-between rounded-xl bg-white shadow-lg xl:mb-5">
