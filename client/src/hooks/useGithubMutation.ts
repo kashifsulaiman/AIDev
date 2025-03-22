@@ -1,6 +1,4 @@
-import {
-  useMutation as useRMutation,
-} from '@tanstack/react-query';
+import { useMutation as useRMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { showToaster } from '@/components/Toaster';
 import {
