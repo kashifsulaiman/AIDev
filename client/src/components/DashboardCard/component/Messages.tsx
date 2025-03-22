@@ -108,7 +108,7 @@ const AiQuestions = () => {
               !(
                 (selectedStrategy.id === 'guided-prompting' ||
                   selectedStrategy.id === 'self-prompting') &&
-                index === 0 &&
+                !index &&
                 !msg.textResponse
               ) && (
                 <div className="mr-20 flex flex-col items-start">
@@ -133,8 +133,9 @@ const AiQuestions = () => {
               code &&
               conversation.messages.length &&
               !(code === msg.code) &&
-              !msg.isQuestion && (
-                <div className="group absolute -bottom-4 right-5 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
+              !msg.isQuestion &&
+              !(selectedStrategy.id === 'guided-prompting' && !index) && (
+                <div className="group absolute -bottom-4 right-8 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
                   <button
                     className="text-white"
                     onClick={() => {
