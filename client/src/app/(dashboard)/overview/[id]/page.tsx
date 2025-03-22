@@ -39,7 +39,7 @@ const Page = () => {
         unansweredQuestions,
         unansweredQuestionIndex,
         questionStatus,
-        refinementRequired: true
+        refinementRequired: true,
       });
     }
   }, [data, isLoading]);

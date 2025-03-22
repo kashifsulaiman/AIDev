@@ -13,5 +13,5 @@ export const ApiUrl = {
   GET_CHAT_LIST: 'users/chat-list',
   ROLLBACK_MESSAGE: 'users/rollback',
   GENERATE_AI_QUESTIONS: 'users/generate-questions',
-  IMPORT_PROJECT: 'users/import-project'
+  IMPORT_PROJECT: 'users/import-project',
 };

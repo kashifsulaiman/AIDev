@@ -11,10 +11,12 @@ import GithubAuthModal from './GithubModal';
 import { useDisclosure } from '@nextui-org/react';
 
 interface GithubAuthButtonInterface {
-  classes: string
+  classes: string;
 }
 
-export default function GitHubAuthButton({ classes }: GithubAuthButtonInterface) {
+export default function GitHubAuthButton({
+  classes,
+}: GithubAuthButtonInterface) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const token = searchParams.get('token');

@@ -48,7 +48,7 @@ const initialState: Conversation = {
   unansweredQuestions: [],
   unansweredQuestionIndex: 0,
   questionStatus: 'pending',
-  refinementRequired: true
+  refinementRequired: true,
 };
 const conversationModel: ConversationModel = {
   conversation: initialState,

@@ -32,18 +32,17 @@ export interface DropdownInterface<T> {
 }
 
 export interface GithubAuthModalInterface {
-  isModalOpen: boolean,
-  modalCloseHandler: () => void
+  isModalOpen: boolean;
+  modalCloseHandler: () => void;
 }
 
 export interface IntroModalContentInterface {
   modalCloseHandler: () => void;
   setRepos: Dispatch<SetStateAction<SelectedRepoType[] | null>>;
-  setCurrentTab: Dispatch<SetStateAction<"intro" | "import" | "export">>;
+  setCurrentTab: Dispatch<SetStateAction<'intro' | 'import' | 'export'>>;
 }
 
 export interface ImportModalContentInterface {
   repos: SelectedRepoType[] | null;
-  modalCloseHandler: () => void
+  modalCloseHandler: () => void;
 }
-

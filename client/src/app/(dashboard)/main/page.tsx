@@ -38,7 +38,7 @@ const DashBoard = async ({ searchParams }: any) => {
             <div className="absolute right-14 top-12">
               <PromptStrategySelector />
             </div>
-            <GitHubAuthButton classes='absolute right-2 top-[3.25rem]' />
+            <GitHubAuthButton classes="absolute right-2 top-[3.25rem]" />
           </div>
         </div>
       </div>
