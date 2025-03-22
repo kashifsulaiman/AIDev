@@ -4,6 +4,8 @@ import { IconInterface } from '@/types/interface';
 import { TbArrowBack, TbBrandGithubFilled } from 'react-icons/tb';
 import { FaCheck } from 'react-icons/fa';
 import { IoMdArrowDropdown } from 'react-icons/io';
+import { GoDownload, GoUpload } from "react-icons/go";
+import { AiOutlineDisconnect } from 'react-icons/ai';
 
 const DropdownIcon = () => {
   return (
@@ -2515,6 +2517,18 @@ const GithubIcon = ({ classes }: IconInterface) => {
   return <TbBrandGithubFilled className={classes} />;
 };
 
+const UploadIcon = ({ classes }: IconInterface) => {
+  return <GoUpload className={classes} />
+}
+
+const DownloadIcon = ({ classes }: IconInterface) => {
+  return <GoDownload className={classes} />
+}
+
+const DisconnectIcon = ({ classes }: IconInterface) => {
+  return <AiOutlineDisconnect className={classes} />
+}
+
 export {
   Platform,
   ExploreStudio,
@@ -2565,4 +2579,7 @@ export {
   ArrowDropdownIcon,
   DropdownCheckIcon,
   GithubIcon,
+  UploadIcon,
+  DownloadIcon,
+  DisconnectIcon
 };
