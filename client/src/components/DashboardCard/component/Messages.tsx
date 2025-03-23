@@ -59,6 +59,12 @@ const AiQuestions = () => {
     mutate(mutationInput);
   };
 
+  const shouldRenderTextResponse = (strategyId: string, index: number) => {
+  if (strategyId === "prompt-refinement") return true;
+  if (["guided-prompt", "self-prompt"].includes(strategyId) && index === 0) return false; // Skip only for first message
+  return true;
+};
+
   return (
     <div className="Scroller-Class block w-full flex-col items-start gap-4 overflow-y-auto overflow-x-hidden pb-8 md:flex">
       {conversation.messages
@@ -118,7 +124,13 @@ const AiQuestions = () => {
             </div>
             )}
 
-            {!msg.isQuestion && !msg.isSuggestion && !!index && (
+            {!msg.isQuestion &&
+              !(
+                (selectedStrategy.id === 'guided-prompting' ||
+                  selectedStrategy.id === 'self-prompting') &&
+                !index &&
+                !msg.textResponse
+              ) && (
                 <div className="mr-20 flex flex-col items-start">
                   <GenericImage
                     className="z-[3] mb-2 mt-2 w-6 md:mb-0"
