@@ -7,5 +7,5 @@ export const selfPromptingIteration: SelfPromptingIterationType  = {
   selectedIteration: 2,
   conversationId: null,
   lastGeneratedIteration: 0,
-  isOldApiCalled: false
+  apiCalled: false
 }

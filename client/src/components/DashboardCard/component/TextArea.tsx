@@ -39,10 +39,10 @@ const TextArea = ({
   const { strategy: selectedStrategy } = useStoreState<StoreModel>(
     (state) => state.promptingStrategyModel
   );
-  const { selfPromptingIteration: { selectedIteration, isGenerating, iterationCount, lastGeneratedIteration, isOldApiCalled } } = useStoreState<StoreModel>(
+  const { selfPromptingIteration: { selectedIteration, isGenerating, iterationCount, lastGeneratedIteration, apiCalled } } = useStoreState<StoreModel>(
     (state) => state.selfPromptingModel
   );
-  const { setGenerating, setIterationCount, setLastGeneratedIteration, setIsOldApiCalled } = useStoreActions<StoreModel>(
+  const { setGenerating, setIterationCount, setLastGeneratedIteration, setApiCalled } = useStoreActions<StoreModel>(
     (actions) => actions.selfPromptingModel
   );
 
@@ -52,65 +52,31 @@ const TextArea = ({
     setInputValue(prompt?.question || '');
   }, [prompt]);
 
-  // useEffect(() => {
-  //   console.log("isGenerating: ", isGenerating);
-  //   if (!isGenerating || hasRun.current) return; // Stop if not generating
-  
-  //   if (iterationCount > selectedIteration) {
-  //     setGenerating(false);
-  //     return;
-  //   }
-  
-  //   if (lastGeneratedIteration < iterationCount) {
-  //     console.log(`Starting iteration ${iterationCount}: Generating suggestion...`);
-
-  //     generateSelfPromptingSuggestion()
-  //       .then(() => {
-  //         setLastGeneratedIteration(iterationCount);
-  //         if (conversation.conversationId) {
-  //           generateCode(conversation.conversationId);
-  //         }
-  //         // ✅ Move to the next iteration
-  //         setIterationCount((prev: number) => {
-  //           console.log(`Iteration ${prev} completed.`);
-  //           return prev + 1;
-  //         });
-  //       });
-  //   }
-  // }, [isGenerating, iterationCount, conversation.conversationId]);
-
-  const runIteration = async () => {
+  const runSelfPromptingIterations = async () => {
     console.log("isGenerating: ", isGenerating);
-    if (!isGenerating) return; // Stop if not generating
+    if (!isGenerating) return;
     if (iterationCount > selectedIteration) {
       setGenerating(false);
+      setIterationCount(0)
       return;
     }
-    console.log(`Starting iteration ${iterationCount}: Generating suggestion...`);
-    console.log(`last iteration ${lastGeneratedIteration}:`);
-    if (lastGeneratedIteration < iterationCount) {
-      try {
+    console.log(`current iteration: ${iterationCount}: Generating suggestion & code`);
+    try {
+      if (!apiCalled && iterationCount === 1) {
         await generateSelfPromptingSuggestion();
-        setLastGeneratedIteration(iterationCount);
-        if (conversation.conversationId) {
-          await generateCode(conversation.conversationId);
-        }
-        // ✅ Move to the next iteration only after completion
         setIterationCount(iterationCount + 1);
-      } catch (error) {
-        console.error("Error during iteration:", error);
-        setGenerating(false); // Stop on error
+      } else if (!apiCalled && iterationCount > 1) {
+        await generateSelfPromptingSuggestion();
+        setIterationCount(iterationCount + 1);
       }
+    } catch (error) {
+      console.error("Error during iteration:", error);
+      setGenerating(false);
     }
-  };
-
-  useEffect(() => {
-    if (isOldApiCalled) {
-      return
-    }
-    runIteration();
-  }, [isGenerating, iterationCount, conversation.conversationId]);
-  
+  }
+  useEffect(()=>{
+    runSelfPromptingIterations();
+  }, [isGenerating, iterationCount, apiCalled]);
   
   const currentModel = useStoreState<StoreModel>(
     (state) => state.aiModel.model
@@ -130,23 +96,17 @@ const TextArea = ({
       };
       const newConversation = {
         conversationId,
+        userId: user.id,
         messages,
         title,
       };
       setPrompt(newPrompt);
       setConversation(newConversation);
-      if(selectedStrategy.id === 'self-prompting') {
-        setIsOldApiCalled(true);
-        setLastGeneratedIteration(iterationCount);
-      }
       router.push(`/overview/${conversationId}`);
-    },
-    onError: (err) => {
-      if(selectedStrategy.id === 'self-prompting') {
-        console.error("Failed to generate code:", err);
-        setGenerating(false); // Stop the process if an error occurs
+      if (selectedStrategy.id === 'self-prompting') {
+        setApiCalled(false);
       }
-    },
+    }
   });
 
   const { mutate: questionMutate } = useMutation({
@@ -169,6 +129,7 @@ const TextArea = ({
       );
       const newConversation = {
         conversationId,
+        userId: user.id,
         messages,
         title,
         unansweredQuestions,
@@ -187,7 +148,7 @@ const TextArea = ({
     isToaster: false,
     method: POST,
     url: ApiUrl.GENERATE_AI_SUGGESTIONS,
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       const { conversationId, messages, title } = res?.data;
       const lastMessage = messages[messages.length - 1];
       const newPrompt = {
@@ -196,12 +157,14 @@ const TextArea = ({
         loader: false,
       };
       const newConversation = {
-        conversationId: conversationId,
+        conversationId,
+        userId: user.id,
         messages,
         title,
       };
       setPrompt(newPrompt);
       setConversation(newConversation);
+      await generateCode(conversationId);
       console.log(" suggestionMutate conversation: ", conversation)
     },
   });
@@ -298,6 +261,7 @@ const TextArea = ({
     };
     setPrompt({ question: inputValue, loader: true });
     try {
+      setApiCalled(true);
       await suggestionMutate(mutationInput);
     } catch (error) {
       console.error("Error generating suggestion:", error);
@@ -308,7 +272,6 @@ const TextArea = ({
   const handleSelfPromptingFlow = async () => {
     setGenerating(true);
     setIterationCount(1);
-    setLastGeneratedIteration(0);
   };
   
   const handleSubmit = async() => {

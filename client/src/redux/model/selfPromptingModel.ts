@@ -11,7 +11,7 @@ export interface SelfPromptingModel {
   setLastGeneratedIteration: Action<SelfPromptingModel, number>;
   setSelectedIteration:  Action<SelfPromptingModel, number>
   clearSelfPromptingIteration: Action<SelfPromptingModel>
-  setIsOldApiCalled: Action<SelfPromptingModel, boolean>;
+  setApiCalled: Action<SelfPromptingModel, boolean>;
 }
 
 const selfPromptingModel: SelfPromptingModel = {
@@ -32,10 +32,10 @@ const selfPromptingModel: SelfPromptingModel = {
     state.selfPromptingIteration.lastGeneratedIteration = payload;
   }),
   clearSelfPromptingIteration: action((state) => {
-    state.selfPromptingIteration = selfPromptingIteration;  
+    state.selfPromptingIteration = { ...selfPromptingIteration, selectedIteration: state.selfPromptingIteration.selectedIteration };  
   }),
-  setIsOldApiCalled: action((state, payload) => {
-    state.selfPromptingIteration.isOldApiCalled = payload;  
+  setApiCalled: action((state, payload) => {
+    state.selfPromptingIteration.apiCalled = payload;  
   })
 };
 
