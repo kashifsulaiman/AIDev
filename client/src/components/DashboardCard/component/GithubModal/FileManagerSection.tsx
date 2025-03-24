@@ -9,7 +9,7 @@ import {
 import { Progress } from '@nextui-org/react';
 import { FileManagerSectionProps, RepoItemsType } from '@/types/modalTypes';
 
-export const MAX_TOKENS = 55000;
+export const MAX_TOKENS = 40000;
 
 export default function FileManagerSection({
   repoItems,
