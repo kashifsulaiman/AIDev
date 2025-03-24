@@ -21,16 +21,19 @@ const TextArea = ({
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { generateCode } = useGenerateCode(inputValue, setInputValue)
+  const { generateCode } = useGenerateCode(inputValue, setInputValue);
   const { handleQuestions } = useQuestionGeneration(inputValue, setInputValue);
-  const { generateSelfPromptingSuggestion, handleSelfPromptingFlow } = useSelfPrompting(inputValue, setInputValue);
-  const { selectedIteration, isGenerating, iterationCount, apiCalled } = useStoreState<StoreModel>((state) => state.selfPromptingModel.selfPromptingIteration);
-  const { setGenerating, setIterationCount } = useStoreActions<StoreModel>((actions) => actions.selfPromptingModel);
+  const { generateSelfPromptingSuggestion, handleSelfPromptingFlow } =
+    useSelfPrompting(inputValue, setInputValue);
+  const { selectedIteration, isGenerating, iterationCount, apiCalled } =
+    useStoreState<StoreModel>(
+      (state) => state.selfPromptingModel.selfPromptingIteration
+    );
+  const { setGenerating, setIterationCount } = useStoreActions<StoreModel>(
+    (actions) => actions.selfPromptingModel
+  );
   const promptData = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
-  );
-  const setPrompt = useStoreActions<StoreModel>(
-    (actions) => actions?.promptModel?.setPrompt
   );
   const { strategy: selectedStrategy } = useStoreState<StoreModel>(
     (state) => state.promptingStrategyModel
@@ -49,20 +52,20 @@ const TextArea = ({
     }
 
     try {
-      if(!apiCalled) {
+      if (!apiCalled) {
         await generateSelfPromptingSuggestion();
       }
     } catch (error) {
       console.error('Error during iteration:', error);
       setGenerating(false);
-    } 
+    }
   };
 
   useEffect(() => {
     runSelfPromptingIterations();
   }, [isGenerating, iterationCount]);
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     if (!inputValue.length) return;
 
     if (pathname.endsWith('main')) {

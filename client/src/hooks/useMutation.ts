@@ -113,7 +113,7 @@ export const useMutation = <T, K = T>({
     data: fetchedData,
     isLoading,
     mutate,
-    mutateAsync
+    mutateAsync,
   } = useRMutation<ApiResult<K>, unknown, T>(
     async (data: T) => {
       deleteConfig(method, data);

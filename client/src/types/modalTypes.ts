@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export type SignupModelType = {
   form: string;
@@ -52,4 +52,4 @@ export type SelfPromptingIterationType = {
   conversationId: string | null;
   lastGeneratedIteration: number;
   apiCalled: boolean;
-}
+};

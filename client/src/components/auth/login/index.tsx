@@ -52,7 +52,7 @@ const Login = () => {
     });
     clearPrompt();
     clearConversation();
-    clearSelfPromptingIteration()
+    clearSelfPromptingIteration();
   }, []);
 
   const { mutate, isLoading } = useMutation<any>({

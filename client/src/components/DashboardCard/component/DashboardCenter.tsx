@@ -20,8 +20,8 @@ const DashboardCenter = ({ prompts }: DashboardCenterProps) => {
     (state) => state?.conversationModel?.conversation
   );
   const { strategy } = useStoreState<StoreModel>(
-      (state) => state.promptingStrategyModel
-    );
+    (state) => state.promptingStrategyModel
+  );
   return (
     <div className="Scroller-Class max-h-[350px] overflow-y-auto">
       {strategy.id === 'guided-prompting' && conversation?.conversationId ? (

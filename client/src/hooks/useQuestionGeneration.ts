@@ -7,15 +7,26 @@ import { StoreModel } from '@/redux/model';
 import { MessageInterface } from '@/redux/model/conversationModel';
 import { useGenerateCode } from '@/hooks/useGenerateCode';
 
-export const useQuestionGeneration = (inputValue: string, setInputValue: (value: string) => void) => {
+export const useQuestionGeneration = (
+  inputValue: string,
+  setInputValue: (value: string) => void
+) => {
   const { generateCode } = useGenerateCode(inputValue, setInputValue);
-  
+
   const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
-  const conversation = useStoreState<StoreModel>((state) => state?.conversationModel?.conversation);
-  const currentModel = useStoreState<StoreModel>((state) => state.aiModel.model);
-  
-  const { setPrompt } = useStoreActions<StoreModel>((actions) => actions?.promptModel);
-  const { setConversation } = useStoreActions<StoreModel>((actions) => actions.conversationModel);
+  const conversation = useStoreState<StoreModel>(
+    (state) => state?.conversationModel?.conversation
+  );
+  const currentModel = useStoreState<StoreModel>(
+    (state) => state.aiModel.model
+  );
+
+  const { setPrompt } = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel
+  );
+  const { setConversation } = useStoreActions<StoreModel>(
+    (actions) => actions.conversationModel
+  );
 
   const { mutate } = useMutation({
     isToaster: false,
@@ -31,8 +42,12 @@ export const useQuestionGeneration = (inputValue: string, setInputValue: (value:
         loader: false,
       };
 
-      const unansweredQuestions = messages.filter((msg: MessageInterface) => msg.isQuestion && !msg.userPrompt);
-      const unansweredQuestionIndex = messages.findIndex((msg: MessageInterface) => msg.isQuestion && !msg.userPrompt);
+      const unansweredQuestions = messages.filter(
+        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
+      );
+      const unansweredQuestionIndex = messages.findIndex(
+        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
+      );
 
       setPrompt(newPrompt);
       setConversation({
@@ -73,10 +88,12 @@ export const useQuestionGeneration = (inputValue: string, setInputValue: (value:
 
   const updateUnansweredQuestion = () => {
     const updatedMessages = [...conversation.messages];
-    updatedMessages[conversation.unansweredQuestionIndex].userPrompt = inputValue;
+    updatedMessages[conversation.unansweredQuestionIndex].userPrompt =
+      inputValue;
 
     const nextUnansweredIndex = conversation.unansweredQuestionIndex + 1;
-    const allAnswered = nextUnansweredIndex > conversation.unansweredQuestions.length;
+    const allAnswered =
+      nextUnansweredIndex > conversation.unansweredQuestions.length;
 
     setConversation({
       ...conversation,

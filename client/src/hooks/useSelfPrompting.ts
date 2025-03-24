@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useEffect } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useMutation } from '@/hooks/useMutation';
 import { ApiUrl } from '@/constants/apiUrl';
@@ -9,18 +8,30 @@ import { StoreModel } from '@/redux/model';
 import { extractAttributes } from '@/utils/utils';
 import { useGenerateCode } from '@/hooks/useGenerateCode';
 
-export const useSelfPrompting = (inputValue: string, setInputValue: (value: string) => void) => {
+export const useSelfPrompting = (
+  inputValue: string,
+  setInputValue: (value: string) => void
+) => {
   const { generateCode } = useGenerateCode(inputValue, setInputValue);
   const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
-  const promptData = useStoreState<StoreModel>((state) => state?.promptModel?.prompt);
-  const conversation = useStoreState<StoreModel>((state) => state?.conversationModel?.conversation);
-  const currentModel = useStoreState<StoreModel>((state) => state.aiModel.model);
-  const { strategy: selectedStrategy } = useStoreState<StoreModel>((state) => state.promptingStrategyModel);
-  const { selectedIteration, isGenerating, iterationCount, apiCalled } = useStoreState<StoreModel>((state) => state.selfPromptingModel.selfPromptingIteration);
+  const conversation = useStoreState<StoreModel>(
+    (state) => state?.conversationModel?.conversation
+  );
+  const currentModel = useStoreState<StoreModel>(
+    (state) => state.aiModel.model
+  );
+  const { strategy: selectedStrategy } = useStoreState<StoreModel>(
+    (state) => state.promptingStrategyModel
+  );
 
-  const { setPrompt } = useStoreActions<StoreModel>((actions) => actions?.promptModel);
-  const { setConversation } = useStoreActions<StoreModel>((actions) => actions.conversationModel);
-  const { setGenerating, setIterationCount, setApiCalled } = useStoreActions<StoreModel>((actions) => actions.selfPromptingModel);
+  const { setPrompt } = useStoreActions<StoreModel>(
+    (actions) => actions?.promptModel
+  );
+  const { setConversation } = useStoreActions<StoreModel>(
+    (actions) => actions.conversationModel
+  );
+  const { setGenerating, setIterationCount, setApiCalled } =
+    useStoreActions<StoreModel>((actions) => actions.selfPromptingModel);
 
   const { mutateAsync } = useMutation({
     isToaster: false,

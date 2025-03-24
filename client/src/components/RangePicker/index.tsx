@@ -1,5 +1,5 @@
-import { Slider, SliderProps } from "@nextui-org/react";
-import { useState } from "react";
+import { Slider, SliderProps } from '@nextui-org/react';
+import { useState } from 'react';
 import { StoreModel } from '@/redux/model';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
@@ -8,24 +8,25 @@ export interface RangePickerProps extends SliderProps {
 }
 
 const RangePicker: React.FC<RangePickerProps> = ({
-  className = "max-w-md",
-  color = "foreground",
+  className = 'max-w-md',
+  color = 'foreground',
   defaultValue = 2,
-  label = "iterations",
   maxValue = 10,
   minValue = 1,
   showSteps = true,
-  size = "sm",
+  size = 'sm',
   step = 1,
   ...props
 }) => {
-  const { selfPromptingIteration: {selectedIteration} } = useStoreState<StoreModel>(
-    (state) => state.selfPromptingModel
-  );
+  const {
+    selfPromptingIteration: { selectedIteration },
+  } = useStoreState<StoreModel>((state) => state.selfPromptingModel);
   const { setSelectedIteration } = useStoreActions<StoreModel>(
     (actions) => actions.selfPromptingModel
   );
-  const initialValue = Array.isArray(defaultValue) ? defaultValue[0] : selectedIteration;
+  const initialValue = Array.isArray(defaultValue)
+    ? defaultValue[0]
+    : selectedIteration;
   const [value, setValue] = useState<number>(initialValue);
 
   const handleChange = (newValue: number | number[]) => {
@@ -49,12 +50,12 @@ const RangePicker: React.FC<RangePickerProps> = ({
         size={size}
         step={step}
         classNames={{
-          track: "bg-custom-purple/30",
-          filler: "bg-custom-purple",
-          thumb: "bg-custom-purple",
-          labelWrapper: "flex justify-end",
-          label: "text-custom-purple",
-          value: "hidden",
+          track: 'bg-custom-purple/30',
+          filler: 'bg-custom-purple',
+          thumb: 'bg-custom-purple',
+          labelWrapper: 'flex justify-end',
+          label: 'text-custom-purple',
+          value: 'hidden',
         }}
         {...props}
       />

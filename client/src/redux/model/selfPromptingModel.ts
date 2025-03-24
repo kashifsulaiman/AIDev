@@ -1,16 +1,15 @@
-
 import { Action, action } from 'easy-peasy';
 import { SelfPromptingIterationType } from '@/types/modalTypes';
 import { selfPromptingIteration } from '@/constants/selfPromptingData';
 
 export interface SelfPromptingModel {
-  selfPromptingIteration: SelfPromptingIterationType
+  selfPromptingIteration: SelfPromptingIterationType;
   setGenerating: Action<SelfPromptingModel, boolean>;
   setIterationCount: Action<SelfPromptingModel, number>;
   setConversationId: Action<SelfPromptingModel, string | null>;
   setLastGeneratedIteration: Action<SelfPromptingModel, number>;
-  setSelectedIteration:  Action<SelfPromptingModel, number>
-  clearSelfPromptingIteration: Action<SelfPromptingModel>
+  setSelectedIteration: Action<SelfPromptingModel, number>;
+  clearSelfPromptingIteration: Action<SelfPromptingModel>;
   setApiCalled: Action<SelfPromptingModel, boolean>;
 }
 
@@ -32,11 +31,14 @@ const selfPromptingModel: SelfPromptingModel = {
     state.selfPromptingIteration.lastGeneratedIteration = payload;
   }),
   clearSelfPromptingIteration: action((state) => {
-    state.selfPromptingIteration = { ...selfPromptingIteration, selectedIteration: state.selfPromptingIteration.selectedIteration };  
+    state.selfPromptingIteration = {
+      ...selfPromptingIteration,
+      selectedIteration: state.selfPromptingIteration.selectedIteration,
+    };
   }),
   setApiCalled: action((state, payload) => {
-    state.selfPromptingIteration.apiCalled = payload;  
-  })
+    state.selfPromptingIteration.apiCalled = payload;
+  }),
 };
 
 export default selfPromptingModel;

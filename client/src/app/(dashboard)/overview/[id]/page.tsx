@@ -4,12 +4,11 @@ import OverviewMain from '@/components/DashboardCard/overview/OverviewMain';
 import { useQuery } from '@/hooks/useQuery';
 import { useParams } from 'next/navigation';
 import { ApiUrl } from '@/constants/apiUrl';
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
 import { StoreModel } from '@/redux/model';
 import { ConversationIdApiResponse } from '@/redux/model/conversationModel';
 import { MessageInterface } from '@/redux/model/conversationModel';
-import { useSelfPrompting } from '@/hooks/useSelfPrompting';
 const Page = () => {
   const param = useParams();
   const conversationId = param.id;
