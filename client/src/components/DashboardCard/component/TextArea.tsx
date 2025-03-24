@@ -118,6 +118,7 @@ const TextArea = ({
         reasoning: currentModel.reasoning,
         aiModel: currentModel.model,
       },
+      refinementRequired: true,
       promptingStrategy: selectedStrategy.id,
     };
     if (conversation.unansweredQuestionIndex === -1) {
