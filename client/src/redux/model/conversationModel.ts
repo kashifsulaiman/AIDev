@@ -24,6 +24,7 @@ interface Conversation {
   questionStatus: 'pending' | 'completed' | 'saved';
   unansweredQuestions: MessageInterface[];
   unansweredQuestionIndex: number;
+  refinementRequired: boolean;
 }
 export interface ConversationModel {
   conversation: Conversation;
@@ -48,6 +49,7 @@ const initialState: Conversation = {
   unansweredQuestions: [],
   unansweredQuestionIndex: 0,
   questionStatus: 'pending',
+  refinementRequired: true,
 };
 const conversationModel: ConversationModel = {
   conversation: initialState,

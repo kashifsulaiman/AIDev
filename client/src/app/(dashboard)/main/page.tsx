@@ -35,10 +35,10 @@ const DashBoard = async ({ searchParams }: any) => {
             <div className="absolute left-0 top-12 z-0">
               <ModelSelector />
             </div>
-            <div className="absolute right-0 top-12 z-0 flex items-center gap-2 pr-2">
+            <div className="absolute right-14 top-12">
               <PromptStrategySelector />
-              <GitHubAuthButton />
             </div>
+            <GitHubAuthButton classes="absolute right-2 top-[3.25rem]" />
           </div>
         </div>
       </div>

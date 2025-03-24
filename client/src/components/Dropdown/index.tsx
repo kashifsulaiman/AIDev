@@ -36,7 +36,10 @@ export default function Dropdown<
           <ArrowDropdownIcon classes="ml-2 h-4 w-4 my-4" />
         </Button>
       </DropdownTrigger>
-      <DropdownMenu aria-label="Model Selection" className="w-72">
+      <DropdownMenu
+        aria-label="Model Selection"
+        className="max-h-80 w-72 overflow-y-auto"
+      >
         {items.map((item) => (
           <DropdownItem
             key={item.label}
