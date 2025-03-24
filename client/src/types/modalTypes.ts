@@ -54,7 +54,7 @@ export type SelfPromptingIterationType = {
   conversationId: string | null;
   lastGeneratedIteration: number;
   apiCalled: boolean;
-}
+};
 export type FileManagerSectionProps = {
   repoItems: RepoItemsType[] | null;
   selectedRepo: SelectedRepoType;
