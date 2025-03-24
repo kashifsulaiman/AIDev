@@ -61,6 +61,9 @@ export default function MainSideBar() {
   const clearConversation = useStoreActions<StoreModel>(
     (actions) => actions?.conversationModel?.clearConversation
   );
+  const clearSelfPromptingIteration = useStoreActions<StoreModel>(
+    (actions) => actions?.selfPromptingModel?.clearSelfPromptingIteration
+  );
 
   useEffect(() => {
     const fetchPrompts = async () => {
@@ -92,6 +95,7 @@ export default function MainSideBar() {
     if (label === 'Dashboard') {
       clearPrompt();
       clearConversation();
+      clearSelfPromptingIteration();
     }
     setPrompt(null);
     if (window.innerWidth < 992) {

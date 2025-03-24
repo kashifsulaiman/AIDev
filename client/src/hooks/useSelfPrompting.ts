@@ -22,7 +22,7 @@ export const useSelfPrompting = (inputValue: string, setInputValue: (value: stri
   const { setConversation } = useStoreActions<StoreModel>((actions) => actions.conversationModel);
   const { setGenerating, setIterationCount, setApiCalled } = useStoreActions<StoreModel>((actions) => actions.selfPromptingModel);
 
-  const { mutateAsync: suggestionMutate } = useMutation({
+  const { mutateAsync } = useMutation({
     isToaster: false,
     method: POST,
     url: ApiUrl.GENERATE_AI_SUGGESTIONS,
@@ -65,7 +65,7 @@ export const useSelfPrompting = (inputValue: string, setInputValue: (value: stri
 
     try {
       setApiCalled(true);
-      await suggestionMutate(mutationInput);
+      await mutateAsync(mutationInput);
     } catch (error) {
       console.error('Error generating suggestion:', error);
       setGenerating(false);

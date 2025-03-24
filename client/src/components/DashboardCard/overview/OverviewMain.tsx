@@ -18,14 +18,10 @@ const OverviewMain = () => {
   const clearConversation = useStoreActions<StoreModel>(
     (actions) => actions?.conversationModel?.clearConversation
   );
-  const clearSelfPromptingIteration = useStoreActions<StoreModel>(
-    (actions) => actions?.selfPromptingModel?.clearSelfPromptingIteration
-  );
   useEffect(() => {
     return () => {
       clearPrompt();
       clearConversation();
-      clearSelfPromptingIteration();
     };
   }, []);
 

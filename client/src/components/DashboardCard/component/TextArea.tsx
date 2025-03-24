@@ -1,17 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ApiUrl } from '@/constants/apiUrl';
-import { POST } from '@/hooks/consts';
-import { useMutation } from '@/hooks/useMutation';
-import { extractAttributes } from '@/utils/utils';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
-import { MessageInterface } from '@/redux/model/conversationModel';
 import { useGenerateCode } from '@/hooks/useGenerateCode';
 import { useQuestionGeneration } from '@/hooks/useQuestionGeneration';
 import { useSelfPrompting } from '@/hooks/useSelfPrompting';
@@ -28,7 +23,9 @@ const TextArea = ({
   const pathname = usePathname();
   const { generateCode } = useGenerateCode(inputValue, setInputValue)
   const { handleQuestions } = useQuestionGeneration(inputValue, setInputValue);
-  const { generateSelfPromptingSuggestion } = useSelfPrompting(inputValue, setInputValue);
+  const { generateSelfPromptingSuggestion, handleSelfPromptingFlow } = useSelfPrompting(inputValue, setInputValue);
+  const { selectedIteration, isGenerating, iterationCount, apiCalled } = useStoreState<StoreModel>((state) => state.selfPromptingModel.selfPromptingIteration);
+  const { setGenerating, setIterationCount } = useStoreActions<StoreModel>((actions) => actions.selfPromptingModel);
   const promptData = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
@@ -39,11 +36,31 @@ const TextArea = ({
     (state) => state.promptingStrategyModel
   );
 
-  const hasRun = useRef(false);
-
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
+
+  const runSelfPromptingIterations = async () => {
+    if (!isGenerating) return;
+    if (iterationCount > selectedIteration) {
+      setGenerating(false);
+      setIterationCount(0);
+      return;
+    }
+
+    try {
+      if(!apiCalled) {
+        await generateSelfPromptingSuggestion();
+      }
+    } catch (error) {
+      console.error('Error during iteration:', error);
+      setGenerating(false);
+    } 
+  };
+
+  useEffect(() => {
+    runSelfPromptingIterations();
+  }, [isGenerating, iterationCount]);
 
   const handleSubmit = async() => {
     if (!inputValue.length) return;
@@ -59,7 +76,7 @@ const TextArea = ({
     } else if (selectedStrategy.id === 'guided-prompting') {
       handleQuestions();
     } else if (selectedStrategy.id === 'self-prompting') {
-      generateSelfPromptingSuggestion();
+      handleSelfPromptingFlow();
     }
   };
 

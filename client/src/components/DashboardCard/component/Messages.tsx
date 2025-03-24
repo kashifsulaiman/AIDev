@@ -59,12 +59,6 @@ const AiQuestions = () => {
     mutate(mutationInput);
   };
 
-  const shouldRenderTextResponse = (strategyId: string, index: number) => {
-  if (strategyId === "prompt-refinement") return true;
-  if (["guided-prompt", "self-prompt"].includes(strategyId) && index === 0) return false; // Skip only for first message
-  return true;
-};
-
   return (
     <div className="Scroller-Class block w-full flex-col items-start gap-4 overflow-y-auto overflow-x-hidden pb-8 md:flex">
       {conversation.messages
@@ -113,7 +107,7 @@ const AiQuestions = () => {
             {msg.isSuggestion && msg.textResponse && (
               <div className="ml-20 flex flex-col items-end">
               <GenericImage
-                className="z-[3] mb-2 mt-2 w-6 md:mb-0"
+                className="z-[3] mb-2 mt-2 w-6 md:mb-1"
                 alt="profile avatar"
                 src="/asstes/images/ad-dashboard.png"
                 classNames={{ img: 'w-9' }}
@@ -125,6 +119,7 @@ const AiQuestions = () => {
             )}
 
             {!msg.isQuestion &&
+            !msg.isSuggestion &&
               !(
                 (selectedStrategy.id === 'guided-prompting' ||
                   selectedStrategy.id === 'self-prompting') &&
@@ -154,6 +149,7 @@ const AiQuestions = () => {
               conversation.messages.length &&
               !(code === msg.code) &&
               !msg.isQuestion &&
+              !msg.isSuggestion &&
               !(selectedStrategy.id === 'guided-prompting' && !index) && (
                 <div className="group absolute -bottom-4 right-8 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
                   <button

@@ -13,12 +13,13 @@ export const useGenerateCode = (inputValue: string, setInputValue: (val: string)
   const conversation = useStoreState<StoreModel>((state) => state.conversationModel.conversation);
   const currentModel = useStoreState<StoreModel>((state) => state.aiModel.model);
   const { strategy: selectedStrategy } = useStoreState<StoreModel>((state) => state.promptingStrategyModel);
-  
+  const { iterationCount } = useStoreState<StoreModel>((state) => state.selfPromptingModel.selfPromptingIteration);
+
   const { setPrompt } = useStoreActions<StoreModel>((actions) => actions.promptModel);
   const { setConversation, addMessage } = useStoreActions<StoreModel>((actions) => actions.conversationModel);
-  const { setApiCalled } = useStoreActions<StoreModel>((actions) => actions.selfPromptingModel);
+  const { setApiCalled, setIterationCount } = useStoreActions<StoreModel>((actions) => actions.selfPromptingModel);
 
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     isToaster: false,
     method: POST,
     url: ApiUrl.GENERATE_AI_RESPONSE,
@@ -27,10 +28,11 @@ export const useGenerateCode = (inputValue: string, setInputValue: (val: string)
       const lastMessage = messages[messages.length - 1];
       setPrompt({ code: lastMessage.code, content: lastMessage.userPrompt, loader: false });
       setConversation({ conversationId, userId: user.id, messages, title });
-      router.push(`/overview/${conversationId}`);
       if (selectedStrategy.id === 'self-prompting') {
         setApiCalled(false);
+        setIterationCount(iterationCount + 1);
       }
+      router.push(`/overview/${conversationId}`);
     }
   });
 
@@ -58,7 +60,7 @@ export const useGenerateCode = (inputValue: string, setInputValue: (val: string)
     };
     addMessage(newMessage);
     setPrompt({ content: inputValue, loader: true });
-    mutate(mutationInput);
+    await mutateAsync(mutationInput);
     setInputValue("");
   };
 
