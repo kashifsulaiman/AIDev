@@ -18,6 +18,7 @@ const OverviewMain = () => {
   const clearConversation = useStoreActions<StoreModel>(
     (actions) => actions?.conversationModel?.clearConversation
   );
+
   useEffect(() => {
     return () => {
       clearPrompt();

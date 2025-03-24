@@ -38,7 +38,6 @@ const TextArea = ({
   const { strategy: selectedStrategy } = useStoreState<StoreModel>(
     (state) => state.promptingStrategyModel
   );
-
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
