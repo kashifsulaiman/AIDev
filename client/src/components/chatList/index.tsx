@@ -57,7 +57,7 @@ const ChatList = () => {
         >
           {conversation.chatList.map((chat: any, index: number) => (
             <ListboxItem
-              key={`menu-${chat.id}-${index}`}
+              key={`menu-${chat._id}-${index}`}
               className="text-[#64748B]"
               classNames={{
                 base: 'rounded-[99px] p-2 w-auto',
@@ -69,10 +69,10 @@ const ChatList = () => {
                 href={`${process.env.NEXT_PUBLIC_SITE_URL}/overview/${chat._id}`}
               >
                 <span className="font-Jakarta text-sm font-medium">
-                  {chat.title.slice(0, 25) + '...'}
+                  {chat.title.slice(0, 20) + '...'}
                 </span>
               </Link>
-              <DeleteChatButton />
+              <DeleteChatButton chatId={chat._id} />
             </ListboxItem>
           ))}
         </Listbox>

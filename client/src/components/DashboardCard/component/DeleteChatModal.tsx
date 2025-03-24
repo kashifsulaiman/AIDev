@@ -6,12 +6,14 @@ interface DeleteChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  isLoading: boolean;
 }
 
 export default function DeleteChatModal({
   isOpen,
   onClose,
   onConfirm,
+  isLoading,
 }: DeleteChatModalProps) {
   return (
     <Modal isOpen={isOpen} onOpenChange={onClose} placement="center">
@@ -30,6 +32,7 @@ export default function DeleteChatModal({
             <Button
               onClick={onConfirm}
               className="bg-red-500 text-white hover:bg-red-600"
+              isLoading={isLoading}
             >
               Delete
             </Button>
