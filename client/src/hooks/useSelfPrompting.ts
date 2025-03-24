@@ -73,7 +73,7 @@ export const useSelfPrompting = (
     };
 
     setPrompt({ content: inputValue, loader: true });
-
+    setInputValue('');
     try {
       setApiCalled(true);
       await mutateAsync(mutationInput);
@@ -83,9 +83,13 @@ export const useSelfPrompting = (
     }
   };
 
-  const handleSelfPromptingFlow = () => {
-    setGenerating(true);
-    setIterationCount(1);
+  const handleSelfPromptingFlow = (conversationId?: string) => {
+    if (conversationId) {
+      generateCode(conversationId);
+    } else {
+      setGenerating(true);
+      setIterationCount(1);
+    }
   };
 
   return {

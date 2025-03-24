@@ -82,8 +82,8 @@ export const useQuestionGeneration = (
     };
 
     setPrompt({ content: inputValue, loader: true });
-    mutate(mutationInput);
     setInputValue('');
+    mutate(mutationInput);
   };
 
   const updateUnansweredQuestion = () => {

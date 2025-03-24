@@ -150,7 +150,11 @@ const AiQuestions = () => {
               !(code === msg.code) &&
               !msg.isQuestion &&
               !msg.isSuggestion &&
-              !(selectedStrategy.id === 'guided-prompting' && !index) && (
+              !(
+                (selectedStrategy.id === 'guided-prompting' ||
+                  selectedStrategy.id === 'self-prompting') &&
+                !index
+              ) && (
                 <div className="group absolute -bottom-4 right-8 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
                   <button
                     className="text-white"

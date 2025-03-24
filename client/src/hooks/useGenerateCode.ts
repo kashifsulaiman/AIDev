@@ -81,8 +81,8 @@ export const useGenerateCode = (
     };
     addMessage(newMessage);
     setPrompt({ content: inputValue, loader: true });
-    await mutateAsync(mutationInput);
     setInputValue('');
+    await mutateAsync(mutationInput);
   };
 
   return { generateCode };

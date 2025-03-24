@@ -25,6 +25,9 @@ const TextArea = ({
   const { handleQuestions } = useQuestionGeneration(inputValue, setInputValue);
   const { generateSelfPromptingSuggestion, handleSelfPromptingFlow } =
     useSelfPrompting(inputValue, setInputValue);
+  const conversation = useStoreState<StoreModel>(
+    (state) => state?.conversationModel?.conversation
+  );
   const { selectedIteration, isGenerating, iterationCount, apiCalled } =
     useStoreState<StoreModel>(
       (state) => state.selfPromptingModel.selfPromptingIteration
@@ -78,7 +81,7 @@ const TextArea = ({
     } else if (selectedStrategy.id === 'guided-prompting') {
       handleQuestions();
     } else if (selectedStrategy.id === 'self-prompting') {
-      handleSelfPromptingFlow();
+      handleSelfPromptingFlow(conversation.conversationId);
     }
   };
 
