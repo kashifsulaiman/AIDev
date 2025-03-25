@@ -34,7 +34,7 @@ export default function DeleteChatModal({
               className="bg-red-500 text-white hover:bg-red-600"
               isLoading={isLoading}
             >
-              Delete
+              Confirm
             </Button>
           </div>
         </ModalBody>
