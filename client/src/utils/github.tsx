@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { RepoItemsType } from '@/types/modalTypes';
-
-type Repo = { label: string };
+import { RepoItemsType, SelectedRepoType } from '@/types/modalTypes';
+import { Project, ProjectFiles } from '@stackblitz/sdk';
+import { showToaster } from '@/components/Toaster';
 
 export function useFetchGithubRepos(
   token: string,
-  onSuccess?: (data: Repo[]) => void,
+  onSuccess?: (data: SelectedRepoType[]) => void,
   onError?: (error: any) => void
 ) {
-  return useMutation<Repo[], unknown, void>(
+  return useMutation<SelectedRepoType[], unknown, void>(
     async () => {
       const response = await axios.get('https://api.github.com/user/repos', {
         headers: {
@@ -138,4 +138,145 @@ export const updateSizeForPublicPaths = (files: RepoItemsType[]) => {
 
 function removePackageLock(files: RepoItemsType[]) {
   return files.filter((file) => !file.name.includes('package-lock.json'));
+}
+
+export async function updateRepoFiles(
+  repoName: string,
+  token: string,
+  codeObject: ProjectFiles
+): Promise<void> {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    Accept: 'application/vnd.github.v3+json',
+  };
+
+  for (const [filePath, content] of Object.entries(codeObject)) {
+    try {
+      let fileSha = '';
+      try {
+        const fileResponse = await axios.get<{ sha: string }>(
+          `https://api.github.com/repos/${repoName}/contents/${filePath}`,
+          { headers }
+        );
+        fileSha = fileResponse.data.sha;
+      } catch (err: any) {
+        if (err.response?.status !== 404) {
+          console.error(
+            `❌ Error checking file ${filePath}:`,
+            err.response?.data || err.message
+          );
+          continue;
+        }
+      }
+      const fileContent =
+        typeof content === 'string'
+          ? content
+          : JSON.stringify(content, null, 2);
+      const base64Content = Buffer.from(fileContent, 'utf-8').toString(
+        'base64'
+      );
+
+      const fileData = {
+        message: fileSha ? `Updated ${filePath}` : `Created ${filePath}`,
+        content: base64Content,
+        branch: 'main',
+        ...(fileSha && { sha: fileSha }),
+      };
+
+      await axios.put(
+        `https://api.github.com/repos/${repoName}/contents/${filePath}`,
+        fileData,
+        { headers }
+      );
+    } catch (error: any) {
+      console.error(
+        `❌ Error updating file ${filePath}:`,
+        error.response?.data || error.message
+      );
+    }
+  }
+}
+
+export async function createRepoAndUpload(
+  username: string,
+  repoName: string,
+  token: string,
+  codeObject: Project
+): Promise<void> {
+  const apiBaseUrl = 'https://api.github.com/user/repos';
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    Accept: 'application/vnd.github.v3+json',
+  };
+
+  try {
+    const repoData = { name: repoName, private: false };
+    const repoResponse = await axios.post<{
+      full_name: string;
+      html_url: string;
+    }>(apiBaseUrl, repoData, { headers });
+
+    const newRepoName = repoResponse.data.full_name;
+
+    const readmeTemplate = generateReadme(
+      codeObject.title,
+      codeObject.description ?? 'This is sample project created by AIDev',
+      username,
+      repoName
+    );
+
+    const readmeContent = Buffer.from(readmeTemplate).toString('base64');
+    await axios.put(
+      `https://api.github.com/repos/${newRepoName}/contents/README.md`,
+      {
+        message: 'Initial commit',
+        content: readmeContent,
+        branch: 'main',
+      },
+      { headers }
+    );
+
+    await updateRepoFiles(newRepoName, token, codeObject.files);
+  } catch (error: any) {
+    console.log(
+      'Error creating repository:',
+      error.response?.data || error.message
+    );
+    showToaster('Error creating repository:', 'error');
+  }
+}
+
+function generateReadme(
+  projectName: string,
+  description: string,
+  username: string,
+  repoName: string,
+  features: string[] = [],
+  technologies: string[] = []
+): string {
+  return `# ${projectName}
+
+## Description
+${description}
+
+${features.length > 0 ? `## Features\n${features.map((feature) => `- ${feature}`).join('\n')}\n` : ''}
+
+## Installation
+\`\`\`bash
+git clone https://github.com/${username}/${repoName}.git
+cd ${repoName}
+npm install
+\`\`\`
+
+## Usage
+\`\`\`bash
+npm run dev
+\`\`\`
+Visit \`http://localhost:3000\` in your browser.
+
+${technologies.length > 0 ? `## Technologies Used\n${technologies.map((tech) => `- ${tech}`).join('\n')}\n` : ''}
+
+## License
+This project is licensed under the MIT License.
+`;
 }

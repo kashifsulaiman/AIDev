@@ -16,12 +16,11 @@ import { SelectedRepoType, RepoItemsType } from '@/types/modalTypes';
 export default function ImportModalContent({
   repos,
   modalCloseHandler,
+  selectedRepo,
+  setSelectedRepo,
 }: ImportModalContentInterface) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedRepo, setSelectedRepo] = useState<SelectedRepoType>({
-    label: 'Select repository to import',
-  });
   const [repoItems, setRepoItems] = useState<RepoItemsType[] | null>(null);
   const [selectedItems, setSelectedItems] = useState<RepoItemsType[] | null>(
     null
@@ -64,6 +63,7 @@ export default function ImportModalContent({
       humanPrompt: `Import ${selectedRepo.label} project from Github and provide a summary`,
       code: code,
       userId: user.id,
+      githubRepoName: selectedRepo.label,
       model: {
         provider: currentModel.provider,
         reasoning: currentModel.reasoning,
@@ -74,9 +74,7 @@ export default function ImportModalContent({
   };
 
   const getRepoData = async () => {
-    if (!selectedItems) {
-      return;
-    }
+    if (!selectedItems || !selectedRepo) return;
     setLoading(true);
     try {
       const filesOnly =
@@ -97,7 +95,7 @@ export default function ImportModalContent({
     method: POST,
     url: ApiUrl.IMPORT_PROJECT,
     onSuccess: (res) => {
-      const { conversationId, messages, title } = res?.data;
+      const { conversationId, messages, title, githubRepoName } = res?.data;
       const lastMessage = messages[messages.length - 1];
       const newPrompt = {
         code: lastMessage.code,
@@ -107,6 +105,7 @@ export default function ImportModalContent({
       const newConversation = {
         _id: conversationId,
         userId: user.id,
+        githubRepoName: githubRepoName,
         messages,
         title,
         refinementRequired: false,
@@ -123,11 +122,14 @@ export default function ImportModalContent({
     getRepoData();
   }, [selectedItems]);
 
+  const DropdownCondition = repos && repos.length && selectedRepo;
+  const FMCondition = repoItems && selectedRepo;
+
   return (
     <>
       {repos ? (
         <>
-          {repos.length && (
+          {DropdownCondition && (
             <Dropdown
               items={repos}
               selectedItem={selectedRepo}
@@ -142,7 +144,7 @@ export default function ImportModalContent({
       {loading ? (
         <Loader Color="black" width="100%" />
       ) : (
-        repoItems && (
+        FMCondition && (
           <FileManagerSection
             selectedRepo={selectedRepo}
             repoItems={repoItems}
