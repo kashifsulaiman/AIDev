@@ -4,48 +4,43 @@ import DeleteChatModal from './DeleteChatModal';
 import { ApiUrl } from '@/constants/apiUrl';
 import { useStoreActions } from 'easy-peasy';
 import { StoreModel } from '@/redux/model';
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import { TrashIcon } from '@/components/SVG';
 import { usePathname, useRouter } from 'next/navigation';
-import { showToaster } from '@/components/Toaster';
+import { DELETE } from '@/hooks/consts';
+import { useMutation } from '@/hooks/useMutation';
 
 export function DeleteChatButton({ chatId }: { chatId: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { removeMessage } = useStoreActions<StoreModel>(
+  const { removeMessage, clearConversation } = useStoreActions<StoreModel>(
     (actions) => actions.conversationModel
   );
 
-  const deleteChat = async (id: string) => {
-    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${ApiUrl.DELETE_CHAT}/${id}`;
-    const response = await axios.delete(url);
-    return response.data;
-  };
-
   const { mutate, isLoading } = useMutation({
-    mutationFn: () => deleteChat(chatId),
+    url: ApiUrl.DELETE_CHAT,
+    method: DELETE,
     onSuccess: (res) => {
-      const {
-        data: { _id },
-        message,
-      } = res;
-      showToaster(message, 'success');
-      removeMessage({ _id });
+      const { success } = res?.data;
+      if (!success) {
+        return;
+      }
+      removeMessage({ _id: chatId });
       setIsOpen(false);
       if (pathname.startsWith('/overview')) {
         router.push('/main');
+        clearConversation();
       }
     },
     onError: (error) => {
       console.error('Error deleting chat:', error);
     },
+    showSuccessToast: true,
   });
 
   const onConfirm = () => {
-    mutate();
+    mutate(chatId);
   };
 
   return (

@@ -31,6 +31,7 @@ type ApiResult<K> = {
   errors?: Array<string>;
   status?: number;
   Message?: string;
+  success?: boolean;
 };
 
 type UseMutationProps<T, K> = {
@@ -115,7 +116,10 @@ export const useMutation = <T, K = T>({
   } = useRMutation<ApiResult<K>, unknown, T>(
     async (data: T) => {
       deleteConfig(method, data);
-      const res = await axios({ ...config, data });
+      const res = await axios({
+        ...config,
+        ...(method === DELETE ? { data: undefined } : { data }),
+      });
       return res.data;
     },
     {
