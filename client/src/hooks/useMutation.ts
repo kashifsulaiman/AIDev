@@ -31,6 +31,7 @@ type ApiResult<K> = {
   errors?: Array<string>;
   status?: number;
   Message?: string;
+  success?: boolean;
 };
 
 type UseMutationProps<T, K> = {

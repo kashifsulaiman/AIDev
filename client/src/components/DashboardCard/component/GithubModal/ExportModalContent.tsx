@@ -47,11 +47,7 @@ export default function ExportModalContent({
   };
 
   const handleCreateNewRepo = async () => {
-    if (
-      !newRepoName ||
-      newRepoName === '' ||
-      !GITHUB_REPONAME_REGEX.test(newRepoName)
-    ) {
+    if (!newRepoName.trim() || !GITHUB_REPONAME_REGEX.test(newRepoName)) {
       showToaster('Repo Name cannot contain special characters');
       return;
     }
@@ -81,7 +77,10 @@ export default function ExportModalContent({
     isToaster: false,
     method: PUT,
     url: ApiUrl.UPDATE_CONVERSATION,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      if (!res?.success) {
+        showToaster('Error updating database', 'error');
+      }
       setGithubRepoName(`${githubAuth.username}/${newRepoName}`);
       setNewRepoName('');
     },

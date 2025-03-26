@@ -122,7 +122,7 @@ export default function ImportModalContent({
     getRepoData();
   }, [selectedItems]);
 
-  const dropdownCondition = repos && repos.length && selectedRepo;
+  const dropdownCondition = repos?.length && selectedRepo;
   const fmCondition = repoItems && selectedRepo;
 
   return (
