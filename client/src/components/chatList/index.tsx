@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Loader from '@/Loader/loading';
 import { Listbox, ListboxItem } from '@nextui-org/react';
 import { StoreModel } from '@/redux/model';
+import { DeleteChatButton } from '../DashboardCard/component/DeleteChatButton';
 
 const ChatList = () => {
   const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
@@ -56,20 +57,23 @@ const ChatList = () => {
         >
           {conversation.chatList.map((chat: any, index: number) => (
             <ListboxItem
-              key={`menu-${chat.id}-${index}`}
-              className="flex items-center justify-center text-[#64748B]"
+              key={`menu-${chat._id}-${index}`}
+              className="text-[#64748B] hover:!bg-purple-white-gradient hover:!text-white"
               classNames={{
                 base: 'rounded-[99px] p-2 w-auto',
+                title: 'flex items-center justify-between',
               }}
               textValue={chat.title}
             >
               <Link
                 href={`${process.env.NEXT_PUBLIC_SITE_URL}/overview/${chat._id}`}
+                className="flex-1 px-3 py-1"
               >
-                <span className="font-Jakarta text-sm font-medium">
+                <span className="block w-full font-Jakarta text-sm font-medium">
                   {chat.title.slice(0, 20) + '...'}
                 </span>
               </Link>
+              <DeleteChatButton chatId={chat._id} />
             </ListboxItem>
           ))}
         </Listbox>

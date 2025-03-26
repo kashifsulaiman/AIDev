@@ -78,7 +78,7 @@ export default function ExportModalContent({
     method: PUT,
     url: ApiUrl.UPDATE_CONVERSATION,
     onSuccess: (res) => {
-      if (!res?.success) {
+      if (!res?.data.success) {
         showToaster('Error updating database', 'error');
       }
       setGithubRepoName(`${githubAuth.username}/${newRepoName}`);
@@ -96,7 +96,7 @@ export default function ExportModalContent({
         <p>Repo already exists on GitHub</p>
         <p className="max-w-80">
           Would you like to push to GitHub to
-          <br />{' '}
+          <br />
           <span className="font-bold">{conversation.githubRepoName}</span> ?
         </p>
         <Button
