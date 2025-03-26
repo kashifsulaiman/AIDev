@@ -148,7 +148,7 @@ export default function FileManagerSection({
         <span>Select files to import </span>
         <button
           disabled={
-            localSelected.length === 0 || capacity > MAX_TOKENS || capacity <= 0
+            !localSelected.length || capacity > MAX_TOKENS || capacity <= 0
           }
           onClick={handleImport}
           className={`rounded bg-custom-purple px-4 py-2 text-white ${localSelected.length && capacity <= MAX_TOKENS && capacity > 0 ? 'cursor-pointer' : 'cursor-not-allowed'}`}

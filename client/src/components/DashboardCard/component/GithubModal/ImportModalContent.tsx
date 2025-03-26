@@ -74,7 +74,7 @@ export default function ImportModalContent({
   };
 
   const getRepoData = async () => {
-    if (!selectedItems || !selectedRepo) return;
+    if (!(selectedItems && selectedRepo)) return;
     setLoading(true);
     try {
       const filesOnly =
@@ -122,14 +122,14 @@ export default function ImportModalContent({
     getRepoData();
   }, [selectedItems]);
 
-  const DropdownCondition = repos && repos.length && selectedRepo;
-  const FMCondition = repoItems && selectedRepo;
+  const dropdownCondition = repos && repos.length && selectedRepo;
+  const fmCondition = repoItems && selectedRepo;
 
   return (
     <>
       {repos ? (
         <>
-          {DropdownCondition && (
+          {dropdownCondition && (
             <Dropdown
               items={repos}
               selectedItem={selectedRepo}
@@ -144,7 +144,7 @@ export default function ImportModalContent({
       {loading ? (
         <Loader Color="black" width="100%" />
       ) : (
-        FMCondition && (
+        fmCondition && (
           <FileManagerSection
             selectedRepo={selectedRepo}
             repoItems={repoItems}

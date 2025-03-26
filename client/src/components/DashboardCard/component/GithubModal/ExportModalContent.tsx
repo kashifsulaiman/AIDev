@@ -91,7 +91,7 @@ export default function ExportModalContent({
     return <Loader Color="black" width="100%" />;
   }
 
-  if (!loader && conversation?.githubRepoName) {
+  if (conversation?.githubRepoName) {
     return (
       <div className="flex w-full flex-col items-center gap-2 text-center">
         <p>Repo already exists on GitHub</p>
@@ -110,26 +110,24 @@ export default function ExportModalContent({
     );
   }
 
-  if (!loader) {
-    return (
-      <div className="flex w-full flex-col items-center gap-2 text-center">
-        <p>No repo found</p>
-        <p className="max-w-80">Would you like to create a new Github repo ?</p>
-        <Input
-          isRequired
-          label="Repo Name"
-          value={newRepoName}
-          onChange={(e) => setNewRepoName(e.target.value)}
-          placeholder="Enter new Repo name"
-          type="text"
-        />
-        <Button
-          className="relative mt-2 flex items-center justify-center gap-2 bg-black px-4 text-white max-sm:w-full"
-          onClick={handleCreateNewRepo}
-        >
-          Create new Repo
-        </Button>
-      </div>
-    );
-  }
+  return (
+    <div className="flex w-full flex-col items-center gap-2 text-center">
+      <p>No repo found</p>
+      <p className="max-w-80">Would you like to create a new Github repo ?</p>
+      <Input
+        isRequired
+        label="Repo Name"
+        value={newRepoName}
+        onChange={(e) => setNewRepoName(e.target.value)}
+        placeholder="Enter new Repo name"
+        type="text"
+      />
+      <Button
+        className="relative mt-2 flex items-center justify-center gap-2 bg-black px-4 text-white max-sm:w-full"
+        onClick={handleCreateNewRepo}
+      >
+        Create new Repo
+      </Button>
+    </div>
+  );
 }
