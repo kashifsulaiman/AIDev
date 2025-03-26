@@ -7,6 +7,7 @@ import Loader from '@/Loader/loading';
 import { Listbox, ListboxItem } from '@nextui-org/react';
 import { StoreModel } from '@/redux/model';
 import { DeleteChatButton } from '../DashboardCard/component/DeleteChatButton';
+import { ShareLinkButton } from '../DashboardCard/component/ShareLinkButton';
 
 const ChatList = () => {
   const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
@@ -69,11 +70,12 @@ const ChatList = () => {
                 href={`${process.env.NEXT_PUBLIC_SITE_URL}/overview/${chat._id}`}
                 className="flex-1 px-3 py-1"
               >
-                <span className="block w-full font-Jakarta text-sm font-medium">
-                  {chat.title.slice(0, 20) + '...'}
+                <span className="block w-36 overflow-hidden text-ellipsis whitespace-nowrap font-Jakarta text-sm font-medium">
+                  {chat.title}
                 </span>
               </Link>
               <DeleteChatButton chatId={chat._id} />
+              <ShareLinkButton chatId={chat._id} />
             </ListboxItem>
           ))}
         </Listbox>

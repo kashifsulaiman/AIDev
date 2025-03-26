@@ -47,7 +47,7 @@ export function DeleteChatButton({ chatId }: { chatId: string }) {
     <>
       <Button
         onClick={() => setIsOpen(true)}
-        className="h-5 min-w-fit rounded-none bg-transparent pl-0 text-inherit"
+        className="h-5 min-w-fit rounded-none bg-transparent !pl-0 !pr-2 text-inherit"
       >
         <TrashIcon classes="w-4 h-4 text-inherit hover:!text-gray-400" />
       </Button>

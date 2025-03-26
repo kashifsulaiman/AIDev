@@ -8,6 +8,8 @@ import { GoDownload, GoUpload } from 'react-icons/go';
 import { AiOutlineDisconnect } from 'react-icons/ai';
 import { FaTrashAlt } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
+import { FiShare2 } from 'react-icons/fi';
+import { FiCopy } from 'react-icons/fi';
 
 const DropdownIcon = () => {
   return (
@@ -2539,6 +2541,14 @@ const SettingsIcon = ({ classes }: IconInterface) => {
   return <HiDotsHorizontal className={classes} />;
 };
 
+const FileShareIcon = ({ classes }: IconInterface) => {
+  return <FiShare2 className={classes} />;
+};
+
+const CopyToClipboardIcon = ({ classes }: IconInterface) => {
+  return <FiCopy className={classes} />;
+};
+
 export {
   Platform,
   ExploreStudio,
@@ -2594,4 +2604,6 @@ export {
   DisconnectIcon,
   TrashIcon,
   SettingsIcon,
+  FileShareIcon,
+  CopyToClipboardIcon,
 };
