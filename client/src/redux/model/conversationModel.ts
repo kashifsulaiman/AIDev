@@ -24,6 +24,7 @@ interface Conversation {
   unansweredQuestions: MessageInterface[];
   unansweredQuestionIndex: number;
   refinementRequired: boolean;
+  githubRepoName: string | null;
 }
 export interface ConversationModel {
   conversation: Conversation;
@@ -35,11 +36,13 @@ export interface ConversationModel {
   setChatList: Action<ConversationModel, ChatList[]>;
   setUnansweredQuestions: Action<ConversationModel, MessageInterface[]>;
   setUnansweredQuestionIndex: Action<ConversationModel, number>;
+  setGithubRepoName: Action<ConversationModel, string>;
 }
 export interface ConversationIdApiResponse {
   _id: string;
   messages: MessageInterface[];
   questionStatus: true;
+  githubRepoName: string;
 }
 const initialState: Conversation = {
   title: '',
@@ -50,6 +53,7 @@ const initialState: Conversation = {
   unansweredQuestionIndex: 0,
   questionStatus: 'pending',
   refinementRequired: true,
+  githubRepoName: null,
 };
 const conversationModel: ConversationModel = {
   conversation: initialState,
@@ -95,6 +99,9 @@ const conversationModel: ConversationModel = {
   }),
   setUnansweredQuestionIndex: action((state, payload) => {
     state.conversation.unansweredQuestionIndex = payload;
+  }),
+  setGithubRepoName: action((state, payload) => {
+    state.conversation.githubRepoName = payload;
   }),
 };
 

@@ -45,4 +45,10 @@ export interface IntroModalContentInterface {
 export interface ImportModalContentInterface {
   repos: SelectedRepoType[] | null;
   modalCloseHandler: () => void;
+  selectedRepo: SelectedRepoType;
+  setSelectedRepo: Dispatch<SetStateAction<SelectedRepoType>>;
+}
+
+export interface ExportModalContentInterface {
+  modalCloseHandler: () => void;
 }

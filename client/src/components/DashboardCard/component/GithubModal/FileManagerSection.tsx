@@ -9,7 +9,7 @@ import {
 import { Progress } from '@nextui-org/react';
 import { FileManagerSectionProps, RepoItemsType } from '@/types/modalTypes';
 
-export const MAX_TOKENS = 40000;
+const MAX_TOKENS = 40000;
 
 export default function FileManagerSection({
   repoItems,
@@ -147,9 +147,11 @@ export default function FileManagerSection({
       <div className="flex w-full items-center justify-between">
         <span>Select files to import </span>
         <button
-          disabled={localSelected.length === 0 || capacity > MAX_TOKENS}
+          disabled={
+            !localSelected.length || capacity > MAX_TOKENS || capacity <= 0
+          }
           onClick={handleImport}
-          className={`rounded bg-custom-purple px-4 py-2 text-white ${localSelected.length || capacity > MAX_TOKENS ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+          className={`rounded bg-custom-purple px-4 py-2 text-white ${localSelected.length && capacity <= MAX_TOKENS && capacity > 0 ? 'cursor-pointer' : 'cursor-not-allowed'}`}
         >
           Import
         </button>

@@ -25,7 +25,7 @@ const Page = () => {
   });
   useEffect(() => {
     if (data && !isLoading) {
-      const { _id, messages, questionStatus } = data;
+      const { _id, messages, questionStatus, githubRepoName } = data;
       setPrompt({ code: messages[messages.length - 1].code, loader: false });
       const unansweredQuestions = messages.filter(
         (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
@@ -34,6 +34,7 @@ const Page = () => {
         (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
       );
       setConversation({
+        githubRepoName: githubRepoName ?? null,
         conversationId: _id,
         messages,
         unansweredQuestions,
