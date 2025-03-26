@@ -29,6 +29,7 @@ export interface ConversationModel {
   conversation: Conversation;
   setConversation: Action<ConversationModel, Conversation>;
   addMessage: Action<ConversationModel, MessageInterface>;
+  removeMessage: Action<ConversationModel, MessageInterface>;
   setMessages: Action<ConversationModel, MessageInterface[]>;
   clearConversation: Action<ConversationModel>;
   setChatList: Action<ConversationModel, ChatList[]>;
@@ -73,6 +74,11 @@ const conversationModel: ConversationModel = {
       textResponse: payload.textResponse,
       isQuestion: false,
     });
+  }),
+  removeMessage: action((state, payload) => {
+    state.conversation.chatList = state.conversation.chatList.filter(
+      (chat) => chat._id !== payload._id
+    );
   }),
   setMessages: action((state, payload) => {
     state.conversation.messages = payload.map((message) => ({

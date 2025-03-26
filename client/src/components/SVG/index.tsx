@@ -6,6 +6,8 @@ import { FaCheck } from 'react-icons/fa';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { GoDownload, GoUpload } from 'react-icons/go';
 import { AiOutlineDisconnect } from 'react-icons/ai';
+import { FaTrashAlt } from 'react-icons/fa';
+import { HiDotsHorizontal } from 'react-icons/hi';
 
 const DropdownIcon = () => {
   return (
@@ -2529,6 +2531,14 @@ const DisconnectIcon = ({ classes }: IconInterface) => {
   return <AiOutlineDisconnect className={classes} />;
 };
 
+const TrashIcon = ({ classes }: IconInterface) => {
+  return <FaTrashAlt className={classes} />;
+};
+
+const SettingsIcon = ({ classes }: IconInterface) => {
+  return <HiDotsHorizontal className={classes} />;
+};
+
 export {
   Platform,
   ExploreStudio,
@@ -2582,4 +2592,6 @@ export {
   UploadIcon,
   DownloadIcon,
   DisconnectIcon,
+  TrashIcon,
+  SettingsIcon,
 };
