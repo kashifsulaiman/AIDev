@@ -1,3 +1,4 @@
+import React from 'react';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -38,6 +39,7 @@ export type PromptingStrategyType = {
   id: string;
   label: string;
   description?: string;
+  element?: () => React.ReactNode;
 };
 
 export type GithubAuthModelType = {
@@ -45,6 +47,14 @@ export type GithubAuthModelType = {
   username: string | null;
 };
 
+export type SelfPromptingIterationType = {
+  isGenerating: boolean;
+  iterationCount: number;
+  selectedIteration: number;
+  conversationId: string | null;
+  lastGeneratedIteration: number;
+  apiCalled: boolean;
+};
 export type FileManagerSectionProps = {
   repoItems: RepoItemsType[] | null;
   selectedRepo: SelectedRepoType;
