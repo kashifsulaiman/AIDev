@@ -34,13 +34,16 @@ export default function GitHubAuthButton({
   );
 
   useEffect(() => {
-    if (!token || !username || !isValidGitHubToken(token)) return;
+    if (!token || !username || !isValidGitHubToken(token) || githubAuth.token)
+      return;
     showToaster('GitHub auth successful', 'success');
     setGithubAuth({ token, username });
-    router.push(pathname);
+    const redirectAfterLogin = sessionStorage.getItem('redirect_after_login');
+    if (redirectAfterLogin) router.push(redirectAfterLogin);
   }, [token, username]);
 
   const initiateGitHubLogin = () => {
+    sessionStorage.setItem('redirect_after_login', pathname);
     window.location.href =
       process.env.NEXT_PUBLIC_API_BASE_URL + `/github/auth`;
   };

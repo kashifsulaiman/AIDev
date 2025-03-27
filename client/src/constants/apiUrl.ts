@@ -15,4 +15,6 @@ export const ApiUrl = {
   GENERATE_AI_QUESTIONS: 'users/generate-questions',
   GENERATE_AI_SUGGESTIONS: 'users/generate-suggestions',
   IMPORT_PROJECT: 'users/import-project',
+  UPDATE_CONVERSATION: 'users/update-conversation',
+  DELETE_CHAT: 'users/delete-chat',
 };

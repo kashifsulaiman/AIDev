@@ -69,7 +69,10 @@ export default function IntroModalContent({
       )}
 
       {pathname.includes('overview') && (
-        <Button className="relative mt-2 flex w-[16rem] items-center justify-start gap-2 bg-black text-white">
+        <Button
+          className="relative mt-2 flex w-[16rem] items-center justify-start gap-2 bg-black text-white"
+          onClick={() => setCurrentTab('export')}
+        >
           <UploadIcon classes="size-5" />
           <span className="py-1 font-semibold">Export Project to GitHub</span>
         </Button>

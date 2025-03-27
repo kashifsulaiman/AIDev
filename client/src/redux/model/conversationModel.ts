@@ -25,21 +25,25 @@ interface Conversation {
   unansweredQuestions: MessageInterface[];
   unansweredQuestionIndex: number;
   refinementRequired: boolean;
+  githubRepoName: string | null;
 }
 export interface ConversationModel {
   conversation: Conversation;
   setConversation: Action<ConversationModel, Conversation>;
   addMessage: Action<ConversationModel, MessageInterface>;
+  removeMessage: Action<ConversationModel, MessageInterface>;
   setMessages: Action<ConversationModel, MessageInterface[]>;
   clearConversation: Action<ConversationModel>;
   setChatList: Action<ConversationModel, ChatList[]>;
   setUnansweredQuestions: Action<ConversationModel, MessageInterface[]>;
   setUnansweredQuestionIndex: Action<ConversationModel, number>;
+  setGithubRepoName: Action<ConversationModel, string>;
 }
 export interface ConversationIdApiResponse {
   _id: string;
   messages: MessageInterface[];
   questionStatus: true;
+  githubRepoName: string;
 }
 const initialState: Conversation = {
   title: '',
@@ -50,6 +54,7 @@ const initialState: Conversation = {
   unansweredQuestionIndex: 0,
   questionStatus: 'pending',
   refinementRequired: true,
+  githubRepoName: null,
 };
 const conversationModel: ConversationModel = {
   conversation: initialState,
@@ -76,6 +81,11 @@ const conversationModel: ConversationModel = {
       isSuggestion: false,
     });
   }),
+  removeMessage: action((state, payload) => {
+    state.conversation.chatList = state.conversation.chatList.filter(
+      (chat) => chat._id !== payload._id
+    );
+  }),
   setMessages: action((state, payload) => {
     state.conversation.messages = payload.map((message) => ({
       userPrompt: message.userPrompt,
@@ -92,6 +102,9 @@ const conversationModel: ConversationModel = {
   }),
   setUnansweredQuestionIndex: action((state, payload) => {
     state.conversation.unansweredQuestionIndex = payload;
+  }),
+  setGithubRepoName: action((state, payload) => {
+    state.conversation.githubRepoName = payload;
   }),
 };
 
