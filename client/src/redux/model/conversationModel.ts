@@ -8,6 +8,7 @@ export interface MessageInterface {
   _id: string;
   textResponse: string;
   isQuestion: boolean;
+  isSuggestion: boolean;
 }
 interface ChatList {
   _id: string;
@@ -77,6 +78,7 @@ const conversationModel: ConversationModel = {
       _id: payload._id,
       textResponse: payload.textResponse,
       isQuestion: false,
+      isSuggestion: false,
     });
   }),
   removeMessage: action((state, payload) => {
@@ -92,6 +94,7 @@ const conversationModel: ConversationModel = {
       _id: message._id,
       textResponse: message.textResponse,
       isQuestion: false,
+      isSuggestion: false,
     }));
   }),
   setUnansweredQuestions: action((state, payload) => {
