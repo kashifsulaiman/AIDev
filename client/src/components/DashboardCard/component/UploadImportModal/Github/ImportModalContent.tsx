@@ -3,28 +3,31 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useEffect, useState } from 'react';
 import { fetchAllFiles, fetchSelectedFiles } from '@/utils/github';
 import Dropdown from '@/components/Dropdown';
-import FileManagerSection from './FileManagerSection';
 import Loader from '@/Loader/loading';
 import { useMutation } from '@/hooks/useMutation';
 import { POST } from '@/hooks/consts';
 import { ApiUrl } from '@/constants/apiUrl';
 import { useRouter } from 'next/navigation';
 import { ProjectFiles } from '@stackblitz/sdk';
-import { ImportModalContentInterface } from '@/types/interface';
+import { GithubImportModalContentInterface } from '@/types/interface';
 import { SelectedRepoType, RepoItemsType } from '@/types/modalTypes';
+import GithubFileManagerSection from './GithubFileManager';
+import { GithubIcon } from '@/components/SVG';
 
-export default function ImportModalContent({
-  repos,
+export default function GithubImportModalContent({
   modalCloseHandler,
-  selectedRepo,
-  setSelectedRepo,
-}: ImportModalContentInterface) {
+  repos,
+}: GithubImportModalContentInterface) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [repoItems, setRepoItems] = useState<RepoItemsType[] | null>(null);
   const [selectedItems, setSelectedItems] = useState<RepoItemsType[] | null>(
     null
   );
+  const [selectedRepo, setSelectedRepo] = useState<SelectedRepoType>({
+    label: 'Select repository to import',
+  });
+
   const githubAuth = useStoreState<StoreModel>(
     (state) => state?.githubAuthModel.githubModel
   );
@@ -127,6 +130,10 @@ export default function ImportModalContent({
 
   return (
     <>
+      <p className="flex items-center gap-2 whitespace-normal py-2">
+        <GithubIcon classes="size-8 text-white bg-black rounded-full p-1.5" />
+        <span className="text-lg font-semibold">{githubAuth.username}</span>
+      </p>
       {repos ? (
         <>
           {dropdownCondition && (
@@ -145,7 +152,7 @@ export default function ImportModalContent({
         <Loader Color="black" width="100%" />
       ) : (
         fmCondition && (
-          <FileManagerSection
+          <GithubFileManagerSection
             selectedRepo={selectedRepo}
             repoItems={repoItems}
             selectedItems={selectedItems}

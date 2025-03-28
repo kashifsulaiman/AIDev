@@ -7,16 +7,19 @@ import {
   FaRegSquare,
 } from 'react-icons/fa';
 import { Progress } from '@nextui-org/react';
-import { FileManagerSectionProps, RepoItemsType } from '@/types/modalTypes';
+import {
+  ImportLocalFileManagerSectionProps,
+  RepoItemsType,
+} from '@/types/modalTypes';
 
 const MAX_TOKENS = 40000;
 
-export default function FileManagerSection({
-  repoItems,
+export default function GithubFileManagerSection({
+  folderItems,
   selectedRepo,
   selectedItems,
   setSelectedItems,
-}: FileManagerSectionProps) {
+}: ImportLocalFileManagerSectionProps) {
   const [currentPath, setCurrentPath] = useState<string>('');
   const [localSelected, setLocalSelected] = useState<RepoItemsType[]>(
     selectedItems ?? []
@@ -24,7 +27,7 @@ export default function FileManagerSection({
   const [capacity, setCapacity] = useState<number>(0);
 
   const filteredItems =
-    repoItems?.filter((item) => {
+    folderItems?.filter((item) => {
       if (!item.name.startsWith(currentPath)) return false;
       const relativePath = item.name.replace(currentPath, '');
       return (
@@ -35,7 +38,7 @@ export default function FileManagerSection({
   const getFolderSelectionState = (folderName: string) => {
     const fullPath = `${currentPath}${folderName}/`;
     const children =
-      repoItems?.filter((item) => item.name.startsWith(fullPath)) ?? [];
+      folderItems?.filter((item) => item.name.startsWith(fullPath)) ?? [];
     const selectedChildren = localSelected.filter((item) =>
       item.name.startsWith(fullPath)
     );
@@ -58,7 +61,7 @@ export default function FileManagerSection({
   const handleSelectFolder = (folderName: string) => {
     const fullPath = `${currentPath}${folderName}/`;
     const children =
-      repoItems?.filter((item) => item.name.startsWith(fullPath)) ?? [];
+      folderItems?.filter((item) => item.name.startsWith(fullPath)) ?? [];
     const selectedChildren = localSelected.filter((item) =>
       item.name.startsWith(fullPath)
     );
@@ -104,8 +107,9 @@ export default function FileManagerSection({
           if (item.type === 'folder') {
             const folderPath = `${currentPath}${item.name}/`;
             const children =
-              repoItems?.filter((child) => child.name.startsWith(folderPath)) ??
-              [];
+              folderItems?.filter((child) =>
+                child.name.startsWith(folderPath)
+              ) ?? [];
 
             newSelection.add(item.name);
 
@@ -115,12 +119,12 @@ export default function FileManagerSection({
           }
         });
 
-        return repoItems?.filter((item) => newSelection.has(item.name)) ?? [];
+        return folderItems?.filter((item) => newSelection.has(item.name)) ?? [];
       }
     });
   };
 
-  const handleImport = () => {
+  const handleUpload = () => {
     if (capacity <= MAX_TOKENS) {
       setSelectedItems(localSelected);
     }
@@ -145,15 +149,15 @@ export default function FileManagerSection({
   return (
     <div className="h-full w-full overflow-hidden bg-white px-6 py-2">
       <div className="flex w-full items-center justify-between">
-        <span>Select files to import </span>
+        <span>Select files to upload </span>
         <button
           disabled={
             !localSelected.length || capacity > MAX_TOKENS || capacity <= 0
           }
-          onClick={handleImport}
+          onClick={handleUpload}
           className={`rounded bg-custom-purple px-4 py-2 text-white ${localSelected.length && capacity <= MAX_TOKENS && capacity > 0 ? 'cursor-pointer' : 'cursor-not-allowed'}`}
         >
-          Import
+          Upload
         </button>
       </div>
 
@@ -162,6 +166,7 @@ export default function FileManagerSection({
           className="cursor-pointer text-custom-purple"
           onClick={() => setCurrentPath('')}
         >
+          root
           {selectedRepo?.label.split('/')[1]}
         </span>
         {breadcrumbs.map((crumb, index) => (

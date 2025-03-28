@@ -45,8 +45,15 @@ export type GithubAuthModelType = {
   username: string | null;
 };
 
-export type FileManagerSectionProps = {
+export type GithubFileManagerSectionProps = {
   repoItems: RepoItemsType[] | null;
+  selectedRepo: SelectedRepoType;
+  selectedItems: RepoItemsType[] | null;
+  setSelectedItems: Dispatch<SetStateAction<RepoItemsType[] | null>>;
+};
+
+export type ImportLocalFileManagerSectionProps = {
+  folderItems: RepoItemsType[] | null;
   selectedRepo: SelectedRepoType;
   selectedItems: RepoItemsType[] | null;
   setSelectedItems: Dispatch<SetStateAction<RepoItemsType[] | null>>;
@@ -58,8 +65,9 @@ export type SelectedRepoType = {
 
 export type RepoItemsType = {
   name: string;
-  type: string;
+  type?: string;
   size: number;
+  content?: string;
 };
 
 export type FetchFileContentParams = {
@@ -75,7 +83,7 @@ export type UseGithubMutationProps<T, K> = {
   url: string;
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   token: string;
-  data?: T; // ✅ Now properly using `T` for request body
+  data?: T;
   onSuccess?: (data: K) => void;
   onError?: (error: any) => void;
   showToast?: boolean;
