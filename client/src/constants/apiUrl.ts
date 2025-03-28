@@ -17,4 +17,5 @@ export const ApiUrl = {
   IMPORT_PROJECT: 'users/import-project',
   UPDATE_CONVERSATION: 'users/update-conversation',
   DELETE_CHAT: 'users/delete-chat',
+  SHARE_CHAT: 'users/share-chat',
 };
