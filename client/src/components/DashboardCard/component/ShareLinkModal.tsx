@@ -23,12 +23,14 @@ export default function ShareLinkModal({
     <Modal isOpen={isOpen} onOpenChange={onClose} placement="center">
       <ModalContent>
         <ModalBody className="p-6 text-center">
-          <h2 className="mt-4 text-xl font-semibold">Share Chat</h2>
-          <p className="mt-2 text-gray-500">
+          <h2 className="mt-4 text-xl font-semibold text-gray-800">
+            Share Chat
+          </h2>
+          <p className="mt-2 text-gray-600">
             Copy and share this link to share your chat.
           </p>
           <div className="mt-2 flex items-center justify-between gap-2 rounded-full border px-4 py-2">
-            <span className="truncate">{shareUrl}</span>
+            <span className="truncate text-gray-800">{shareUrl}</span>
             <Button
               onClick={copyToClipboard}
               className="h-8 min-w-fit rounded-xl bg-custom-gradient text-white group-hover:bg-custom-white"

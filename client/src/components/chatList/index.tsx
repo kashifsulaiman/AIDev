@@ -75,7 +75,11 @@ const ChatList = () => {
                 </span>
               </Link>
               <DeleteChatButton chatId={chat._id} />
-              <ShareLinkButton chatId={chat._id} />
+              <ShareLinkButton
+                chatId={chat._id}
+                buttonClassName="h-5 min-w-fit rounded-none bg-transparent !pl-0 !pr-2 text-inherit "
+                iconClassName="w-4 h-4 text-inherit hover:!text-gray-400 "
+              />
             </ListboxItem>
           ))}
         </Listbox>
