@@ -3,7 +3,7 @@ import { Button } from '@nextui-org/react';
 import { CopyToClipboardIcon } from '@/components/SVG';
 import { showToaster } from '@/components/Toaster';
 
-interface ShareLinkModalProps {
+interface ShareLinkModalInterface {
   isOpen: boolean;
   onClose: () => void;
   shareUrl: string;
@@ -13,7 +13,7 @@ export default function ShareLinkModal({
   isOpen,
   onClose,
   shareUrl,
-}: ShareLinkModalProps) {
+}: ShareLinkModalInterface) {
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(shareUrl);
     showToaster('Link copied to clipboard!', 'success');
