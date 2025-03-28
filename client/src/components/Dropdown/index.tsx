@@ -8,12 +8,11 @@ import {
 } from '@nextui-org/react';
 import { ArrowDropdownIcon, DropdownCheckIcon } from '@/components/SVG';
 import { DropdownInterface } from '@/types/interface';
+import React from 'react';
 
-export default function Dropdown<T extends { label: string; img?: string }>({
-  items,
-  selectedItem,
-  onSelect,
-}: DropdownInterface<T>) {
+export default function Dropdown<
+  T extends { label: string; img?: string; element?: () => React.ReactNode },
+>({ items, selectedItem, onSelect }: DropdownInterface<T>) {
   return (
     <NextDropDown>
       <DropdownTrigger>
@@ -68,6 +67,7 @@ export default function Dropdown<T extends { label: string; img?: string }>({
                 <DropdownCheckIcon classes=" h-5 w-5 text-custom-purple absolute right-2" />
               )}
             </span>
+            {item.element && item.element()}
           </DropdownItem>
         ))}
       </DropdownMenu>

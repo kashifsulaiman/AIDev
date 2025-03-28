@@ -13,6 +13,7 @@ export const ApiUrl = {
   GET_CHAT_LIST: 'users/chat-list',
   ROLLBACK_MESSAGE: 'users/rollback',
   GENERATE_AI_QUESTIONS: 'users/generate-questions',
+  GENERATE_AI_SUGGESTIONS: 'users/generate-suggestions',
   IMPORT_PROJECT: 'users/import-project',
   UPDATE_CONVERSATION: 'users/update-conversation',
   DELETE_CHAT: 'users/delete-chat',
