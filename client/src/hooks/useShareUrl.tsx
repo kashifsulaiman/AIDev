@@ -1,5 +1,6 @@
 'use client';
 
+import { encrypt } from '@/utils/encryption';
 import { useEffect, useState } from 'react';
 
 export function useShareUrl(chatId: string) {
@@ -7,7 +8,9 @@ export function useShareUrl(chatId: string) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setShareUrl(`${window.location.origin}/overview/${chatId}`);
+      const token = encrypt(chatId);
+      const url = `${window.location.origin}/overview/${chatId}?token=${token}`;
+      setShareUrl(url);
     }
   }, [chatId]);
 

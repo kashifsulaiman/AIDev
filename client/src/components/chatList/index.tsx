@@ -37,7 +37,7 @@ const ChatList = () => {
     if (data && !isLoading) {
       setChatList(data);
     }
-  }, [prompt.content, prompt.code]);
+  }, [prompt.content, prompt.code, conversation.conversationId]);
 
   if (isLoading) {
     return (

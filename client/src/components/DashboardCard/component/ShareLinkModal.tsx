@@ -31,13 +31,13 @@ export default function ShareLinkModal({
             <span className="truncate">{shareUrl}</span>
             <Button
               onClick={copyToClipboard}
-              className="h-8 min-w-fit rounded-xl bg-custom-purple text-white hover:bg-blue-600"
+              className="h-8 min-w-fit rounded-xl bg-custom-gradient text-white group-hover:bg-custom-white"
             >
               <CopyToClipboardIcon classes="w-4 h-4" />
             </Button>
           </div>
           <div className="mt-3 flex justify-center">
-            <Button onClick={onClose} className="bg-custom-purple text-white">
+            <Button onClick={onClose} className="bg-gray-200 text-white">
               Close
             </Button>
           </div>
