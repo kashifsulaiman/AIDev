@@ -73,6 +73,7 @@ const OverviewLeft = ({ view }: OverviewLeftInterface) => {
 
       <div className="relative pb-12 md:pb-2">
         <GitHubAuthButton classes="absolute right-0 top-0 z-[5]" />
+
         {generating && (
           <Toptext
             text="Preparing Your Project Overview"
