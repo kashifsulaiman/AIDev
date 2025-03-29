@@ -14,7 +14,7 @@ import { useSearchParams } from 'next/navigation';
 import { decrypt } from '@/utils/encryption';
 const AiQuestions = () => {
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
+  const token = searchParams.get('shareToken');
   const sharedId = token ? decrypt(token) : null;
   const { loader, code } = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt

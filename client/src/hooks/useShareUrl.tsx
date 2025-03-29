@@ -9,7 +9,7 @@ export function useShareUrl(chatId: string) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = encrypt(chatId);
-      const url = `${window.location.origin}/overview/${chatId}?token=${token}`;
+      const url = `${window.location.origin}/overview/${chatId}?shareToken=${token}`;
       setShareUrl(url);
     }
   }, [chatId]);
