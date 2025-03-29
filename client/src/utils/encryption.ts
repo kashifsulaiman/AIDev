@@ -6,7 +6,8 @@ const SECRET_KEY = process.env.ENCRYPTION_SECRET || 'aidev@2025';
 
 const key = crypto.createHash('sha256').update(SECRET_KEY).digest();
 
-export const encrypt = (text: string): string => {
+export const encrypt = (text: string | null): string | null => {
+  if (!text) return null;
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
   let encrypted = cipher.update(text, 'utf-8', 'hex');
