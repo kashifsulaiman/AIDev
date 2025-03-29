@@ -14,7 +14,7 @@ const Page = () => {
   const param = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get('token');
+  const token = searchParams.get('shareToken');
   const sharedId = token ? decrypt(token) : null;
 
   const conversationId = param.id;
