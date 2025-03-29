@@ -27,16 +27,44 @@ export default function FileManagerSection({
     }) ?? [];
 
   const getFolderSelectionState = (folderName: string) => {
-    const fullPath = `${currentPath}${folderName}/`;
-    const children =
-      folderItems?.filter((item) => item.name.startsWith(fullPath)) ?? [];
-    const selectedChildren = localSelected.filter((item) =>
-      item.name.startsWith(fullPath)
-    );
+    if (!folderItems) return 'none';
 
-    if (selectedChildren.length === children.length && children.length > 0)
+    const fullPath = `${currentPath}${folderName}/`;
+    const uniqueItems = new Set<string>();
+
+    const getAllNestedItems = (folderPath: string): typeof folderItems => {
+      if (!folderItems) return [];
+
+      const children = folderItems.filter((item) => item.name.startsWith(folderPath)) ?? [];
+      let allItems: typeof folderItems = [];
+
+      children.forEach((child) => {
+        if (!uniqueItems.has(child.name)) {
+          uniqueItems.add(child.name);
+          allItems.push(child);
+        }
+
+        if (child.type === 'folder') {
+          const nestedItems = getAllNestedItems(`${child.name}/`) ?? [];
+          allItems = [...allItems, ...nestedItems];
+        }
+      });
+
+      return allItems;
+    };
+
+    const allChildren = getAllNestedItems(fullPath) ?? [];
+
+    const selectedChildren = localSelected?.filter((item) =>
+      item.name.startsWith(fullPath)
+    ) ?? [];
+
+    if (selectedChildren.length === allChildren.length && allChildren.length > 0) {
       return 'checked';
-    if (selectedChildren.length > 0) return 'partial';
+    }
+    if (selectedChildren.length > 0) {
+      return 'partial';
+    }
     return 'none';
   };
 

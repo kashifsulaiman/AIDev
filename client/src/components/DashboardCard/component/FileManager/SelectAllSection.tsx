@@ -9,14 +9,16 @@ export default function SelectAllSection({
   currentPath,
   repoItems,
 }: SelectAllSectionInterface) {
+
   const handleSelectAll = () => {
     if (!filteredItems.length) return;
 
     const allSelected = filteredItems.every((item) =>
       item.type === 'folder'
-        ? getFolderSelectionState(item.name.split('/').pop()!) === 'checked'
+        ? getFolderSelectionState(item.name) === 'checked'
         : localSelected.some((sel) => sel.name === item.name)
     );
+
     setLocalSelected((prev) => {
       if (allSelected) {
         return prev.filter(
@@ -26,24 +28,43 @@ export default function SelectAllSection({
       } else {
         const newSelection = new Set(prev.map((item) => item.name));
 
+        const getAllNestedItems = (folderPath: string): typeof repoItems => {
+          if (!repoItems) return [];
+
+          const children = repoItems.filter((item) => item.name.startsWith(folderPath)) ?? [];
+          let allItems: typeof repoItems = [];
+
+          children.forEach((child) => {
+            if (!newSelection.has(child.name)) {
+              newSelection.add(child.name);
+              allItems.push(child);
+            }
+
+            if (child.type === 'folder') {
+              const nestedItems = getAllNestedItems(currentPath + child.name + "/") ?? [];
+              allItems = [...allItems, ...nestedItems];
+            }
+          });
+
+          return allItems;
+        };
         filteredItems.forEach((item) => {
           if (item.type === 'folder') {
-            const folderPath = `${currentPath}${item.name}/`;
-            const children =
-              repoItems?.filter((child) => child.name.startsWith(folderPath)) ??
-              [];
-
+            const folderPath = `${item.name}/`;
+            const nestedItems = getAllNestedItems(folderPath) ?? [];
             newSelection.add(item.name);
-
-            children.forEach((child) => newSelection.add(child.name));
+            nestedItems.forEach((child) => newSelection.add(child.name));
           } else {
             newSelection.add(item.name);
           }
         });
+
         return repoItems?.filter((item) => newSelection.has(item.name)) ?? [];
       }
     });
   };
+
+
 
   return (
     <div className="mb-2 flex items-center">

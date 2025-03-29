@@ -18,9 +18,10 @@ export default function FileAndFolderViewSection({
   return (
     <ul className="h-48 w-full overflow-y-auto">
       {filteredItems.map((item) => {
+        const itemNameSplit = item.name.split('/').pop()!
         const selectionState =
           item.type === 'folder'
-            ? getFolderSelectionState(item.name.split('/').pop()!)
+            ? getFolderSelectionState(itemNameSplit)
             : 'none';
         const isSelected = localSelected.some(
           (selected) => selected.name === item.name
@@ -36,7 +37,7 @@ export default function FileAndFolderViewSection({
                 <span
                   className="mr-2 cursor-pointer text-green-500"
                   onClick={() =>
-                    handleSelectFolder(item.name.split('/').pop()!)
+                    handleSelectFolder(itemNameSplit)
                   }
                 >
                   <CheckboxIcon />
@@ -45,7 +46,7 @@ export default function FileAndFolderViewSection({
                 <span
                   className="mr-2 cursor-pointer text-yellow-500"
                   onClick={() =>
-                    handleSelectFolder(item.name.split('/').pop()!)
+                    handleSelectFolder(itemNameSplit)
                   }
                 >
                   <PartialCheckboxIcon />
@@ -54,7 +55,7 @@ export default function FileAndFolderViewSection({
                 <span
                   className="mr-2 cursor-pointer text-gray-500"
                   onClick={() =>
-                    handleSelectFolder(item.name.split('/').pop()!)
+                    handleSelectFolder(itemNameSplit)
                   }
                 >
                   <EmptyCheckboxIcon />
@@ -79,7 +80,7 @@ export default function FileAndFolderViewSection({
             {item.type === 'folder' ? (
               <div
                 className="flex items-center gap-1"
-                onClick={() => handleFolderClick(item.name.split('/').pop()!)}
+                onClick={() => handleFolderClick(itemNameSplit)}
               >
                 <FolderIcon classes="mr-2 cursor-pointer text-gray-500" />
                 <span className="flex-grow cursor-pointer">
