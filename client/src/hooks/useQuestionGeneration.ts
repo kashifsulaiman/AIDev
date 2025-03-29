@@ -33,13 +33,15 @@ export const useQuestionGeneration = (
     method: POST,
     url: ApiUrl.GENERATE_AI_QUESTIONS,
     onSuccess: (res) => {
-      const { conversationId, messages, title, questionStatus } = res?.data;
+      const { conversationId, messages, title, questionStatus, startCommand } =
+        res?.data;
       const lastMessage = messages[messages.length - 1];
 
       const newPrompt = {
         code: lastMessage.code,
         content: lastMessage.userPrompt,
         loader: false,
+        startCommand,
       };
 
       const unansweredQuestions = messages.filter(

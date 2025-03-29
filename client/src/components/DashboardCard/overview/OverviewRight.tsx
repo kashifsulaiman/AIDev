@@ -13,7 +13,7 @@ import { DiffCodeAndSendChanges } from '@/utils/stackblitz';
 import { ShareLinkButton } from '../component/ShareLinkButton';
 
 const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
-  const { loader, code } = useStoreState<StoreModel>(
+  const { loader, code, startCommand } = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
   const conversation = useStoreState<StoreModel>(
@@ -23,8 +23,12 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
   const [firstInstance, setFirstInstance] = useState<boolean>(false);
 
   useEffect(() => {
-    if (code && sdkRef.current && !firstInstance) {
-      StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
+    if (code && sdkRef.current && !firstInstance && startCommand) {
+      StackBlitzSDK.embedProject(
+        'embed',
+        code,
+        StackblitzSettingMain(startCommand)
+      );
       setFirstInstance(true);
     } else if (code && sdkRef.current) {
       handleCheckDependencyAndCreateInstance();
@@ -40,7 +44,11 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
     }
     const updatedCode = DiffCodeAndSendChanges(oldCode, code.files);
     if (updatedCode.create['package.json']) {
-      StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
+      StackBlitzSDK.embedProject(
+        'embed',
+        code,
+        StackblitzSettingMain(startCommand)
+      );
     } else {
       vm.applyFsDiff(updatedCode);
     }

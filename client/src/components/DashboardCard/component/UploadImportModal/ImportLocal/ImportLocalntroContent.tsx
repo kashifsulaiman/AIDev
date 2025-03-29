@@ -74,12 +74,14 @@ export default function ImportLocalIntroContent({
     method: POST,
     url: ApiUrl.IMPORT_PROJECT,
     onSuccess: (res) => {
-      const { conversationId, messages, title, githubRepoName } = res?.data;
+      const { conversationId, messages, title, githubRepoName, startCommand } =
+        res?.data;
       const lastMessage = messages[messages.length - 1];
       const newPrompt = {
         code: lastMessage.code,
         content: lastMessage.userPrompt,
         loader: false,
+        startCommand,
       };
       const newConversation = {
         _id: conversationId,

@@ -41,9 +41,10 @@ export const useGenerateCode = (
     method: POST,
     url: ApiUrl.GENERATE_AI_RESPONSE,
     onSuccess: (res) => {
-      const { conversationId, messages, title } = res?.data;
+      const { conversationId, messages, title, startCommand } = res?.data;
       const lastMessage = messages[messages.length - 1];
       setPrompt({
+        startCommand,
         code: lastMessage.code,
         content: lastMessage.userPrompt,
         loader: false,

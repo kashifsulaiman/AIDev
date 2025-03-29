@@ -44,6 +44,7 @@ export interface ConversationIdApiResponse {
   messages: MessageInterface[];
   questionStatus: true;
   githubRepoName: string;
+  startCommand: string;
 }
 const initialState: Conversation = {
   title: '',
