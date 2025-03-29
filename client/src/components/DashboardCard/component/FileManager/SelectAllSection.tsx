@@ -9,7 +9,6 @@ export default function SelectAllSection({
   currentPath,
   repoItems,
 }: SelectAllSectionInterface) {
-
   const handleSelectAll = () => {
     if (!filteredItems.length) return;
 
@@ -31,7 +30,8 @@ export default function SelectAllSection({
         const getAllNestedItems = (folderPath: string): typeof repoItems => {
           if (!repoItems) return [];
 
-          const children = repoItems.filter((item) => item.name.startsWith(folderPath)) ?? [];
+          const children =
+            repoItems.filter((item) => item.name.startsWith(folderPath)) ?? [];
           let allItems: typeof repoItems = [];
 
           children.forEach((child) => {
@@ -41,7 +41,8 @@ export default function SelectAllSection({
             }
 
             if (child.type === 'folder') {
-              const nestedItems = getAllNestedItems(currentPath + child.name + "/") ?? [];
+              const nestedItems =
+                getAllNestedItems(currentPath + child.name + '/') ?? [];
               allItems = [...allItems, ...nestedItems];
             }
           });
@@ -63,8 +64,6 @@ export default function SelectAllSection({
       }
     });
   };
-
-
 
   return (
     <div className="mb-2 flex items-center">

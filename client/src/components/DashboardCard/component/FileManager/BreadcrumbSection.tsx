@@ -11,7 +11,7 @@ export default function BreadcrumbSection({
 }: BreadcrumbSectionInterface) {
   const handleImport = () => {
     if (capacity <= MAX_TOKENS) {
-      console.log(localSelected)
+      console.log(localSelected);
       // setSelectedItems(localSelected);
     }
   };

@@ -18,7 +18,7 @@ export default function FileAndFolderViewSection({
   return (
     <ul className="h-48 w-full overflow-y-auto">
       {filteredItems.map((item) => {
-        const itemNameSplit = item.name.split('/').pop()!
+        const itemNameSplit = item.name.split('/').pop()!;
         const selectionState =
           item.type === 'folder'
             ? getFolderSelectionState(itemNameSplit)
@@ -36,27 +36,21 @@ export default function FileAndFolderViewSection({
               selectionState === 'checked' ? (
                 <span
                   className="mr-2 cursor-pointer text-green-500"
-                  onClick={() =>
-                    handleSelectFolder(itemNameSplit)
-                  }
+                  onClick={() => handleSelectFolder(itemNameSplit)}
                 >
                   <CheckboxIcon />
                 </span>
               ) : selectionState === 'partial' ? (
                 <span
                   className="mr-2 cursor-pointer text-yellow-500"
-                  onClick={() =>
-                    handleSelectFolder(itemNameSplit)
-                  }
+                  onClick={() => handleSelectFolder(itemNameSplit)}
                 >
                   <PartialCheckboxIcon />
                 </span>
               ) : (
                 <span
                   className="mr-2 cursor-pointer text-gray-500"
-                  onClick={() =>
-                    handleSelectFolder(itemNameSplit)
-                  }
+                  onClick={() => handleSelectFolder(itemNameSplit)}
                 >
                   <EmptyCheckboxIcon />
                 </span>

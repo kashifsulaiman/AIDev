@@ -35,7 +35,8 @@ export default function FileManagerSection({
     const getAllNestedItems = (folderPath: string): typeof folderItems => {
       if (!folderItems) return [];
 
-      const children = folderItems.filter((item) => item.name.startsWith(folderPath)) ?? [];
+      const children =
+        folderItems.filter((item) => item.name.startsWith(folderPath)) ?? [];
       let allItems: typeof folderItems = [];
 
       children.forEach((child) => {
@@ -55,11 +56,13 @@ export default function FileManagerSection({
 
     const allChildren = getAllNestedItems(fullPath) ?? [];
 
-    const selectedChildren = localSelected?.filter((item) =>
-      item.name.startsWith(fullPath)
-    ) ?? [];
+    const selectedChildren =
+      localSelected?.filter((item) => item.name.startsWith(fullPath)) ?? [];
 
-    if (selectedChildren.length === allChildren.length && allChildren.length > 0) {
+    if (
+      selectedChildren.length === allChildren.length &&
+      allChildren.length > 0
+    ) {
       return 'checked';
     }
     if (selectedChildren.length > 0) {
