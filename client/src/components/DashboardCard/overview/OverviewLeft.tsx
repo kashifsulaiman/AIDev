@@ -1,10 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import TextArea from '../component/TextArea';
-
-import Toptext from './Toptext';
 
 import { useStoreState } from 'easy-peasy';
 
