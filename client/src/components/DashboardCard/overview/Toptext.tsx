@@ -7,9 +7,9 @@ interface Props {
 }
 const Toptext = ({ text, loading }: Props) => {
   return (
-    <div className="mb-2 flex gap-7">
+    <div className="mb-2 flex items-center gap-4">
       {loading ? <Spinner /> : <Tick />}
-      <p className="font-Jakarta text-base font-normal text-black">{text}</p>
+      <p className="font-Jakarta font-normal text-black">{text}</p>
     </div>
   );
 };
