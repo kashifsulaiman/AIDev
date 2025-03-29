@@ -56,14 +56,7 @@ export type SelfPromptingIterationType = {
   apiCalled: boolean;
 };
 
-export type GithubFileManagerSectionProps = {
-  repoItems: RepoItemsType[] | null;
-  selectedRepo: SelectedRepoType;
-  selectedItems: RepoItemsType[] | null;
-  setSelectedItems: Dispatch<SetStateAction<RepoItemsType[] | null>>;
-};
-
-export type ImportLocalFileManagerSectionProps = {
+export type FileManagerSectionProps = {
   folderItems: RepoItemsType[] | null;
   selectedRepo: SelectedRepoType;
   selectedItems: RepoItemsType[] | null;

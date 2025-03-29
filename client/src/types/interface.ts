@@ -1,6 +1,6 @@
 import { Project } from '@stackblitz/sdk';
 import { Dispatch, SetStateAction } from 'react';
-import { SelectedRepoType } from './modalTypes';
+import { RepoItemsType, SelectedRepoType } from './modalTypes';
 
 export interface PreviewMainInterface {
   handleViewChange: () => void;
@@ -79,4 +79,39 @@ export type ImportLocalIntroContentInterface = {
 export interface UploadImportModalInterface {
   isOpen: boolean;
   handleCloseModal: () => void;
+}
+
+export interface BreadcrumbSectionInterface {
+  setSelectedItems: Dispatch<SetStateAction<RepoItemsType[] | null>>;
+  localSelected: RepoItemsType[];
+  selectedRepo: SelectedRepoType;
+  capacity: number;
+  currentPath: string;
+  setCurrentPath: Dispatch<SetStateAction<string>>;
+}
+
+export interface SelectAllSectionInterface {
+  filteredItems: RepoItemsType[];
+  getFolderSelectionState: (
+    folderName: string
+  ) => 'checked' | 'partial' | 'none';
+  localSelected: RepoItemsType[];
+  setLocalSelected: Dispatch<SetStateAction<RepoItemsType[]>>;
+  currentPath: string;
+  repoItems: RepoItemsType[] | null;
+}
+
+export interface CapacitySectionInterface {
+  capacity: number;
+}
+
+export interface FileAndFolderViewSectionInterface {
+  filteredItems: RepoItemsType[];
+  getFolderSelectionState: (
+    folderName: string
+  ) => 'none' | 'checked' | 'partial';
+  localSelected: RepoItemsType[];
+  handleSelectItem: (item: RepoItemsType) => void;
+  handleSelectFolder: (folderName: string) => void;
+  handleFolderClick: (folderName: string) => void;
 }

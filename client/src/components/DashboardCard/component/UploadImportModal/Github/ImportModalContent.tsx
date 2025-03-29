@@ -11,8 +11,8 @@ import { useRouter } from 'next/navigation';
 import { ProjectFiles } from '@stackblitz/sdk';
 import { GithubImportModalContentInterface } from '@/types/interface';
 import { SelectedRepoType, RepoItemsType } from '@/types/modalTypes';
-import GithubFileManagerSection from './GithubFileManager';
 import { GithubIcon } from '@/components/SVG';
+import FileManagerSection from '../../FileManager';
 
 export default function GithubImportModalContent({
   modalCloseHandler,
@@ -152,9 +152,9 @@ export default function GithubImportModalContent({
         <Loader Color="black" width="100%" />
       ) : (
         fmCondition && (
-          <GithubFileManagerSection
+          <FileManagerSection
             selectedRepo={selectedRepo}
-            repoItems={repoItems}
+            folderItems={repoItems}
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}
           />

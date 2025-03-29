@@ -1,4 +1,3 @@
-import { GithubIcon } from '@/components/SVG';
 import { showToaster } from '@/components/Toaster';
 import { ApiUrl } from '@/constants/apiUrl';
 import { GITHUB_REPONAME_REGEX } from '@/constants/regex';
@@ -11,6 +10,7 @@ import { createRepoAndUpload, updateRepoFiles } from '@/utils/github';
 import { Button, Input } from '@nextui-org/react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useState } from 'react';
+import UsernameSection from './UsernameSection';
 
 export default function GithubExportModalContent({
   modalCloseHandler,
@@ -90,10 +90,7 @@ export default function GithubExportModalContent({
   if (loader) {
     return (
       <div className="flex w-full flex-col items-center gap-2 text-center">
-        <p className="flex items-center gap-2 whitespace-normal py-2">
-          <GithubIcon classes="size-8 text-white bg-black rounded-full p-1.5" />
-          <span className="text-lg font-semibold">{githubAuth.username}</span>
-        </p>
+        <UsernameSection />
         <Loader Color="black" width="100%" />
       </div>
     );
@@ -102,10 +99,7 @@ export default function GithubExportModalContent({
   if (conversation?.githubRepoName) {
     return (
       <div className="flex w-full flex-col items-center gap-2 text-center">
-        <p className="flex items-center gap-2 whitespace-normal py-2">
-          <GithubIcon classes="size-8 text-white bg-black rounded-full p-1.5" />
-          <span className="text-lg font-semibold">{githubAuth.username}</span>
-        </p>
+        <UsernameSection />
         <p>Repo already exists on GitHub</p>
         <p className="max-w-80">
           Would you like to push to GitHub to
@@ -124,10 +118,7 @@ export default function GithubExportModalContent({
 
   return (
     <div className="flex w-full flex-col items-center gap-2 text-center">
-      <p className="flex items-center gap-2 whitespace-normal py-2">
-        <GithubIcon classes="size-8 text-white bg-black rounded-full p-1.5" />
-        <span className="text-lg font-semibold">{githubAuth.username}</span>
-      </p>
+      <UsernameSection />
       <p>No repo found</p>
       <p className="max-w-80">Would you like to create a new Github repo ?</p>
       <Input

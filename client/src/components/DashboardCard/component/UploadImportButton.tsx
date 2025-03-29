@@ -37,13 +37,13 @@ export default function UploadImportProjectButton() {
     setIsOpen(!isOpen);
   };
 
-  function isValidGitHubToken(token: string) {
+  const isValidGitHubToken = (token: string) => {
     return GITHUB_TOKEN_REGEX.some((pattern) => pattern.test(token));
-  }
+  };
 
   return (
     <div className="relative flex items-center">
-      <Tooltip content="Upload/Import project">
+      <Tooltip content="Import or Export project">
         <Button
           onClick={handleCloseModal}
           className="!min-w-fit rounded-xl bg-gray-800 px-2 py-1.5 text-white"

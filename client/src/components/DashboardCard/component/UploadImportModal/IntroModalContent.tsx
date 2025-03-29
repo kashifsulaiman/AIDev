@@ -22,7 +22,9 @@ export default function IntroModalContent({
 
   return (
     <>
-      <p className="text-lg font-semibold text-black">Import/Upload Project</p>
+      <p className="text-lg font-semibold text-black">
+        Import or Export Project
+      </p>
 
       {githubAuth.token && githubAuth.username ? (
         <Button

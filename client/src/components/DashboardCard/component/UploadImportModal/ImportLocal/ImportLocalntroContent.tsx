@@ -12,10 +12,10 @@ import { POST } from '@/hooks/consts';
 import { useMutation } from '@/hooks/useMutation';
 import { ApiUrl } from '@/constants/apiUrl';
 import { useRouter } from 'next/navigation';
-import ImportLocalFileManager from './ImportLocalFileManager';
 import { ImportLocalIntroContentInterface } from '@/types/interface';
 import { FolderIcon } from '@/components/SVG';
 import { showToaster } from '@/components/Toaster';
+import FileManagerSection from '../../FileManager';
 
 export default function ImportLocalIntroContent({
   handleCloseModal,
@@ -133,7 +133,7 @@ export default function ImportLocalIntroContent({
         <Loader Color="black" width="100%" />
       ) : (
         fmCondition && (
-          <ImportLocalFileManager
+          <FileManagerSection
             folderItems={folderData}
             selectedRepo={{ label: selectedFolderName }}
             selectedItems={selectedFolderData}
