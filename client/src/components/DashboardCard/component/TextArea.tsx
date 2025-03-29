@@ -10,6 +10,8 @@ import { StoreModel } from '@/redux/model';
 import { useGenerateCode } from '@/hooks/useGenerateCode';
 import { useQuestionGeneration } from '@/hooks/useQuestionGeneration';
 import { useSelfPrompting } from '@/hooks/useSelfPrompting';
+import { decrypt } from '@/utils/encryption';
+import { useSharedChat } from '@/hooks/useSharedChat';
 
 const TextArea = ({
   prompt,
@@ -21,10 +23,13 @@ const TextArea = ({
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const token = searchParams.get('token');
+  const sharedId = token ? decrypt(token) : null;
   const { generateCode } = useGenerateCode(inputValue, setInputValue);
   const { handleQuestions } = useQuestionGeneration(inputValue, setInputValue);
   const { generateSelfPromptingSuggestion, handleSelfPromptingFlow } =
     useSelfPrompting(inputValue, setInputValue);
+  const { shareChat } = useSharedChat(inputValue, setInputValue);
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );
@@ -74,6 +79,11 @@ const TextArea = ({
       const current = new URLSearchParams(searchParams.toString());
       current.delete('promptType');
       router.push(`${pathname}${current.toString() ? `?${current}` : ''}`);
+    }
+
+    if (sharedId && sharedId === conversation.conversationId) {
+      shareChat(conversation.conversationId);
+      return;
     }
 
     if (selectedStrategy.id === 'prompt-refinement') {

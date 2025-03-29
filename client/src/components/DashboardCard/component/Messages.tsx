@@ -10,8 +10,12 @@ import { useMutation } from '@/hooks/useMutation';
 import { POST } from '@/hooks/consts';
 import { ApiUrl } from '@/constants/apiUrl';
 import { RollbackIcon } from '@/components/SVG';
-
+import { useSearchParams } from 'next/navigation';
+import { decrypt } from '@/utils/encryption';
 const AiQuestions = () => {
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+  const sharedId = token ? decrypt(token) : null;
   const { loader, code } = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
@@ -146,6 +150,7 @@ const AiQuestions = () => {
             {conversation.messages &&
               !loader &&
               code &&
+              !sharedId &&
               conversation.messages.length &&
               !(code === msg.code) &&
               !msg.isQuestion &&
