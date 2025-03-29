@@ -8,7 +8,7 @@ export default function CapacitySection({
 }: CapacitySectionInterface) {
   const capacityPercentage: () => number = useCallback(() => {
     const newCapacity = Number(((capacity / MAX_TOKENS) * 100).toFixed(2));
-    return newCapacity ? newCapacity : 0;
+    return newCapacity ?? 0;
   }, [capacity]);
 
   return (
