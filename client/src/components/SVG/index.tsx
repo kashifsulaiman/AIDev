@@ -2570,7 +2570,7 @@ const CheckboxIcon = ({ classes }: IconInterface) => {
 
 const PartialCheckboxIcon = ({ classes }: IconInterface) => {
   return <FaMinusSquare className={classes} />;
-}
+};
 
 const FileShareIcon = ({ classes }: IconInterface) => {
   return <FaShare className={classes} />;
