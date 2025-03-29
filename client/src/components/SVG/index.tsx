@@ -2,8 +2,15 @@ import { VscPreview } from 'react-icons/vsc';
 import { TiArrowBack } from 'react-icons/ti';
 import { IconInterface } from '@/types/interface';
 import { TbArrowBack, TbBrandGithubFilled } from 'react-icons/tb';
-import { FaCheck } from 'react-icons/fa';
-import { IoMdArrowDropdown } from 'react-icons/io';
+import {
+  FaCheck,
+  FaCheckSquare,
+  FaFile,
+  FaMinusSquare,
+  FaRegFolder,
+  FaRegSquare,
+} from 'react-icons/fa';
+import { IoMdArrowDropdown, IoMdCloudUpload } from 'react-icons/io';
 import { GoDownload, GoUpload } from 'react-icons/go';
 import { AiOutlineDisconnect } from 'react-icons/ai';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -2541,6 +2548,30 @@ const SettingsIcon = ({ classes }: IconInterface) => {
   return <HiDotsHorizontal className={classes} />;
 };
 
+const FolderIcon = ({ classes }: IconInterface) => {
+  return <FaRegFolder className={classes} />;
+};
+
+const FileIcon = ({ classes }: IconInterface) => {
+  return <FaFile className={classes} />;
+};
+
+const CloudUploadIcon = ({ classes }: IconInterface) => {
+  return <IoMdCloudUpload className={classes} />;
+};
+
+const EmptyCheckboxIcon = ({ classes }: IconInterface) => {
+  return <FaRegSquare className={classes} />;
+};
+
+const CheckboxIcon = ({ classes }: IconInterface) => {
+  return <FaCheckSquare className={classes} />;
+};
+
+const PartialCheckboxIcon = ({ classes }: IconInterface) => {
+  return <FaMinusSquare className={classes} />;
+};
+
 const FileShareIcon = ({ classes }: IconInterface) => {
   return <FaShare className={classes} />;
 };
@@ -2604,6 +2635,12 @@ export {
   DisconnectIcon,
   TrashIcon,
   SettingsIcon,
+  FolderIcon,
+  CloudUploadIcon,
+  FileIcon,
+  CheckboxIcon,
+  EmptyCheckboxIcon,
+  PartialCheckboxIcon,
   FileShareIcon,
   CopyToClipboardIcon,
 };

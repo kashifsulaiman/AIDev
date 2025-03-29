@@ -49,8 +49,13 @@ const Page = () => {
         }
       }
       if (data) {
-        const { _id, messages, questionStatus, githubRepoName } = data;
-        setPrompt({ code: messages[messages.length - 1].code, loader: false });
+        const { _id, messages, questionStatus, githubRepoName, startCommand } =
+          data;
+        setPrompt({
+          code: messages[messages.length - 1].code,
+          loader: false,
+          startCommand,
+        });
         const unansweredQuestions = messages.filter(
           (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
         );

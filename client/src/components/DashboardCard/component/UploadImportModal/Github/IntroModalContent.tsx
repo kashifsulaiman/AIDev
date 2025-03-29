@@ -1,18 +1,23 @@
 import { Button } from '@nextui-org/react';
 import { StoreModel } from '@/redux/model';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { DisconnectIcon, DownloadIcon, UploadIcon } from '@/components/SVG';
+import {
+  DisconnectIcon,
+  DownloadIcon,
+  GithubIcon,
+  UploadIcon,
+} from '@/components/SVG';
 import { useState } from 'react';
 import Loader from '@/Loader/loading';
-import { IntroModalContentInterface } from '@/types/interface';
+import { GithubIntroModalContentInterface } from '@/types/interface';
 import { useGithubMutation } from '@/hooks/useGithubMutation';
 import { usePathname } from 'next/navigation';
 
-export default function IntroModalContent({
-  modalCloseHandler,
+export default function GithubIntroModalContent({
+  handleCloseModal,
   setRepos,
   setCurrentTab,
-}: IntroModalContentInterface) {
+}: GithubIntroModalContentInterface) {
   const pathname = usePathname();
   const githubAuth = useStoreState<StoreModel>(
     (state) => state?.githubAuthModel.githubModel
@@ -22,7 +27,7 @@ export default function IntroModalContent({
   );
   const signOut = () => {
     setGithubAuth({ token: null, username: null });
-    modalCloseHandler();
+    handleCloseModal();
   };
   const [loader, setLoader] = useState<boolean>(false);
 
@@ -37,7 +42,7 @@ export default function IntroModalContent({
       const reposData = data.map((repo) => ({ label: repo.full_name }));
       setRepos(reposData);
       setLoader(false);
-      setCurrentTab('import');
+      setCurrentTab('github-import');
     },
   });
 
@@ -48,9 +53,14 @@ export default function IntroModalContent({
 
   return (
     <>
+      <p className="flex items-center gap-2 whitespace-normal py-2">
+        <GithubIcon classes="size-8 text-white bg-black rounded-full p-1.5" />
+        <span className="text-lg font-semibold">{githubAuth.username}</span>
+      </p>
+
       {pathname.includes('main') && (
         <Button
-          className="relative mt-2 flex w-[16rem] items-center justify-start gap-2 bg-black text-white max-sm:w-full"
+          className="relative mb-10 mt-2 flex w-[16rem] items-center justify-start gap-2 bg-black text-white max-sm:w-full"
           onClick={handleGetGithubRepos}
         >
           {loader ? (
@@ -70,8 +80,8 @@ export default function IntroModalContent({
 
       {pathname.includes('overview') && (
         <Button
-          className="relative mt-2 flex w-[16rem] items-center justify-start gap-2 bg-black text-white"
-          onClick={() => setCurrentTab('export')}
+          className="relative mb-10 mt-2 flex w-[16rem] items-center justify-start gap-2 bg-black text-white"
+          onClick={() => setCurrentTab('github-export')}
         >
           <UploadIcon classes="size-5" />
           <span className="py-1 font-semibold">Export Project to GitHub</span>

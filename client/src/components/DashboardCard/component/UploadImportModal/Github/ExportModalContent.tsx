@@ -5,15 +5,16 @@ import { PUT } from '@/hooks/consts';
 import { useMutation } from '@/hooks/useMutation';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
-import { ExportModalContentInterface } from '@/types/interface';
+import { GithubExportModalContentInterface } from '@/types/interface';
 import { createRepoAndUpload, updateRepoFiles } from '@/utils/github';
 import { Button, Input } from '@nextui-org/react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useState } from 'react';
+import UsernameSection from './UsernameSection';
 
-export default function ExportModalContent({
+export default function GithubExportModalContent({
   modalCloseHandler,
-}: ExportModalContentInterface) {
+}: GithubExportModalContentInterface) {
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );
@@ -87,12 +88,18 @@ export default function ExportModalContent({
   });
 
   if (loader) {
-    return <Loader Color="black" width="100%" />;
+    return (
+      <div className="flex w-full flex-col items-center gap-2 text-center">
+        <UsernameSection />
+        <Loader Color="black" width="100%" />
+      </div>
+    );
   }
 
   if (conversation?.githubRepoName) {
     return (
       <div className="flex w-full flex-col items-center gap-2 text-center">
+        <UsernameSection />
         <p>Repo already exists on GitHub</p>
         <p className="max-w-80">
           Would you like to push to GitHub to
@@ -111,6 +118,7 @@ export default function ExportModalContent({
 
   return (
     <div className="flex w-full flex-col items-center gap-2 text-center">
+      <UsernameSection />
       <p>No repo found</p>
       <p className="max-w-80">Would you like to create a new Github repo ?</p>
       <Input

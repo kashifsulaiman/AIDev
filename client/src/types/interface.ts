@@ -1,6 +1,6 @@
 import { Project } from '@stackblitz/sdk';
 import { Dispatch, SetStateAction } from 'react';
-import { SelectedRepoType } from './modalTypes';
+import { RepoItemsType, SelectedRepoType } from './modalTypes';
 
 export interface PreviewMainInterface {
   handleViewChange: () => void;
@@ -31,24 +31,87 @@ export interface DropdownInterface<T> {
   onSelect: (item: T) => void;
 }
 
-export interface GithubAuthModalInterface {
-  isModalOpen: boolean;
-  modalCloseHandler: () => void;
-}
-
-export interface IntroModalContentInterface {
-  modalCloseHandler: () => void;
+export interface GithubIntroModalContentInterface {
+  handleCloseModal: () => void;
   setRepos: Dispatch<SetStateAction<SelectedRepoType[] | null>>;
-  setCurrentTab: Dispatch<SetStateAction<'intro' | 'import' | 'export'>>;
+  setCurrentTab: Dispatch<
+    SetStateAction<
+      'intro' | 'github' | 'local-import' | 'github-import' | 'github-export'
+    >
+  >;
 }
 
-export interface ImportModalContentInterface {
+export interface GithubImportModalContentInterface {
+  modalCloseHandler: () => void;
   repos: SelectedRepoType[] | null;
-  modalCloseHandler: () => void;
-  selectedRepo: SelectedRepoType;
-  setSelectedRepo: Dispatch<SetStateAction<SelectedRepoType>>;
 }
 
-export interface ExportModalContentInterface {
+export interface GithubExportModalContentInterface {
   modalCloseHandler: () => void;
+}
+
+export type UploadImportModalHandlerInterface = {
+  currentTab:
+    | 'intro'
+    | 'github'
+    | 'local-import'
+    | 'github-import'
+    | 'github-export';
+  setCurrentTab: Dispatch<
+    SetStateAction<
+      'intro' | 'github' | 'local-import' | 'github-import' | 'github-export'
+    >
+  >;
+  handleCloseModal: () => void;
+};
+
+export type IntroModalContentInterface = {
+  setCurrentTab: Dispatch<
+    SetStateAction<
+      'intro' | 'github' | 'local-import' | 'github-import' | 'github-export'
+    >
+  >;
+};
+export type ImportLocalIntroContentInterface = {
+  handleCloseModal: () => void;
+};
+
+export interface UploadImportModalInterface {
+  isOpen: boolean;
+  handleCloseModal: () => void;
+}
+
+export interface BreadcrumbSectionInterface {
+  setSelectedItems: Dispatch<SetStateAction<RepoItemsType[] | null>>;
+  localSelected: RepoItemsType[];
+  selectedRepo: SelectedRepoType;
+  capacity: number;
+  currentPath: string;
+  setCurrentPath: Dispatch<SetStateAction<string>>;
+}
+
+export interface SelectAllSectionInterface {
+  filteredItems: RepoItemsType[];
+  getFolderSelectionState: (
+    folderName: string
+  ) => 'checked' | 'partial' | 'none';
+  localSelected: RepoItemsType[];
+  setLocalSelected: Dispatch<SetStateAction<RepoItemsType[]>>;
+  currentPath: string;
+  repoItems: RepoItemsType[] | null;
+}
+
+export interface CapacitySectionInterface {
+  capacity: number;
+}
+
+export interface FileAndFolderViewSectionInterface {
+  filteredItems: RepoItemsType[];
+  getFolderSelectionState: (
+    folderName: string
+  ) => 'none' | 'checked' | 'partial';
+  localSelected: RepoItemsType[];
+  handleSelectItem: (item: RepoItemsType) => void;
+  handleSelectFolder: (folderName: string) => void;
+  handleFolderClick: (folderName: string) => void;
 }
