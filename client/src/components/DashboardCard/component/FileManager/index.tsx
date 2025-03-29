@@ -56,7 +56,6 @@ export default function FileManagerSection({
     const selectedChildren = localSelected.filter((item) =>
       item.name.startsWith(fullPath)
     );
-
     setLocalSelected((prev) =>
       selectedChildren.length > 0
         ? prev.filter((item) => !item.name.startsWith(fullPath))

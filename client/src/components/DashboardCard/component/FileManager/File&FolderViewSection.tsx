@@ -1,11 +1,11 @@
 import {
+  CheckboxIcon,
   EmptyCheckboxIcon,
   FileIcon,
   FolderIcon,
   PartialCheckboxIcon,
 } from '@/components/SVG';
 import { FileAndFolderViewSectionInterface } from '@/types/interface';
-import { CheckboxIcon } from '@nextui-org/react';
 
 export default function FileAndFolderViewSection({
   filteredItems,

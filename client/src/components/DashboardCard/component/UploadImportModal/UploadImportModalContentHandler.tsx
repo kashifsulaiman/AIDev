@@ -36,7 +36,6 @@ export default function UploadImportModalHandler({
           modalCloseHandler={handleCloseModal}
         />
       );
-
     default:
       return null;
   }

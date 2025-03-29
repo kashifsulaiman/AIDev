@@ -17,7 +17,6 @@ export default function SelectAllSection({
         ? getFolderSelectionState(item.name.split('/').pop()!) === 'checked'
         : localSelected.some((sel) => sel.name === item.name)
     );
-
     setLocalSelected((prev) => {
       if (allSelected) {
         return prev.filter(
@@ -41,7 +40,6 @@ export default function SelectAllSection({
             newSelection.add(item.name);
           }
         });
-
         return repoItems?.filter((item) => newSelection.has(item.name)) ?? [];
       }
     });
