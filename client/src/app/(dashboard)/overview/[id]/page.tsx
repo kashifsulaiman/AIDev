@@ -33,45 +33,46 @@ const Page = () => {
     showToast: true,
   });
   useEffect(() => {
-    if (!isLoading) {
-      if (!token) {
-        const isInChatList = conversation.chatList.some(
-          (chat: { _id: string }) => chat._id === conversationId
-        );
-        if (!isInChatList) {
-          router.replace('/main');
-          clearConversation();
-        }
-      } else {
-        if (sharedId !== conversationId) {
-          router.replace('/main');
-          clearConversation();
-        }
+    if (isLoading) {
+      return;
+    }
+    if (!token) {
+      const isInChatList = conversation.chatList.some(
+        (chat: { _id: string }) => chat._id === conversationId
+      );
+      if (!isInChatList) {
+        router.replace('/main');
+        clearConversation();
       }
-      if (data) {
-        const { _id, messages, questionStatus, githubRepoName, startCommand } =
-          data;
-        setPrompt({
-          code: messages[messages.length - 1].code,
-          loader: false,
-          startCommand,
-        });
-        const unansweredQuestions = messages.filter(
-          (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
-        );
-        const unansweredQuestionIndex = messages.findIndex(
-          (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
-        );
-        setConversation({
-          githubRepoName: githubRepoName ?? null,
-          conversationId: _id,
-          messages,
-          unansweredQuestions,
-          unansweredQuestionIndex,
-          questionStatus,
-          refinementRequired: true,
-        });
+    } else {
+      if (sharedId !== conversationId) {
+        router.replace('/main');
+        clearConversation();
       }
+    }
+    if (data) {
+      const { _id, messages, questionStatus, githubRepoName, startCommand } =
+        data;
+      setPrompt({
+        code: messages[messages.length - 1].code,
+        loader: false,
+        startCommand,
+      });
+      const unansweredQuestions = messages.filter(
+        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
+      );
+      const unansweredQuestionIndex = messages.findIndex(
+        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
+      );
+      setConversation({
+        githubRepoName: githubRepoName ?? null,
+        conversationId: _id,
+        messages,
+        unansweredQuestions,
+        unansweredQuestionIndex,
+        questionStatus,
+        refinementRequired: true,
+      });
     }
   }, [data, isLoading, token, sharedId, conversationId]);
   return (

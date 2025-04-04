@@ -64,6 +64,7 @@ export const useSelfPrompting = (
       humanPrompt: inputValue,
       attributes,
       conversationId: conversation?.conversationId,
+      userId: user.id,
       model: {
         provider: currentModel.provider,
         reasoning: currentModel.reasoning,
