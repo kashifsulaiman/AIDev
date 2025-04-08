@@ -2,6 +2,7 @@ import Loader from '@/Loader/loading';
 import { RepoItemsType } from '@/types/modalTypes';
 import {
   getFolderContents,
+  handleHTMLAndPackageJson,
   transformFilesToObject,
 } from '@/utils/local-import';
 import { Button } from '@nextui-org/react';
@@ -56,6 +57,11 @@ export default function ImportLocalIntroContent({
     if (!selectedFolderData) return;
     setLoading(true);
     const transformedCode = transformFilesToObject(selectedFolderData);
+    const res = handleHTMLAndPackageJson(transformedCode);
+    if (!res) {
+      setLoading(false);
+      return;
+    }
     const mutationInput = {
       humanPrompt: `Import ${selectedFolderName} project from my PC and provide a summary`,
       code: transformedCode,

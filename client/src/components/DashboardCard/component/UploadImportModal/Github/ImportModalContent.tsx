@@ -13,6 +13,7 @@ import { GithubImportModalContentInterface } from '@/types/interface';
 import { SelectedRepoType, RepoItemsType } from '@/types/modalTypes';
 import { GithubIcon } from '@/components/SVG';
 import FileManagerSection from '../../FileManager';
+import { handleHTMLAndPackageJson } from '@/utils/local-import';
 
 export default function GithubImportModalContent({
   modalCloseHandler,
@@ -59,7 +60,10 @@ export default function GithubImportModalContent({
   };
 
   const startConversation = async (code: ProjectFiles) => {
-    if (!selectedRepo) {
+    if (!selectedRepo) return;
+    const res = handleHTMLAndPackageJson(code);
+    if (!res) {
+      setLoading(false);
       return;
     }
     const mutationInput = {

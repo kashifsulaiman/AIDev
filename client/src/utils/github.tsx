@@ -16,6 +16,12 @@ export function useFetchGithubRepos(
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json',
         },
+        params: {
+          visibility: 'all',
+          affiliation: 'owner,collaborator,organization_member',
+          per_page: 100,
+          page: 1,
+        },
       });
       return response.data.map((repo: { full_name: string }) => ({
         label: repo.full_name,
