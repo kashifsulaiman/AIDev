@@ -18,6 +18,8 @@ import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect } from 'react';
 import Cookies from 'js-cookie';
 import { StoreModel } from '@/redux/model';
+import GoogleLoginButton from '@/components/GoogleLoginButton';
+import DividerWithText from '@/common/DividerWithText';
 
 interface LoginFormProps {
   email: string;
@@ -99,16 +101,16 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center rounded-2xl bg-white p-6 sm:m-auto sm:min-w-[534px] sm:px-10 sm:py-12">
-      <div className="Scroller-Class max-h-[72vh] overflow-y-auto scrollbar-hide">
+    <div className="flex flex-col justify-center rounded-2xl bg-white py-6 pl-6 pr-0 sm:m-auto sm:min-w-[534px] sm:px-8 sm:py-6 ">
+      <div className="Scroller-Class max-h-[80vh] overflow-y-auto sm:scrollbar-hide">
         <Formik
           initialValues={initialValues}
           validationSchema={LoginFormSchema}
           onSubmit={onSubmit}
         >
           {({ isValid, dirty, touched, errors, handleSubmit }) => (
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-4">
+            <form className="flex flex-col gap-4 mr-3 md:gap-2" onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-4 md:gap-2">
                 <h2 className="font-Jakarta text-[28px] font-bold text-authgray-100 md:text-[32px]">
                   Login
                 </h2>
@@ -122,6 +124,9 @@ const Login = () => {
                   name="email"
                   placeholder="Enter email"
                   classNames="text-sm sm:text-base focus-visible:border-none border-none focus:outline-none focus-visible:outline-none"
+                  // inputClass="h-full"
+                  // innerWrapperClass="h-full"
+                  // inputWrapperClass="min-h-10 h-10 px-1"
                 />
                 <Field
                   component={FormikInput}
@@ -132,6 +137,9 @@ const Login = () => {
                   placeholder="Enter password"
                   type="password"
                   classNames="text-sm sm:text-base focus-visible:border-none border-none focus:outline-none focus-visible:outline-none"
+                  // inputClass="h-full"
+                  // innerWrapperClass="h-full"
+                  // inputWrapperClass="min-h-10 h-10 px-1"
                 />
               </div>
               <div className="mb-2 flex items-center justify-start">
@@ -174,11 +182,15 @@ const Login = () => {
                   )}
                 </Button>
               </div>
+              <DividerWithText text="Or continue with"/>
+              <div className='flex w-full flex-col items-center justify-center sm:flex-row'>
+                <GoogleLoginButton/>
+              </div>
             </form>
           )}
         </Formik>
 
-        <div className="my-4 flex flex-col items-center justify-center gap-2.5 sm:my-6 sm:flex-row">
+        <div className="my-4 flex flex-col items-center justify-center gap-2.5 md:my-3 sm:my-6 sm:flex-row">
           <h2 className="text-auth-100 text-sm font-normal text-black sm:text-base">
             Don’t have an account?
           </h2>

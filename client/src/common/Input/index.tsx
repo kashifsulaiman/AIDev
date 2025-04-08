@@ -24,6 +24,7 @@ interface InputTypes {
   readonly disabled?: boolean;
   readonly inputWrapperClass?: string;
   readonly inputClass?: string;
+  readonly innerWrapperClass?: string;
 }
 
 export default function CInput({
@@ -47,6 +48,7 @@ export default function CInput({
   disabled,
   inputClass,
   inputWrapperClass,
+  innerWrapperClass,
   onClick,
   ...rest
 }: Readonly<InputTypes>) {
@@ -58,10 +60,10 @@ export default function CInput({
       ref={ref}
       className={`${className} placeholder:text-authgray-200`}
       classNames={{
-        inputWrapper: `bg-transparent !ring-0 !ring-transparent ${isClearable && 'pr-6'} border ${errorMessage ? 'border-red-400' : 'border-[#94A3B8]'} h-[44px] data-[hover=true]:bg-transparent group-data-[focus]:bg-[#f6f6f6] group-data-[focus]:border-primary-100 rounded-lg ${inputWrapperClass}`,
-        innerWrapper: 'bg-transparent',
-        input: `text-black-400 bg-transparent text-sm px-2 font-Jakarta font-normal ${inputClass} date-input`,
-        label: ' font-medium font-Jakarta !text-[#111827] text-sm sm:text-base',
+        inputWrapper: `bg-transparent !ring-0 !ring-transparent ${isClearable && 'pr-6'} border ${errorMessage ? 'border-red-400' : 'border-[#94A3B8]'} h-[44px] data-[hover=true]:bg-transparent group-data-[focus]:bg-[#f6f6f6] group-data-[focus]:border-primary-100 rounded-lg ${inputWrapperClass} sm:min-h-12 sm:h-12 sm:px-3`, // Apply changes on small screens (sm)
+        innerWrapper: `bg-transparent ${innerWrapperClass} sm:h-auto`, // Full height on all screens, adjust on small screens (sm)
+        input: `text-black-400 bg-transparent text-sm px-2 font-Jakarta font-normal ${inputClass} date-input sm:h-auto`, // Apply height change on small screens (sm)
+        label: 'font-medium font-Jakarta !text-[#111827] text-sm sm:text-base',
         base: 'mb-4',
         errorMessage: 'text-red-400',
       }}
