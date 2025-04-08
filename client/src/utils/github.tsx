@@ -3,7 +3,7 @@ import { RepoItemsType, SelectedRepoType } from '@/types/modalTypes';
 import { Project, ProjectFiles } from '@stackblitz/sdk';
 import { showToaster } from '@/components/Toaster';
 
-export async function useFetchGithubRepos(
+export async function fetchGithubRepos(
   token: string
 ): Promise<SelectedRepoType[]> {
   const response = await axios.get('https://api.github.com/user/repos', {

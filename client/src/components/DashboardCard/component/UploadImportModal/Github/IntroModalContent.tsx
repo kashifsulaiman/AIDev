@@ -11,7 +11,7 @@ import { useState } from 'react';
 import Loader from '@/Loader/loading';
 import { GithubIntroModalContentInterface } from '@/types/interface';
 import { usePathname } from 'next/navigation';
-import { useFetchGithubRepos } from '@/utils/github';
+import { fetchGithubRepos } from '@/utils/github';
 
 export default function GithubIntroModalContent({
   handleCloseModal,
@@ -33,7 +33,7 @@ export default function GithubIntroModalContent({
 
   const getGithubRepos = async () => {
     try {
-      const res = await useFetchGithubRepos(githubAuth.token);
+      const res = await fetchGithubRepos(githubAuth.token);
       if (res) {
         setRepos(res);
         setLoader(false);
