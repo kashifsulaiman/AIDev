@@ -101,7 +101,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center rounded-2xl bg-white py-6 pl-6 pr-0 sm:m-auto sm:min-w-[534px] sm:px-8 sm:py-6 ">
+    <div className="flex flex-col justify-center rounded-2xl bg-white p-6 sm:m-auto sm:min-w-[534px] sm:px-8 sm:py-6 ">
       <div className="Scroller-Class max-h-[80vh] overflow-y-auto sm:scrollbar-hide">
         <Formik
           initialValues={initialValues}
@@ -178,14 +178,14 @@ const Login = () => {
                   )}
                 </Button>
               </div>
-              <DividerWithText text="Or continue with"/>
-              <div className='flex w-full flex-col items-center justify-center sm:flex-row'>
-                <GoogleLoginButton/>
-              </div>
             </form>
           )}
         </Formik>
 
+        <DividerWithText text="Or continue with" />
+        <div className='flex w-full flex-col items-center justify-center sm:flex-row'>
+          <GoogleLoginButton />
+        </div>
         <div className="flex flex-col items-center justify-center gap-1 md:mb-0 mt-2 sm:my-6 sm:flex-row">
           <h2 className="text-auth-100 text-xs md:text-sm font-normal text-black sm:text-base">
             Don’t have an account?

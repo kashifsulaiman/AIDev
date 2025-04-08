@@ -1,10 +1,11 @@
 "use client";
 
+import { ApiUrl } from "@/constants/apiUrl";
 import { GoogleIcon } from "../SVG";
 
 export default function GoogleLoginButton() {
   const handleLogin = () => {
-    window.location.href = "http://localhost:5000/auth/google";
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${ApiUrl.GOOGLE_LOGIN}`;
   };
 
   return (
