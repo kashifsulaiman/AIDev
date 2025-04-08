@@ -17,7 +17,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { FiCopy } from 'react-icons/fi';
 import { FaShare } from 'react-icons/fa';
-import { FcGoogle } from "react-icons/fc";
+import { FcGoogle } from 'react-icons/fc';
 
 const DropdownIcon = () => {
   return (

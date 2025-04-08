@@ -101,7 +101,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center rounded-2xl bg-white p-6 sm:m-auto sm:min-w-[534px] sm:px-8 sm:py-6 ">
+    <div className="flex flex-col justify-center rounded-2xl bg-white p-6 sm:m-auto sm:min-w-[534px] sm:px-8 sm:py-6">
       <div className="Scroller-Class max-h-[80vh] overflow-y-auto sm:scrollbar-hide">
         <Formik
           initialValues={initialValues}
@@ -109,12 +109,15 @@ const Login = () => {
           onSubmit={onSubmit}
         >
           {({ isValid, dirty, touched, errors, handleSubmit }) => (
-            <form className="flex flex-col md:gap-2 mr-3" onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-0.5 md:gap-2 sm:gap-4">
+            <form
+              className="mr-3 flex flex-col md:gap-2"
+              onSubmit={handleSubmit}
+            >
+              <div className="flex flex-col gap-0.5 sm:gap-4 md:gap-2">
                 <h2 className="font-Jakarta text-[20px] font-bold text-authgray-100 md:text-[32px]">
                   Login
                 </h2>
-                <Text className="font-Noto text-xs md:text-sm font-normal !text-authgray-100 sm:!text-base">
+                <Text className="font-Noto text-xs font-normal !text-authgray-100 sm:!text-base md:text-sm">
                   Please enter your credentials below to access the application.
                 </Text>
                 <Field
@@ -141,13 +144,13 @@ const Login = () => {
               <div className="mb-2 flex items-center justify-start">
                 <div className="hidden items-center gap-2">
                   <Field component={Checkbox} label={''} name="accept" />
-                  <Text className="font-Jakarta text-xs md:text-sm font-medium !text-authgray-300">
+                  <Text className="font-Jakarta text-xs font-medium !text-authgray-300 md:text-sm">
                     Remember me
                   </Text>
                 </div>
                 <Link
                   href={pagePaths.FORGOT_PASSWORD}
-                  className="font-Jakarta text-xs md:text-sm font-medium !text-authgray-300"
+                  className="font-Jakarta text-xs font-medium !text-authgray-300 md:text-sm"
                 >
                   Forgot password?
                 </Link>
@@ -157,7 +160,7 @@ const Login = () => {
                   label="Login"
                   variant="secondary"
                   colorPrimary
-                  className="h-6 sm:h-12 w-full !rounded-[50px] border border-[#dadada] bg-[#f3f4f6] md:text-sm text-xs text-authgray-100 sm:text-base"
+                  className="h-6 w-full !rounded-[50px] border border-[#dadada] bg-[#f3f4f6] text-xs text-authgray-100 sm:h-12 sm:text-base md:text-sm"
                   type="submit"
                   isDisabled={
                     isLoading || guestIsLoading || !(isValid && dirty)
@@ -165,14 +168,14 @@ const Login = () => {
                   isLoading={isLoading}
                 />
                 <Button
-                  className="flex !h-6 sm:!h-12 w-full items-center rounded-full border border-blueTheme-600 bg-gradient-to-r from-custom-purple to-custom-blue py-[16px] font-Jakarta text-sm font-normal !text-[#ffffff] sm:text-base"
+                  className="flex !h-6 w-full items-center rounded-full border border-blueTheme-600 bg-gradient-to-r from-custom-purple to-custom-blue py-[16px] font-Jakarta text-sm font-normal !text-[#ffffff] sm:!h-12 sm:text-base"
                   onClick={guestLogin}
                   isDisabled={isLoading || guestIsLoading}
                 >
                   {guestIsLoading ? (
                     <Spinner color="white" size="sm" />
                   ) : (
-                    <span className="font-Jakarta text-xs md:text-sm font-normal text-[#ffffff] sm:text-base">
+                    <span className="font-Jakarta text-xs font-normal text-[#ffffff] sm:text-base md:text-sm">
                       Login as guest user
                     </span>
                   )}
@@ -183,15 +186,15 @@ const Login = () => {
         </Formik>
 
         <DividerWithText text="Or continue with" />
-        <div className='flex w-full flex-col items-center justify-center sm:flex-row'>
+        <div className="flex w-full flex-col items-center justify-center sm:flex-row">
           <GoogleLoginButton />
         </div>
-        <div className="flex flex-col items-center justify-center gap-1 md:mb-0 mt-2 sm:my-6 sm:flex-row">
-          <h2 className="text-auth-100 text-xs md:text-sm font-normal text-black sm:text-base">
+        <div className="mt-2 flex flex-col items-center justify-center gap-1 sm:my-6 sm:flex-row md:mb-0">
+          <h2 className="text-auth-100 text-xs font-normal text-black sm:text-base md:text-sm">
             Don’t have an account?
           </h2>
           <Link
-            className="text-auth-100 font-Jakarta text-xs md:text-sm font-medium text-authblue-100 sm:text-base"
+            className="text-auth-100 font-Jakarta text-xs font-medium text-authblue-100 sm:text-base md:text-sm"
             href={pagePaths.SIGNUP}
           >
             Register here!

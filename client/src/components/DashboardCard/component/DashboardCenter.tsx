@@ -6,8 +6,8 @@ import { useStoreState } from 'easy-peasy';
 import { StoreModel } from '@/redux/model';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useStoreActions } from 'easy-peasy';
-import { base64Decode } from "@/utils/utils";
-import React, { useEffect, useRef  } from 'react';
+import { base64Decode } from '@/utils/utils';
+import React, { useEffect, useRef } from 'react';
 import { showToaster } from '@/components/Toaster';
 interface DashboardCenterProps {
   prompts: Prompts[];
@@ -23,13 +23,15 @@ interface Prompts {
 const DashboardCenter = ({ prompts }: DashboardCenterProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const encodedUser = searchParams.get('user')
+  const encodedUser = searchParams.get('user');
   const user = encodedUser ? base64Decode(encodedUser) : null;
 
   const hasRun = useRef(false);
 
   const router = useRouter();
-  const userAction = useStoreActions<StoreModel>((actions) => actions.userObj.add);
+  const userAction = useStoreActions<StoreModel>(
+    (actions) => actions.userObj.add
+  );
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );
@@ -46,7 +48,7 @@ const DashboardCenter = ({ prompts }: DashboardCenterProps) => {
         current.delete('user');
         router.push(`${pathname}${current.toString() ? `?${current}` : ''}`);
       }
-      showToaster(`Google login successful. Welcome, ${user.name}!`, "success");
+      showToaster(`Google login successful. Welcome, ${user.name}!`, 'success');
     }
   }, [user]);
   return (

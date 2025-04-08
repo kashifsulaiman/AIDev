@@ -5,9 +5,9 @@ interface DividerWithTextInterface {
 
 export default function DividerWithText({ text }: DividerWithTextInterface) {
   return (
-    <div className="flex items-center my-1 w-full">
+    <div className="my-1 flex w-full items-center">
       <div className="flex-grow border-t border-gray-300"></div>
-      <span className="mx-4 text-black text-xs md:text-sm">{text}</span>
+      <span className="mx-4 text-xs text-black md:text-sm">{text}</span>
       <div className="flex-grow border-t border-gray-300"></div>
     </div>
   );

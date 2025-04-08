@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { ApiUrl } from "@/constants/apiUrl";
-import { GoogleIcon } from "../SVG";
+import { ApiUrl } from '@/constants/apiUrl';
+import { GoogleIcon } from '../SVG';
 
 export default function GoogleLoginButton() {
   const handleLogin = () => {
@@ -11,10 +11,10 @@ export default function GoogleLoginButton() {
   return (
     <button
       onClick={handleLogin}
-      className="w-full h-6 sm:h-12  px-5 py-4 md:py-2 rounded-full flex items-center justify-center gap-3 border border-gray-300 bg-white hover:shadow-md transition duration-200"
+      className="flex h-6 w-full items-center justify-center gap-3 rounded-full border border-gray-300 bg-white px-5 py-4 transition duration-200 hover:shadow-md sm:h-12 md:py-2"
     >
       <GoogleIcon classes="text-xl" />
-      <span className="text-sm text-black font-medium">Google</span>
+      <span className="text-sm font-medium text-black">Google</span>
     </button>
   );
 }
