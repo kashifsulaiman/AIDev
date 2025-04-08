@@ -109,12 +109,12 @@ const Login = () => {
           onSubmit={onSubmit}
         >
           {({ isValid, dirty, touched, errors, handleSubmit }) => (
-            <form className="flex flex-col gap-4 mr-3 md:gap-2" onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-4 md:gap-2">
-                <h2 className="font-Jakarta text-[28px] font-bold text-authgray-100 md:text-[32px]">
+            <form className="flex flex-col md:gap-2 mr-3" onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-0.5 md:gap-2 sm:gap-4">
+                <h2 className="font-Jakarta text-[20px] font-bold text-authgray-100 md:text-[32px]">
                   Login
                 </h2>
-                <Text className="font-Noto !text-sm font-normal !text-authgray-100 sm:!text-base">
+                <Text className="font-Noto text-xs md:text-sm font-normal !text-authgray-100 sm:!text-base">
                   Please enter your credentials below to access the application.
                 </Text>
                 <Field
@@ -124,9 +124,7 @@ const Login = () => {
                   name="email"
                   placeholder="Enter email"
                   classNames="text-sm sm:text-base focus-visible:border-none border-none focus:outline-none focus-visible:outline-none"
-                  // inputClass="h-full"
-                  // innerWrapperClass="h-full"
-                  // inputWrapperClass="min-h-10 h-10 px-1"
+                  labelClass="text-xs md:text-sm"
                 />
                 <Field
                   component={FormikInput}
@@ -136,32 +134,30 @@ const Login = () => {
                   name="password"
                   placeholder="Enter password"
                   type="password"
-                  classNames="text-sm sm:text-base focus-visible:border-none border-none focus:outline-none focus-visible:outline-none"
-                  // inputClass="h-full"
-                  // innerWrapperClass="h-full"
-                  // inputWrapperClass="min-h-10 h-10 px-1"
+                  classNames="text-xs md:text-sm focus-visible:border-none border-none focus:outline-none focus-visible:outline-none"
+                  labelClass="text-xs md:text-sm"
                 />
               </div>
               <div className="mb-2 flex items-center justify-start">
                 <div className="hidden items-center gap-2">
                   <Field component={Checkbox} label={''} name="accept" />
-                  <Text className="font-Jakarta text-sm font-medium !text-authgray-300">
+                  <Text className="font-Jakarta text-xs md:text-sm font-medium !text-authgray-300">
                     Remember me
                   </Text>
                 </div>
                 <Link
                   href={pagePaths.FORGOT_PASSWORD}
-                  className="font-Jakarta text-sm font-medium !text-authgray-300"
+                  className="font-Jakarta text-xs md:text-sm font-medium !text-authgray-300"
                 >
                   Forgot password?
                 </Link>
               </div>
-              <div className="flex w-full flex-col-reverse items-center justify-center gap-4 sm:flex-row">
+              <div className="flex w-full items-center justify-center gap-4 sm:flex-row">
                 <CButton
                   label="Login"
                   variant="secondary"
                   colorPrimary
-                  className="h-12 w-full !rounded-[50px] border border-[#dadada] bg-[#f3f4f6] text-sm text-authgray-100 sm:text-base"
+                  className="h-6 sm:h-12 w-full !rounded-[50px] border border-[#dadada] bg-[#f3f4f6] md:text-sm text-xs text-authgray-100 sm:text-base"
                   type="submit"
                   isDisabled={
                     isLoading || guestIsLoading || !(isValid && dirty)
@@ -169,14 +165,14 @@ const Login = () => {
                   isLoading={isLoading}
                 />
                 <Button
-                  className="flex !h-12 w-full items-center rounded-full border border-blueTheme-600 bg-gradient-to-r from-custom-purple to-custom-blue px-4 py-3 font-Jakarta text-sm font-normal !text-[#ffffff] sm:text-base"
+                  className="flex !h-6 sm:!h-12 w-full items-center rounded-full border border-blueTheme-600 bg-gradient-to-r from-custom-purple to-custom-blue py-[16px] font-Jakarta text-sm font-normal !text-[#ffffff] sm:text-base"
                   onClick={guestLogin}
                   isDisabled={isLoading || guestIsLoading}
                 >
                   {guestIsLoading ? (
                     <Spinner color="white" size="sm" />
                   ) : (
-                    <span className="font-Jakarta text-sm font-normal text-[#ffffff] sm:text-base">
+                    <span className="font-Jakarta text-xs md:text-sm font-normal text-[#ffffff] sm:text-base">
                       Login as guest user
                     </span>
                   )}
@@ -190,12 +186,12 @@ const Login = () => {
           )}
         </Formik>
 
-        <div className="my-4 flex flex-col items-center justify-center gap-2.5 md:my-3 sm:my-6 sm:flex-row">
-          <h2 className="text-auth-100 text-sm font-normal text-black sm:text-base">
+        <div className="flex flex-col items-center justify-center gap-1 md:mb-0 mt-2 sm:my-6 sm:flex-row">
+          <h2 className="text-auth-100 text-xs md:text-sm font-normal text-black sm:text-base">
             Don’t have an account?
           </h2>
           <Link
-            className="text-auth-100 font-Jakarta text-sm font-medium text-authblue-100 sm:text-base"
+            className="text-auth-100 font-Jakarta text-xs md:text-sm font-medium text-authblue-100 sm:text-base"
             href={pagePaths.SIGNUP}
           >
             Register here!

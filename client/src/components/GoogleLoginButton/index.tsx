@@ -10,7 +10,7 @@ export default function GoogleLoginButton() {
   return (
     <button
       onClick={handleLogin}
-      className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg px-5 py-2 bg-white hover:shadow-md transition duration-200"
+      className="w-full h-6 sm:h-12  px-5 py-4 md:py-2 rounded-full flex items-center justify-center gap-3 border border-gray-300 bg-white hover:shadow-md transition duration-200"
     >
       <GoogleIcon classes="text-xl" />
       <span className="text-sm text-black font-medium">Google</span>
