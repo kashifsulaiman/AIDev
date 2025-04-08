@@ -10,8 +10,8 @@ import {
 import { useState } from 'react';
 import Loader from '@/Loader/loading';
 import { GithubIntroModalContentInterface } from '@/types/interface';
-import { useGithubMutation } from '@/hooks/useGithubMutation';
 import { usePathname } from 'next/navigation';
+import { useFetchGithubRepos } from '@/utils/github';
 
 export default function GithubIntroModalContent({
   handleCloseModal,
@@ -31,20 +31,18 @@ export default function GithubIntroModalContent({
   };
   const [loader, setLoader] = useState<boolean>(false);
 
-  const { mutate: getGithubRepos } = useGithubMutation<
-    void,
-    { full_name: string }[]
-  >({
-    url: '/user/repos',
-    method: 'GET',
-    token: githubAuth.token,
-    onSuccess: (data) => {
-      const reposData = data.map((repo) => ({ label: repo.full_name }));
-      setRepos(reposData);
-      setLoader(false);
-      setCurrentTab('github-import');
-    },
-  });
+  const getGithubRepos = async () => {
+    try {
+      const res = await useFetchGithubRepos(githubAuth.token);
+      if (res) {
+        setRepos(res);
+        setLoader(false);
+        setCurrentTab('github-import');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handleGetGithubRepos = () => {
     setLoader(true);

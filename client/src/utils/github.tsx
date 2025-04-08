@@ -1,37 +1,26 @@
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
 import { RepoItemsType, SelectedRepoType } from '@/types/modalTypes';
 import { Project, ProjectFiles } from '@stackblitz/sdk';
 import { showToaster } from '@/components/Toaster';
 
-export function useFetchGithubRepos(
-  token: string,
-  onSuccess?: (data: SelectedRepoType[]) => void,
-  onError?: (error: any) => void
-) {
-  return useMutation<SelectedRepoType[], unknown, void>(
-    async () => {
-      const response = await axios.get('https://api.github.com/user/repos', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
-        params: {
-          visibility: 'all',
-          affiliation: 'owner,collaborator,organization_member',
-          per_page: 100,
-          page: 1,
-        },
-      });
-      return response.data.map((repo: { full_name: string }) => ({
-        label: repo.full_name,
-      }));
+export async function useFetchGithubRepos(
+  token: string
+): Promise<SelectedRepoType[]> {
+  const response = await axios.get('https://api.github.com/user/repos', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github.v3+json',
     },
-    {
-      onSuccess,
-      onError,
-    }
-  );
+    params: {
+      visibility: 'all',
+      affiliation: 'owner,collaborator,organization_member',
+      per_page: 100,
+      page: 1,
+    },
+  });
+  return response.data.map((repo: { full_name: string }) => ({
+    label: repo.full_name,
+  }));
 }
 
 export async function fetchAllFiles(reponame: string, token: string) {
