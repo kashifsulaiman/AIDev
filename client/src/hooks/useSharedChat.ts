@@ -31,7 +31,7 @@ export const useSharedChat = (
   const shareChat = async (conversationId: string) => {
     if (!conversationId || !user?.id) return;
     setPrompt({ content: inputValue, loader: true });
-    mutate({ conversationId, userId: user.id });
+    mutate({ conversationId, userId: user._id });
   };
 
   return { shareChat };

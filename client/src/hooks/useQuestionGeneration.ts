@@ -54,7 +54,7 @@ export const useQuestionGeneration = (
       setPrompt(newPrompt);
       setConversation({
         conversationId,
-        userId: user.id,
+        userId: user._id,
         messages,
         title,
         unansweredQuestions,
@@ -75,7 +75,7 @@ export const useQuestionGeneration = (
       attributes,
       conversationId: conversation?.conversationId,
       conversationMessages: conversation?.messages,
-      userId: user.id,
+      userId: user._id,
       model: {
         provider: currentModel.provider,
         reasoning: currentModel.reasoning,

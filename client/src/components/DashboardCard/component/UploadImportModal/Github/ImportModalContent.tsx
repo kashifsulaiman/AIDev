@@ -65,7 +65,7 @@ export default function GithubImportModalContent({
     const mutationInput = {
       humanPrompt: `Import ${selectedRepo.label} project from Github and provide a summary`,
       code: code,
-      userId: user.id,
+      userId: user._id,
       githubRepoName: selectedRepo.label,
       model: {
         provider: currentModel.provider,
@@ -109,7 +109,7 @@ export default function GithubImportModalContent({
       };
       const newConversation = {
         _id: conversationId,
-        userId: user.id,
+        userId: user._id,
         githubRepoName: githubRepoName,
         messages,
         title,

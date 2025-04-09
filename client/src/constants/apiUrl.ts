@@ -18,4 +18,5 @@ export const ApiUrl = {
   UPDATE_CONVERSATION: 'users/update-conversation',
   DELETE_CHAT: 'users/delete-chat',
   SHARE_CHAT: 'users/share-chat',
+  GOOGLE_LOGIN: 'auth/google',
 };

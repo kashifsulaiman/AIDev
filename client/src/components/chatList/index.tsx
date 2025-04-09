@@ -21,8 +21,8 @@ const ChatList = () => {
     (state) => state?.conversationModel?.setChatList
   );
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['chatlist'],
-    url: `${ApiUrl.GET_CHAT_LIST}/${user.id}`,
+    queryKey: ['chatlist', user._id],
+    url: `${ApiUrl.GET_CHAT_LIST}/${user._id}`,
     showToast: true,
   });
 
@@ -34,10 +34,7 @@ const ChatList = () => {
 
   useEffect(() => {
     refetch();
-    if (data && !isLoading) {
-      setChatList(data);
-    }
-  }, [prompt.content, prompt.code, conversation.conversationId]);
+  }, [prompt.content, prompt.code, conversation.conversationId, user._id]);
 
   if (isLoading) {
     return (

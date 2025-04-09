@@ -59,7 +59,7 @@ export default function ImportLocalIntroContent({
     const mutationInput = {
       humanPrompt: `Import ${selectedFolderName} project from my PC and provide a summary`,
       code: transformedCode,
-      userId: user.id,
+      userId: user._id,
       model: {
         provider: currentModel.provider,
         reasoning: currentModel.reasoning,
@@ -85,7 +85,7 @@ export default function ImportLocalIntroContent({
       };
       const newConversation = {
         _id: conversationId,
-        userId: user.id,
+        userId: user._id,
         githubRepoName: githubRepoName,
         messages,
         title,

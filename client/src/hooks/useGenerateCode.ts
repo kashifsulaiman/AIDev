@@ -49,7 +49,7 @@ export const useGenerateCode = (
         content: lastMessage.userPrompt,
         loader: false,
       });
-      setConversation({ conversationId, userId: user.id, messages, title });
+      setConversation({ conversationId, userId: user._id, messages, title });
       if (selectedStrategy.id === 'self-prompting') {
         setApiCalled(false);
         setIterationCount(iterationCount + 1);
@@ -64,7 +64,7 @@ export const useGenerateCode = (
       humanPrompt: inputValue,
       attributes,
       conversationId: conversationId || conversation.conversationId,
-      userId: user.id,
+      userId: user._id,
       model: {
         provider: currentModel.provider,
         reasoning: currentModel.reasoning,
