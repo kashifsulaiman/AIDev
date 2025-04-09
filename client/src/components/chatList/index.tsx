@@ -22,7 +22,7 @@ const ChatList = () => {
   );
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['chatlist'],
-    url: `${ApiUrl.GET_CHAT_LIST}/${user.id}`,
+    url: `${ApiUrl.GET_CHAT_LIST}/${user._id}`,
     showToast: true,
   });
 

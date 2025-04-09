@@ -49,7 +49,7 @@ export const useSelfPrompting = (
 
       setConversation({
         conversationId,
-        userId: user.id,
+        userId: user._id,
         messages,
         title,
       });
@@ -64,7 +64,7 @@ export const useSelfPrompting = (
       humanPrompt: inputValue,
       attributes,
       conversationId: conversation?.conversationId,
-      userId: user.id,
+      userId: user._id,
       model: {
         provider: currentModel.provider,
         reasoning: currentModel.reasoning,
