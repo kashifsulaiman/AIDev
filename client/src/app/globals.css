@@ -113,15 +113,15 @@ body {
   transform: scale(1);
 }
 .Scroller-Class::-webkit-scrollbar {
-  width: 5px;
+  width: 0px;
 }
 
 .Scroller-Class::-webkit-scrollbar-track {
-  background: transparent;
+  background: #504e4e;
 }
 
 .Scroller-Class::-webkit-scrollbar-thumb {
-  background: #504e4e40;
+  background: #504e4e;
 }
 
 .Scroller-Class::-webkit-scrollbar-thumb:hover {
