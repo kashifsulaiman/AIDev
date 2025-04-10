@@ -10,7 +10,7 @@ export const useGoogleAuth = () => {
   const hasRun = useRef(false);
   const router = useRouter();
   useEffect(() => {
-    if (hasRun.current) return; // Prevent re-running the logic if already executed
+    if (hasRun.current) return;
     if (pathname.endsWith('main') && token) {
       hasRun.current = true;
       Cookies.set('jwtToken', token);
