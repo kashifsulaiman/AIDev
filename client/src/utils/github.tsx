@@ -23,17 +23,13 @@ export async function fetchGithubRepos(
         page,
       },
     });
-
     const repos = response.data.map((repo: { full_name: string }) => ({
       label: repo.full_name,
     }));
-
     allRepos.push(...repos);
-
     hasMore = response.data.length === 100;
     page += 1;
   }
-
   return allRepos;
 }
 
