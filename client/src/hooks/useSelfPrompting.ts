@@ -110,11 +110,16 @@ export const useSelfPrompting = (
     }
   };
 
-  const handleSelfPromptingFlow = (conversationId?: string) => {
+  const handleSelfPromptingFlow = async (conversationId?: string) => {
     if (conversationId) {
-      generateCode(conversationId);
-    } else {
+      // CASE 1: Resuming with existing conversation
+      await generateCode(conversationId);
       setGenerating(true);
+      setIterationCount(1);
+    } else {
+      // CASE 2: First-time self-prompting
+      await generateCode(); // 👈 First generate code from original prompt
+      setGenerating(true); // 👈 THEN start iterations
       setIterationCount(1);
     }
   };
