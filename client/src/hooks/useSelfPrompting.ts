@@ -7,6 +7,7 @@ import { POST } from '@/hooks/consts';
 import { StoreModel } from '@/redux/model';
 import { extractAttributes } from '@/utils/utils';
 import { useGenerateCode } from '@/hooks/useGenerateCode';
+import { useEffect } from 'react';
 
 export const useSelfPrompting = (
   inputValue: string,
@@ -32,7 +33,10 @@ export const useSelfPrompting = (
   );
   const { setGenerating, setIterationCount, setApiCalled } =
     useStoreActions<StoreModel>((actions) => actions.selfPromptingModel);
-
+  const { selectedIteration, isGenerating, iterationCount, apiCalled } =
+    useStoreState<StoreModel>(
+      (state) => state.selfPromptingModel.selfPromptingIteration
+    );
   const { mutateAsync } = useMutation({
     isToaster: false,
     method: POST,
@@ -57,6 +61,28 @@ export const useSelfPrompting = (
       await generateCode(conversationId);
     },
   });
+
+  const runSelfPromptingIterations = async () => {
+    if (!isGenerating) return;
+    if (iterationCount > selectedIteration) {
+      setGenerating(false);
+      setIterationCount(0);
+      return;
+    }
+
+    try {
+      if (!apiCalled) {
+        await generateSelfPromptingSuggestion();
+      }
+    } catch (error) {
+      console.error('Error during iteration:', error);
+      setGenerating(false);
+    }
+  };
+
+  useEffect(() => {
+    runSelfPromptingIterations();
+  }, [isGenerating, iterationCount]);
 
   const generateSelfPromptingSuggestion = async () => {
     const attributes = extractAttributes(inputValue);
@@ -84,11 +110,16 @@ export const useSelfPrompting = (
     }
   };
 
-  const handleSelfPromptingFlow = (conversationId?: string) => {
+  const handleSelfPromptingFlow = async (conversationId?: string) => {
     if (conversationId) {
-      generateCode(conversationId);
-    } else {
+      // CASE 1: Resuming with existing conversation
+      await generateCode(conversationId);
       setGenerating(true);
+      setIterationCount(1);
+    } else {
+      // CASE 2: First-time self-prompting
+      await generateCode(); // 👈 First generate code from original prompt
+      setGenerating(true); // 👈 THEN start iterations
       setIterationCount(1);
     }
   };
