@@ -6,21 +6,35 @@ import { showToaster } from '@/components/Toaster';
 export async function fetchGithubRepos(
   token: string
 ): Promise<SelectedRepoType[]> {
-  const response = await axios.get('https://api.github.com/user/repos', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github.v3+json',
-    },
-    params: {
-      visibility: 'all',
-      affiliation: 'owner,collaborator,organization_member',
-      per_page: 100,
-      page: 1,
-    },
-  });
-  return response.data.map((repo: { full_name: string }) => ({
-    label: repo.full_name,
-  }));
+  const allRepos: SelectedRepoType[] = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    const response = await axios.get('https://api.github.com/user/repos', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github.v3+json',
+      },
+      params: {
+        visibility: 'all',
+        affiliation: 'owner,collaborator,organization_member',
+        per_page: 100,
+        page,
+      },
+    });
+
+    const repos = response.data.map((repo: { full_name: string }) => ({
+      label: repo.full_name,
+    }));
+
+    allRepos.push(...repos);
+
+    hasMore = response.data.length === 100;
+    page += 1;
+  }
+
+  return allRepos;
 }
 
 export async function fetchAllFiles(reponame: string, token: string) {

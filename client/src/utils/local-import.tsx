@@ -87,7 +87,10 @@ export function handleHTMLAndPackageJson(filesObject: ProjectFiles) {
   if (hasPackageJson || htmlFile.length) {
     return true;
   } else {
-    showToaster("Project doesn't contain HTML file or Package.json", 'error');
+    showToaster(
+      'No entry point found. Please provide either a package.json file or an HTML file.',
+      'error'
+    );
     return false;
   }
 }

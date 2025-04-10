@@ -97,7 +97,7 @@ export default function ImportLocalIntroContent({
         title,
         refinementRequired: false,
       };
-      showToaster('Project imported frpm your PC', 'success');
+      showToaster('Project imported from your PC', 'success');
       setPrompt(newPrompt);
       setConversation(newConversation);
       router.push(`/overview/${conversationId}`);
