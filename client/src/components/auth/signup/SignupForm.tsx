@@ -2,8 +2,10 @@
 
 import { CButton } from '@/common/button';
 import Checkbox from '@/common/Checkbox';
+import DividerWithText from '@/common/DividerWithText';
 import { FormikInput } from '@/common/Input';
 import Text from '@/common/text/Index';
+import GoogleLoginButton from '@/components/GoogleLoginButton';
 import { ApiUrl } from '@/constants/apiUrl';
 import { pagePaths } from '@/constants/pagePath';
 import { POST } from '@/hooks/consts';
@@ -43,20 +45,20 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex w-full flex-col justify-center rounded-2xl bg-white p-6 sm:min-w-[534px] sm:px-10 sm:py-12 md:mx-auto">
-      <div className="Scroller-Class max-h-[72vh] overflow-y-auto scrollbar-hide">
+    <div className="flex w-full flex-col justify-center rounded-2xl bg-white p-6 sm:min-w-[534px] sm:px-6 sm:pb-6 sm:pt-3 md:mx-auto">
+      <div className="Scroller-Class max-h-[80vh] overflow-y-auto scrollbar-hide">
         <Formik
           initialValues={initialValues}
           validationSchema={signUpFormSchema}
           onSubmit={onSubmit}
         >
           {({ isValid, dirty, touched, errors, handleSubmit }) => (
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-4">
+            <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+              <div className="flex flex-col">
                 <h2 className="font-Jakarta text-[28px] font-bold text-authgray-100 md:text-[32px]">
                   Create Account
                 </h2>
-                <Text className="font-Jakarta text-sm font-normal !text-authgray-100 sm:text-base">
+                <Text className="mb-3 font-Jakarta text-sm font-normal !text-authgray-100 sm:text-base">
                   Sign up for a new account
                 </Text>
                 <Field
@@ -119,7 +121,11 @@ const SignUpForm = () => {
             </form>
           )}
         </Formik>
-        <div className="mb-3 flex flex-col items-center justify-center gap-2.5 sm:my-6 sm:flex-row">
+        <DividerWithText text="Or continue with" />
+        <div className="flex w-full flex-col items-center justify-center sm:flex-row">
+          <GoogleLoginButton />
+        </div>
+        <div className="flex flex-col items-center justify-center gap-2.5 sm:mt-3 sm:flex-row">
           <h2 className="text-sm font-normal text-[#0F172A] sm:text-base">
             Already have an account?
           </h2>

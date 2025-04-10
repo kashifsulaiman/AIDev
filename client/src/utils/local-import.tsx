@@ -1,4 +1,6 @@
+import { showToaster } from '@/components/Toaster';
 import { RepoItemsType } from '@/types/modalTypes';
+import { ProjectFiles } from '@stackblitz/sdk';
 
 export async function getFolderContents(): Promise<{
   folderName: string;
@@ -72,4 +74,23 @@ export function transformFilesToObject(files: RepoItemsType[]): {
   }
 
   return result;
+}
+
+export function handleHTMLAndPackageJson(filesObject: ProjectFiles) {
+  const hasPackageJson = Object.keys(filesObject).some((path) =>
+    path.includes('package.json')
+  );
+  const htmlFile = Object.keys(filesObject).filter((path) =>
+    path.endsWith('.html')
+  );
+
+  if (hasPackageJson || htmlFile.length) {
+    return true;
+  } else {
+    showToaster(
+      'No entry point found. Please provide either a package.json file or an HTML file.',
+      'error'
+    );
+    return false;
+  }
 }
