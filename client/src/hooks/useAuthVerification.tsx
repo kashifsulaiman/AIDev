@@ -9,9 +9,11 @@ import { useStoreActions } from 'easy-peasy';
 export const useAuthVerification = () => {
   const pathName = usePathname();
   const jwtToken = Cookies.get('jwtToken');
-  const userAction = useStoreActions<StoreModel>((actions) => actions.userObj.add);
+  const userAction = useStoreActions<StoreModel>(
+    (actions) => actions.userObj.add
+  );
 
-  const { data, isLoading } = useQuery<any>({
+  const { data, isLoading } = useQuery<StoreModel>({
     queryKey: [pathName],
 
     url: ApiUrl?.VERIFY_TOKEN,
@@ -26,5 +28,5 @@ export const useAuthVerification = () => {
     } else {
       Cookies.remove('jwtToken');
     }
-  }, [data, isLoading])
+  }, [data, isLoading, jwtToken]);
 };

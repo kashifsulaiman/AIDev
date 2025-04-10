@@ -17,7 +17,7 @@ interface Prompts {
   question?: string;
 }
 const DashboardCenter = ({ prompts }: DashboardCenterProps) => {
-  useGoogleAuth()
+  useGoogleAuth();
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );

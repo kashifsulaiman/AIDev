@@ -8,7 +8,7 @@ export const middleware = (request: any) => {
   const token = request.cookies.get('jwtToken')?.value;
   const tokenInQuery = request.nextUrl.searchParams.get('authToken');
   if (tokenInQuery && request.nextUrl.pathname === pagePaths.MAIN) {
-    return NextResponse.next()
+    return NextResponse.next();
   }
 
   const isPrivateRoute = PRIVATE_ROUTES.some((route) => {

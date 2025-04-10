@@ -9,7 +9,6 @@ export const useGoogleAuth = () => {
   const token = searchParams.get('authToken');
   const hasRun = useRef(false);
   const router = useRouter();
- 
   useEffect(() => {
     if (hasRun.current) return; // Prevent re-running the logic if already executed
     if (pathname.endsWith('main') && token) {
@@ -21,6 +20,4 @@ export const useGoogleAuth = () => {
       showToaster(`Logged in with Google successfully!`, 'success');
     }
   }, [token]);
-
-
 };
