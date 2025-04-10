@@ -6,7 +6,7 @@ import { showToaster } from '@/components/Toaster';
 export const useGoogleAuth = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
+  const token = searchParams.get('authToken');
   const hasRun = useRef(false);
   const router = useRouter();
  
@@ -16,7 +16,7 @@ export const useGoogleAuth = () => {
       hasRun.current = true;
       Cookies.set('jwtToken', token);
       const current = new URLSearchParams(searchParams.toString());
-      current.delete('token');
+      current.delete('authToken');
       router.push(`${pathname}${current.toString() ? `?${current}` : ''}`);
       showToaster(`Logged in with Google successfully!`, 'success');
     }
