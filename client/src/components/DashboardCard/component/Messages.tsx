@@ -12,7 +12,7 @@ import { ApiUrl } from '@/constants/apiUrl';
 import { RollbackIcon } from '@/components/SVG';
 import { useSearchParams } from 'next/navigation';
 import { decrypt } from '@/utils/encryption';
-const AiQuestions = () => {
+const Messages = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('shareToken');
   const sharedId = token ? decrypt(token) : null;
@@ -181,4 +181,4 @@ const AiQuestions = () => {
   );
 };
 
-export default AiQuestions;
+export default Messages;
