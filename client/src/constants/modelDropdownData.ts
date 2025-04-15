@@ -25,8 +25,8 @@ export const AIModelData: AIModelType[] = [
   {
     provider: 'gemini',
     reasoning: true,
-    model: 'gemini-2.5-pro-preview-03-25',
-    label: 'Gemini 2.5 Pro (Thinking)',
+    model: 'gemini-2.5-pro-exp-03-25',
+    label: 'Gemini 2.5 Pro exp (Thinking)',
     img: '/asstes/images/google-gemini-icon.png',
   },
   {
