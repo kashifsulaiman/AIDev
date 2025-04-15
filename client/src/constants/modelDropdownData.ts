@@ -22,4 +22,18 @@ export const AIModelData: AIModelType[] = [
     label: 'Open AI o3-mini (Thinking)',
     img: '/asstes/images/openai-icon.png',
   },
+  {
+    provider: 'gemini',
+    reasoning: true,
+    model: 'gemini-2.5-pro-preview-03-25',
+    label: 'Gemini 2.5 Pro (Thinking)',
+    img: '/asstes/images/google-gemini-icon.png',
+  },
+  {
+    provider: 'gemini',
+    reasoning: false,
+    model: 'gemini-2.0-flash',
+    label: 'Gemini 2.0 Flash',
+    img: '/asstes/images/google-gemini-icon.png',
+  },
 ];
