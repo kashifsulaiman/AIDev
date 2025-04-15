@@ -6,3 +6,4 @@ export const GITHUB_TOKEN_REGEX = [
   /^github_pat_\w{22}_\w{59}$/,
   /^gh[posru]_\w{36}$/,
 ];
+export const GITHUB_REPONAME_REGEX = /^(?!.*\.\.)(?!\.)[a-zA-Z0-9._-]+(?<!\.)$/;

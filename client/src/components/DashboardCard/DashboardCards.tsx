@@ -4,8 +4,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import DashboardCard from './component/DashboardCard';
 import { Icons } from '../SideBar';
 import { useStoreState } from 'easy-peasy';
-import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
+import StagesLoader from './overview/StagesLoader';
 interface CardData {
   title: string;
   description: string;
@@ -41,10 +41,8 @@ const DashboardCards = ({ data }: DashboardCardsProps) => {
 
   if (promptData.loader)
     return (
-      <div className="mt-10 flex size-full h-full items-center justify-center">
-        <div className="size-20">
-          <Loader Color="#961CBE" height="50px" width="50px" />
-        </div>
+      <div className="mt-10 flex h-full flex-col items-start justify-center text-xl">
+        <StagesLoader />
       </div>
     );
 

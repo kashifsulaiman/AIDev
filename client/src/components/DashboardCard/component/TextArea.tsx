@@ -5,13 +5,13 @@ import { Textarea, Button } from '@nextui-org/react';
 import { Addicon } from '@/components/SVG';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ApiUrl } from '@/constants/apiUrl';
-import { POST } from '@/hooks/consts';
-import { useMutation } from '@/hooks/useMutation';
-import { extractAttributes } from '@/utils/utils';
 import Loader from '@/Loader/loading';
 import { StoreModel } from '@/redux/model';
-import { MessageInterface } from '@/redux/model/conversationModel';
+import { useGenerateCode } from '@/hooks/useGenerateCode';
+import { useQuestionGeneration } from '@/hooks/useQuestionGeneration';
+import { useSelfPrompting } from '@/hooks/useSelfPrompting';
+import { decrypt } from '@/utils/encryption';
+import { useSharedChat } from '@/hooks/useSharedChat';
 
 const TextArea = ({
   prompt,
@@ -19,183 +19,79 @@ const TextArea = ({
   // isExpanded,
   ...props
 }: any) => {
+  const [inputValue, setInputValue] = useState('');
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const promptData = useStoreState<StoreModel>(
-    (state) => state?.promptModel?.prompt
-  );
+  const token = searchParams.get('shareToken');
+  const sharedId = token ? decrypt(token) : null;
+  const { generateCode } = useGenerateCode(inputValue, setInputValue);
+  const { handleQuestions } = useQuestionGeneration(inputValue, setInputValue);
+  const { generateSelfPromptingSuggestion, handleSelfPromptingFlow } =
+    useSelfPrompting(inputValue, setInputValue);
+  const { shareChat } = useSharedChat(inputValue, setInputValue);
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
   );
-  const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
-  const setPrompt = useStoreActions<StoreModel>(
-    (actions) => actions?.promptModel?.setPrompt
+  const { selectedIteration, isGenerating, iterationCount, apiCalled } =
+    useStoreState<StoreModel>(
+      (state) => state.selfPromptingModel.selfPromptingIteration
+    );
+  const { setGenerating, setIterationCount } = useStoreActions<StoreModel>(
+    (actions) => actions.selfPromptingModel
   );
-  const { setConversation, addMessage } = useStoreActions<StoreModel>(
-    (actions) => actions.conversationModel
+  const promptData = useStoreState<StoreModel>(
+    (state) => state?.promptModel?.prompt
   );
-  const selectedStrategy = useStoreState<StoreModel>(
-    (state) => state.promptingStrategyModel.strategy
+  const { strategy: selectedStrategy } = useStoreState<StoreModel>(
+    (state) => state.promptingStrategyModel
   );
-  const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     setInputValue(prompt?.question || '');
   }, [prompt]);
 
-  const currentModel = useStoreState<StoreModel>(
-    (state) => state.aiModel.model
-  );
+  const runSelfPromptingIterations = async () => {
+    if (!isGenerating) return;
+    if (iterationCount > selectedIteration) {
+      setGenerating(false);
+      setIterationCount(0);
+      return;
+    }
 
-  const { mutate } = useMutation({
-    isToaster: false,
-    method: POST,
-    url: ApiUrl.GENERATE_AI_RESPONSE,
-    onSuccess: (res) => {
-      const { conversationId, messages, title } = res?.data;
-      const lastMessage = messages[messages.length - 1];
-      const newPrompt = {
-        code: lastMessage.code,
-        content: lastMessage.userPrompt,
-        loader: false,
-      };
-      const newConversation = {
-        _id: conversationId,
-        userId: user.id,
-        messages,
-        title,
-      };
-      setPrompt(newPrompt);
-      setConversation(newConversation);
-      router.push(`/overview/${conversationId}`);
-    },
-  });
-
-  const { mutate: questionMutate } = useMutation({
-    isToaster: false,
-    method: POST,
-    url: ApiUrl.GENERATE_AI_QUESTIONS,
-    onSuccess: (res) => {
-      const { conversationId, messages, title, questionStatus } = res?.data;
-      const lastMessage = messages[messages.length - 1];
-      const newPrompt = {
-        code: lastMessage.code,
-        content: lastMessage.userPrompt,
-        loader: false,
-      };
-      const unansweredQuestions = messages.filter(
-        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
-      );
-      const unansweredQuestionIndex = messages.findIndex(
-        (msg: MessageInterface) => msg.isQuestion && !msg.userPrompt
-      );
-      const newConversation = {
-        conversationId,
-        userId: user.id,
-        messages,
-        title,
-        unansweredQuestions,
-        unansweredQuestionIndex,
-        questionStatus,
-      };
-      setPrompt(newPrompt);
-      setConversation(newConversation);
-      if (questionStatus === 'completed') {
-        generateCode();
+    try {
+      if (!apiCalled) {
+        await generateSelfPromptingSuggestion();
       }
-    },
-  });
-
-  const generateCode = async () => {
-    const attributes = extractAttributes(inputValue);
-    const mutationInput = {
-      humanPrompt: inputValue,
-      attributes,
-      conversationId: conversation.conversationId,
-      userId: user.id,
-      model: {
-        provider: currentModel.provider,
-        reasoning: currentModel.reasoning,
-        aiModel: currentModel.model,
-      },
-      promptingStrategy: selectedStrategy.id,
-    };
-    if (conversation.unansweredQuestionIndex === -1) {
-      const newMessages = {
-        userPrompt: inputValue,
-        aiResponse: '',
-        code: null,
-        id: '',
-        textResponse: '',
-        isQuestion: false,
-      };
-      addMessage(newMessages);
-    }
-    setPrompt({ question: inputValue, loader: true });
-    mutate(mutationInput);
-    setInputValue('');
-  };
-
-  const generateQuestion = async () => {
-    const attributes = extractAttributes(inputValue);
-    const mutationInput = {
-      humanPrompt: inputValue,
-      attributes,
-      conversationId: conversation?.conversationId,
-      conversationMessages: conversation?.messages,
-      userId: user.id,
-      model: {
-        provider: currentModel.provider,
-        reasoning: currentModel.reasoning,
-        aiModel: currentModel.model,
-      },
-    };
-    setPrompt({ question: inputValue, loader: true });
-    questionMutate(mutationInput);
-    setInputValue('');
-  };
-
-  const updateUnansweredQuestion = () => {
-    const updatedMessages = [...conversation.messages];
-    updatedMessages[conversation.unansweredQuestionIndex].userPrompt =
-      inputValue;
-    const nextUnansweredIndex = conversation.unansweredQuestionIndex + 1;
-    const allAnswered =
-      nextUnansweredIndex > conversation.unansweredQuestions.length;
-    setConversation({
-      ...conversation,
-      messages: updatedMessages,
-      unansweredQuestionIndex: allAnswered ? -1 : nextUnansweredIndex,
-    });
-    setInputValue('');
-    if (allAnswered) generateQuestion();
-  };
-
-  const handleQuestions = () => {
-    if (!conversation.conversationId) {
-      if (pathname.endsWith('main')) {
-        const current = new URLSearchParams(searchParams.toString());
-        current.delete('promptType');
-        router.push(`${pathname}${current.toString() ? `?${current}` : ''}`);
-      }
-      return generateQuestion();
-    }
-
-    if (conversation.questionStatus === 'pending') {
-      return updateUnansweredQuestion();
-    }
-
-    if (['completed', 'saved'].includes(conversation.questionStatus)) {
-      return generateCode();
+    } catch (error) {
+      console.error('Error during iteration:', error);
+      setGenerating(false);
     }
   };
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    runSelfPromptingIterations();
+  }, [isGenerating, iterationCount]);
+
+  const handleSubmit = async () => {
     if (!inputValue.length) return;
+
+    if (pathname.endsWith('main')) {
+      const current = new URLSearchParams(searchParams.toString());
+      current.delete('promptType');
+      router.push(`${pathname}${current.toString() ? `?${current}` : ''}`);
+    }
+
+    if (sharedId && sharedId === conversation.conversationId) {
+      shareChat(conversation.conversationId);
+      return;
+    }
+
     if (selectedStrategy.id === 'prompt-refinement') {
       generateCode();
     } else if (selectedStrategy.id === 'guided-prompting') {
       handleQuestions();
+    } else if (selectedStrategy.id === 'self-prompting') {
+      handleSelfPromptingFlow(conversation.conversationId);
     }
   };
 

@@ -61,6 +61,9 @@ export default function MainSideBar() {
   const clearConversation = useStoreActions<StoreModel>(
     (actions) => actions?.conversationModel?.clearConversation
   );
+  const clearSelfPromptingIteration = useStoreActions<StoreModel>(
+    (actions) => actions?.selfPromptingModel?.clearSelfPromptingIteration
+  );
 
   useEffect(() => {
     const fetchPrompts = async () => {
@@ -92,6 +95,7 @@ export default function MainSideBar() {
     if (label === 'Dashboard') {
       clearPrompt();
       clearConversation();
+      clearSelfPromptingIteration();
     }
     setPrompt(null);
     if (window.innerWidth < 992) {
@@ -188,7 +192,7 @@ export default function MainSideBar() {
         )}
         <Divider className="mt-3" />
         <div
-          className={`max-h-56 overflow-hidden ${isCollapsed ? 'hidden' : 'justify-between px-8'} flex items-center py-2`}
+          className={`max-h-56 overflow-hidden ${isCollapsed ? 'hidden' : 'justify-between px-2'} flex items-center py-2`}
         >
           <ChatList />
         </div>

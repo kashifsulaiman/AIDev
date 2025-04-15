@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Loader from '@/Loader/loading';
 import { Listbox, ListboxItem } from '@nextui-org/react';
 import { StoreModel } from '@/redux/model';
+import { DeleteChatButton } from '../DashboardCard/component/DeleteChatButton';
+import { ShareLinkButton } from '../DashboardCard/component/ShareLinkButton';
 
 const ChatList = () => {
   const user = useStoreState<StoreModel>((state) => state?.userObj?.UserObj);
@@ -19,8 +21,8 @@ const ChatList = () => {
     (state) => state?.conversationModel?.setChatList
   );
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['chatlist'],
-    url: `${ApiUrl.GET_CHAT_LIST}/${user.id}`,
+    queryKey: ['chatlist', user._id],
+    url: `${ApiUrl.GET_CHAT_LIST}/${user._id}`,
     showToast: true,
   });
 
@@ -32,10 +34,7 @@ const ChatList = () => {
 
   useEffect(() => {
     refetch();
-    if (data && !isLoading) {
-      setChatList(data);
-    }
-  }, [prompt.content, prompt.code]);
+  }, [prompt.content, prompt.code, conversation.conversationId, user._id]);
 
   if (isLoading) {
     return (
@@ -56,20 +55,28 @@ const ChatList = () => {
         >
           {conversation.chatList.map((chat: any, index: number) => (
             <ListboxItem
-              key={`menu-${chat.id}-${index}`}
-              className="flex items-center justify-center text-[#64748B]"
+              key={`menu-${chat._id}-${index}`}
+              className="text-[#64748B] hover:!bg-purple-white-gradient hover:!text-white"
               classNames={{
                 base: 'rounded-[99px] p-2 w-auto',
+                title: 'flex items-center justify-between',
               }}
               textValue={chat.title}
             >
               <Link
                 href={`${process.env.NEXT_PUBLIC_SITE_URL}/overview/${chat._id}`}
+                className="flex-1 px-3 py-1"
               >
-                <span className="font-Jakarta text-sm font-medium">
-                  {chat.title.slice(0, 20) + '...'}
+                <span className="block w-36 overflow-hidden text-ellipsis whitespace-nowrap font-Jakarta text-sm font-medium">
+                  {chat.title}
                 </span>
               </Link>
+              <DeleteChatButton chatId={chat._id} />
+              <ShareLinkButton
+                chatId={chat._id}
+                buttonClassName="h-5 min-w-fit rounded-none bg-transparent !pl-0 !pr-2 text-inherit "
+                iconClassName="w-4 h-4 text-inherit hover:!text-gray-400 "
+              />
             </ListboxItem>
           ))}
         </Listbox>

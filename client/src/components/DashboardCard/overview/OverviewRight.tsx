@@ -10,18 +10,25 @@ import { BackArrowIcon, CodeIcon } from '@/components/SVG';
 import { StackblitzSettingMain } from '@/constants/stackblitz';
 import { StoreModel } from '@/redux/model';
 import { DiffCodeAndSendChanges } from '@/utils/stackblitz';
+import { ShareLinkButton } from '../component/ShareLinkButton';
 
 const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
-  const { loader, code } = useStoreState<StoreModel>(
+  const { loader, code, startCommand } = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
-
+  const conversation = useStoreState<StoreModel>(
+    (state) => state?.conversationModel?.conversation
+  );
   const sdkRef = useRef(null);
   const [firstInstance, setFirstInstance] = useState<boolean>(false);
 
   useEffect(() => {
-    if (code && sdkRef.current && !firstInstance) {
-      StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
+    if (code && sdkRef.current && !firstInstance && startCommand) {
+      StackBlitzSDK.embedProject(
+        'embed',
+        code,
+        StackblitzSettingMain(startCommand)
+      );
       setFirstInstance(true);
     } else if (code && sdkRef.current) {
       handleCheckDependencyAndCreateInstance();
@@ -37,7 +44,11 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
     }
     const updatedCode = DiffCodeAndSendChanges(oldCode, code.files);
     if (updatedCode.create['package.json']) {
-      StackBlitzSDK.embedProject('embed', code, StackblitzSettingMain);
+      StackBlitzSDK.embedProject(
+        'embed',
+        code,
+        StackblitzSettingMain(startCommand)
+      );
     } else {
       vm.applyFsDiff(updatedCode);
     }
@@ -61,8 +72,19 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
         </div>
       ) : (
         <>
-          <div className="absolute right-6 top-4 z-10 flex items-end justify-end gap-4 rounded-lg border-4 border-white">
-            <div className="group relative flex size-8 items-center justify-center rounded bg-custom-gradient p-2">
+          <div className="absolute right-6 top-4 z-10 flex items-end justify-end gap-2">
+            <div className="group relative flex opacity-100">
+              <ShareLinkButton
+                chatId={conversation.conversationId}
+                buttonClassName="h-8 min-w-fit px-2 bg-custom-gradient rounded-lg border-4 border-white opacity-100"
+                iconClassName="text-white"
+              />
+              <div className="absolute left-1/2 top-full mt-1 w-max -translate-x-1/2 scale-0 transform rounded bg-gray-800 p-1 text-xs text-white opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+                Share
+              </div>
+            </div>
+
+            <div className="group relative flex size-8 items-center justify-center rounded-lg border-4 border-white bg-custom-gradient p-2">
               {view ? (
                 <button
                   className="text-2xl text-white"
@@ -72,7 +94,7 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
                 </button>
               ) : (
                 <button
-                  className="text-2xl text-white"
+                  className="text-xl text-white"
                   onClick={() => togglePreview('preview')}
                 >
                   <BackArrowIcon />

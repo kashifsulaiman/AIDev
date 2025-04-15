@@ -2,8 +2,22 @@ import { VscPreview } from 'react-icons/vsc';
 import { TiArrowBack } from 'react-icons/ti';
 import { IconInterface } from '@/types/interface';
 import { TbArrowBack, TbBrandGithubFilled } from 'react-icons/tb';
-import { FaCheck } from 'react-icons/fa';
-import { IoMdArrowDropdown } from 'react-icons/io';
+import {
+  FaCheck,
+  FaCheckSquare,
+  FaFile,
+  FaMinusSquare,
+  FaRegFolder,
+  FaRegSquare,
+} from 'react-icons/fa';
+import { IoMdArrowDropdown, IoMdCloudUpload } from 'react-icons/io';
+import { GoDownload, GoUpload } from 'react-icons/go';
+import { AiOutlineDisconnect } from 'react-icons/ai';
+import { FaTrashAlt } from 'react-icons/fa';
+import { HiDotsHorizontal } from 'react-icons/hi';
+import { FiCopy } from 'react-icons/fi';
+import { FaShare } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 
 const DropdownIcon = () => {
   return (
@@ -2515,6 +2529,62 @@ const GithubIcon = ({ classes }: IconInterface) => {
   return <TbBrandGithubFilled className={classes} />;
 };
 
+const UploadIcon = ({ classes }: IconInterface) => {
+  return <GoUpload className={classes} />;
+};
+
+const DownloadIcon = ({ classes }: IconInterface) => {
+  return <GoDownload className={classes} />;
+};
+
+const DisconnectIcon = ({ classes }: IconInterface) => {
+  return <AiOutlineDisconnect className={classes} />;
+};
+
+const TrashIcon = ({ classes }: IconInterface) => {
+  return <FaTrashAlt className={classes} />;
+};
+
+const SettingsIcon = ({ classes }: IconInterface) => {
+  return <HiDotsHorizontal className={classes} />;
+};
+
+const FolderIcon = ({ classes }: IconInterface) => {
+  return <FaRegFolder className={classes} />;
+};
+
+const FileIcon = ({ classes }: IconInterface) => {
+  return <FaFile className={classes} />;
+};
+
+const CloudUploadIcon = ({ classes }: IconInterface) => {
+  return <IoMdCloudUpload className={classes} />;
+};
+
+const EmptyCheckboxIcon = ({ classes }: IconInterface) => {
+  return <FaRegSquare className={classes} />;
+};
+
+const CheckboxIcon = ({ classes }: IconInterface) => {
+  return <FaCheckSquare className={classes} />;
+};
+
+const PartialCheckboxIcon = ({ classes }: IconInterface) => {
+  return <FaMinusSquare className={classes} />;
+};
+
+const FileShareIcon = ({ classes }: IconInterface) => {
+  return <FaShare className={classes} />;
+};
+
+const CopyToClipboardIcon = ({ classes }: IconInterface) => {
+  return <FiCopy className={classes} />;
+};
+
+const GoogleIcon = ({ classes }: IconInterface) => {
+  return <FcGoogle className={classes} />;
+};
+
 export {
   Platform,
   ExploreStudio,
@@ -2565,4 +2635,18 @@ export {
   ArrowDropdownIcon,
   DropdownCheckIcon,
   GithubIcon,
+  UploadIcon,
+  DownloadIcon,
+  DisconnectIcon,
+  TrashIcon,
+  SettingsIcon,
+  FolderIcon,
+  CloudUploadIcon,
+  FileIcon,
+  CheckboxIcon,
+  EmptyCheckboxIcon,
+  PartialCheckboxIcon,
+  FileShareIcon,
+  CopyToClipboardIcon,
+  GoogleIcon,
 };

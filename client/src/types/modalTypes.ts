@@ -1,3 +1,7 @@
+import React from 'react';
+import { UseMutateFunction } from '@tanstack/react-query';
+import { Dispatch, SetStateAction } from 'react';
+
 export type SignupModelType = {
   form: string;
   email: string;
@@ -35,9 +39,56 @@ export type PromptingStrategyType = {
   id: string;
   label: string;
   description?: string;
+  element?: () => React.ReactNode;
 };
 
 export type GithubAuthModelType = {
   token: string | null;
   username: string | null;
+};
+
+export type SelfPromptingIterationType = {
+  isGenerating: boolean;
+  iterationCount: number;
+  selectedIteration: number;
+  conversationId: string | null;
+  lastGeneratedIteration: number;
+  apiCalled: boolean;
+};
+
+export type FileManagerSectionProps = {
+  folderItems: RepoItemsType[] | null;
+  selectedRepo: SelectedRepoType;
+  selectedItems: RepoItemsType[] | null;
+  setSelectedItems: Dispatch<SetStateAction<RepoItemsType[] | null>>;
+};
+
+export type SelectedRepoType = {
+  label: string;
+};
+
+export type RepoItemsType = {
+  name: string;
+  type?: string;
+  size: number;
+  content?: string;
+};
+
+export type FetchFileContentParams = {
+  fileSha: string;
+};
+
+export type UseGithubMutationReturn<T, K> = {
+  isLoading: boolean;
+  mutate: UseMutateFunction<K, unknown, T | undefined, unknown>;
+};
+
+export type UseGithubMutationProps<T, K> = {
+  url: string;
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  token: string;
+  data?: T;
+  onSuccess?: (data: K) => void;
+  onError?: (error: any) => void;
+  showToast?: boolean;
 };

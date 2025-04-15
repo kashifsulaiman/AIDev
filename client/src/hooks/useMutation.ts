@@ -13,6 +13,7 @@ type UseMutationReturn<T, K> = {
   data?: K;
   isLoading: boolean;
   mutate: UseMutateFunction<ApiResult<K>, unknown, T, unknown>;
+  mutateAsync: (variables: T) => Promise<ApiResult<K>>;
 };
 
 type ApiResult<K> = {
@@ -31,6 +32,7 @@ type ApiResult<K> = {
   errors?: Array<string>;
   status?: number;
   Message?: string;
+  success?: boolean;
 };
 
 type UseMutationProps<T, K> = {
@@ -112,10 +114,14 @@ export const useMutation = <T, K = T>({
     data: fetchedData,
     isLoading,
     mutate,
+    mutateAsync,
   } = useRMutation<ApiResult<K>, unknown, T>(
     async (data: T) => {
       deleteConfig(method, data);
-      const res = await axios({ ...config, data });
+      const res = await axios({
+        ...config,
+        ...(method === DELETE ? { data: undefined } : { data }),
+      });
       return res.data;
     },
     {
@@ -144,5 +150,5 @@ export const useMutation = <T, K = T>({
     }
   );
 
-  return { ...fetchedData, isLoading, mutate };
+  return { ...fetchedData, isLoading, mutate, mutateAsync };
 };

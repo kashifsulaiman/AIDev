@@ -10,6 +10,7 @@ export interface Prompt {
   code: Project | null;
   content: string;
   loader: boolean;
+  startCommand: string | null;
 }
 
 export interface PromptModel {
@@ -27,6 +28,7 @@ const initialPrompt: Prompt = {
   code: null,
   content: '',
   loader: false,
+  startCommand: null,
 };
 
 const promptModel: PromptModel = {

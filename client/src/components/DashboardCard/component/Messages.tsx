@@ -10,8 +10,12 @@ import { useMutation } from '@/hooks/useMutation';
 import { POST } from '@/hooks/consts';
 import { ApiUrl } from '@/constants/apiUrl';
 import { RollbackIcon } from '@/components/SVG';
-
+import { useSearchParams } from 'next/navigation';
+import { decrypt } from '@/utils/encryption';
 const AiQuestions = () => {
+  const searchParams = useSearchParams();
+  const token = searchParams.get('shareToken');
+  const sharedId = token ? decrypt(token) : null;
   const { loader, code } = useStoreState<StoreModel>(
     (state) => state?.promptModel?.prompt
   );
@@ -104,11 +108,26 @@ const AiQuestions = () => {
               </div>
             )}
 
+            {msg.isSuggestion && msg.textResponse && (
+              <div className="ml-20 flex flex-col items-end">
+                <GenericImage
+                  className="z-[3] mb-2 mt-2 w-6 md:mb-1"
+                  alt="profile avatar"
+                  src="/asstes/images/ad-dashboard.png"
+                  classNames={{ img: 'w-9' }}
+                />
+                <div className="leading-2 max-h-auto mr-8 w-[100%] rounded-2xl rounded-se-none bg-custom-purple p-4 font-Jakarta text-[16px] font-normal text-white">
+                  {msg.textResponse}
+                </div>
+              </div>
+            )}
+
             {!msg.isQuestion &&
+              !msg.isSuggestion &&
               !(
                 (selectedStrategy.id === 'guided-prompting' ||
                   selectedStrategy.id === 'self-prompting') &&
-                index === 0 &&
+                !index &&
                 !msg.textResponse
               ) && (
                 <div className="mr-20 flex flex-col items-start">
@@ -131,10 +150,17 @@ const AiQuestions = () => {
             {conversation.messages &&
               !loader &&
               code &&
+              !sharedId &&
               conversation.messages.length &&
               !(code === msg.code) &&
-              !msg.isQuestion && (
-                <div className="group absolute -bottom-4 right-5 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
+              !msg.isQuestion &&
+              !msg.isSuggestion &&
+              !(
+                (selectedStrategy.id === 'guided-prompting' ||
+                  selectedStrategy.id === 'self-prompting') &&
+                !index
+              ) && (
+                <div className="group absolute -bottom-4 right-8 flex size-8 cursor-pointer items-center justify-center rounded bg-custom-gradient p-1.5 transition-colors duration-200 hover:opacity-90">
                   <button
                     className="text-white"
                     onClick={() => {
