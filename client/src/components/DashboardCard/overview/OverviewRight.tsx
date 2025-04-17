@@ -24,7 +24,7 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
   const [firstInstance, setFirstInstance] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!code || !sdkRef.current) { return }
+    if (!code || !sdkRef.current) return;
     if (code && sdkRef.current && !firstInstance && startCommand) {
       StackBlitzSDK.embedProject(
         'embed',
@@ -85,7 +85,7 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
                 Share
               </div>
             </div>
-            
+
             <EnvModal />
 
             <div className="group relative flex size-8 items-center justify-center rounded-lg border-4 border-white bg-custom-gradient p-2">

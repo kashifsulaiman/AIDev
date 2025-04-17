@@ -97,7 +97,7 @@ export default function MainSideBar() {
   const handleItemClick = (label: string) => {
     if (label === 'Dashboard') {
       clearPrompt();
-      clearEnv()
+      clearEnv();
       clearConversation();
       clearSelfPromptingIteration();
     }

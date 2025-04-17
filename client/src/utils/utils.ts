@@ -10,7 +10,7 @@ export const extractAttributes = (inputPrompt: string) => {
     'next.js',
     'node',
     'express',
-    'backend'
+    'backend',
   ];
   const lowerCasePrompt = inputPrompt.toLowerCase();
   const attributes = { framework: 'react' };
@@ -51,7 +51,7 @@ export function areEnvValuesComplete(
 ): boolean {
   return envKeys.every((key) => {
     const value = envValues[key];
-    return typeof value === "string" && value.trim() !== "";
+    return typeof value === 'string' && value.trim() !== '';
   });
 }
 
@@ -65,7 +65,7 @@ export function replaceEnvInFiles(
     let updatedContent = content;
 
     for (const [key, value] of Object.entries(envMap)) {
-      const regex = new RegExp(`process\\.env\\.${key}\\b`, "g");
+      const regex = new RegExp(`process\\.env\\.${key}\\b`, 'g');
       updatedContent = updatedContent.replace(regex, `"${value}"`);
     }
 

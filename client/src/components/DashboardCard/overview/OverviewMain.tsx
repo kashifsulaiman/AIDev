@@ -26,7 +26,7 @@ const OverviewMain = () => {
     return () => {
       clearPrompt();
       clearConversation();
-      clearEnv()
+      clearEnv();
     };
   }, []);
 

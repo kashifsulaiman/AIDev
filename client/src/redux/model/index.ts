@@ -22,7 +22,7 @@ export interface StoreModel {
   promptingStrategyModel: PromptingStrategyModel;
   githubAuthModel: GithubAuthModel;
   selfPromptingModel: SelfPromptingModel;
-  envModel: EnvModel
+  envModel: EnvModel;
 }
 const model: StoreModel = persist(
   {
@@ -35,7 +35,7 @@ const model: StoreModel = persist(
     promptingStrategyModel,
     githubAuthModel,
     selfPromptingModel,
-    envModel
+    envModel,
   },
   {
     storage: 'localStorage',

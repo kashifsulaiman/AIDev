@@ -56,7 +56,7 @@ const Login = () => {
       email: '',
     });
     clearPrompt();
-    clearEnv()
+    clearEnv();
     clearConversation();
     clearSelfPromptingIteration();
   }, []);
