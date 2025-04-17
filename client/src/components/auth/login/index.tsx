@@ -43,6 +43,9 @@ const Login = () => {
   const clearSelfPromptingIteration = useStoreActions<StoreModel>(
     (actions) => actions?.selfPromptingModel?.clearSelfPromptingIteration
   );
+  const clearEnv = useStoreActions<StoreModel>(
+    (state) => state?.envModel?.clearENV
+  );
   useLayoutEffect(() => {
     forgotPasswordAction({
       form: 'ForgotPassword',
@@ -53,6 +56,7 @@ const Login = () => {
       email: '',
     });
     clearPrompt();
+    clearEnv()
     clearConversation();
     clearSelfPromptingIteration();
   }, []);
