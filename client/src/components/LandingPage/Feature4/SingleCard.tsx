@@ -49,7 +49,7 @@ const SingleCard: React.FC<Props> = ({
         )}
 
         <CardHeader className="flex flex-col items-start gap-2 xl:gap-3">
-          <div className="flex flex-wrap items-center gap-1 min-[500px]:gap-3 2xl:flex-nowrap 2xl:gap-6">
+          <div className="flex flex-wrap items-center gap-1 min-[500px]:gap-3 2xl:flex-wrap 2xl:gap-6">
             <Text
               className={`font-Jakarta text-[34px] font-semibold leading-none md:text-[44px] xl:leading-normal ${mostPopular ? 'text-white' : '!text-black'}`}
             >
