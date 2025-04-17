@@ -24,7 +24,6 @@ const OverviewRight = ({ handleViewChange, view }: OverviewRightInterface) => {
   const [firstInstance, setFirstInstance] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!code || !sdkRef.current) return;
     if (code && sdkRef.current && !firstInstance && startCommand) {
       StackBlitzSDK.embedProject(
         'embed',
