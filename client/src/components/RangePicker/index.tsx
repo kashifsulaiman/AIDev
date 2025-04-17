@@ -8,7 +8,7 @@ export interface RangePickerProps extends SliderProps {
 }
 
 const RangePicker: React.FC<RangePickerProps> = ({
-  className = 'max-w-md',
+  className = `w-full max-w-[250px]`,
   color = 'foreground',
   defaultValue = 2,
   maxValue = 10,
@@ -31,12 +31,13 @@ const RangePicker: React.FC<RangePickerProps> = ({
 
   const handleChange = (newValue: number | number[]) => {
     const newVal = Array.isArray(newValue) ? newValue[0] : newValue;
-    setValue(newVal < 2 ? 2 : newVal);
-    setSelectedIteration(newVal);
+    const clamped = newVal < 2 ? 2 : newVal;
+    setValue(clamped);
+    setSelectedIteration(clamped);
   };
 
   return (
-    <div>
+    <div className="px-2 pb-3 pt-2">
       <Slider
         className={className}
         color={color}
@@ -50,9 +51,10 @@ const RangePicker: React.FC<RangePickerProps> = ({
         size={size}
         step={step}
         classNames={{
-          track: 'bg-custom-purple/30',
-          filler: 'bg-custom-purple',
-          thumb: 'bg-custom-purple',
+          track: 'bg-custom-purple',
+          filler: 'bg-custom-gradient',
+          thumb:
+            'w-4 h-4 after:w-3 after:h-3 after:bg-custom-gradient after:shadow-none bg-custom-gradient',
           labelWrapper: 'flex justify-end',
           label: 'text-custom-purple',
           value: 'hidden',

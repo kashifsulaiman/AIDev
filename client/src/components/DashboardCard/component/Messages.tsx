@@ -12,7 +12,7 @@ import { ApiUrl } from '@/constants/apiUrl';
 import { RollbackIcon } from '@/components/SVG';
 import { useSearchParams } from 'next/navigation';
 import { decrypt } from '@/utils/encryption';
-const AiQuestions = () => {
+const Messages = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('shareToken');
   const sharedId = token ? decrypt(token) : null;
@@ -108,7 +108,7 @@ const AiQuestions = () => {
               </div>
             )}
 
-            {msg.isSuggestion && msg.textResponse && (
+            {msg.isSuggestion && (
               <div className="ml-20 flex flex-col items-end">
                 <GenericImage
                   className="z-[3] mb-2 mt-2 w-6 md:mb-1"
@@ -117,7 +117,7 @@ const AiQuestions = () => {
                   classNames={{ img: 'w-9' }}
                 />
                 <div className="leading-2 max-h-auto mr-8 w-[100%] rounded-2xl rounded-se-none bg-custom-purple p-4 font-Jakarta text-[16px] font-normal text-white">
-                  {msg.textResponse}
+                  {msg.textResponse || 'Done'}
                 </div>
               </div>
             )}
@@ -181,4 +181,4 @@ const AiQuestions = () => {
   );
 };
 
-export default AiQuestions;
+export default Messages;
