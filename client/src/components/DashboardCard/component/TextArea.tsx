@@ -27,7 +27,10 @@ const TextArea = ({
   const sharedId = token ? decrypt(token) : null;
   const { generateCode } = useGenerateCode(inputValue, setInputValue);
   const { handleQuestions } = useQuestionGeneration(inputValue, setInputValue);
-  const { handleSelfPromptingFlow } = useSelfPrompting( inputValue, setInputValue);
+  const { handleSelfPromptingFlow } = useSelfPrompting(
+    inputValue,
+    setInputValue
+  );
   const { shareChat } = useSharedChat(inputValue, setInputValue);
   const conversation = useStoreState<StoreModel>(
     (state) => state?.conversationModel?.conversation
