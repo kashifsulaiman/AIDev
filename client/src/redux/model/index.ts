@@ -11,6 +11,7 @@ import promptingStrategyModel, {
 } from './promptStrategy';
 import githubAuthModel, { GithubAuthModel } from './githubAuthModel';
 import selfPromptingModel, { SelfPromptingModel } from './selfPromptingModel';
+import envModel, { EnvModel } from './envModel';
 export interface StoreModel {
   userObj: UserModel;
   signupObj: SignupModel;
@@ -21,6 +22,7 @@ export interface StoreModel {
   promptingStrategyModel: PromptingStrategyModel;
   githubAuthModel: GithubAuthModel;
   selfPromptingModel: SelfPromptingModel;
+  envModel: EnvModel;
 }
 const model: StoreModel = persist(
   {
@@ -33,6 +35,7 @@ const model: StoreModel = persist(
     promptingStrategyModel,
     githubAuthModel,
     selfPromptingModel,
+    envModel,
   },
   {
     storage: 'localStorage',

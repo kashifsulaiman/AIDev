@@ -64,6 +64,9 @@ export default function MainSideBar() {
   const clearSelfPromptingIteration = useStoreActions<StoreModel>(
     (actions) => actions?.selfPromptingModel?.clearSelfPromptingIteration
   );
+  const clearEnv = useStoreActions<StoreModel>(
+    (state) => state?.envModel?.clearENV
+  );
 
   useEffect(() => {
     const fetchPrompts = async () => {
@@ -94,6 +97,7 @@ export default function MainSideBar() {
   const handleItemClick = (label: string) => {
     if (label === 'Dashboard') {
       clearPrompt();
+      clearEnv();
       clearConversation();
       clearSelfPromptingIteration();
     }

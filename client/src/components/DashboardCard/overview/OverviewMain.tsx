@@ -18,11 +18,15 @@ const OverviewMain = () => {
   const clearConversation = useStoreActions<StoreModel>(
     (actions) => actions?.conversationModel?.clearConversation
   );
+  const clearEnv = useStoreActions<StoreModel>(
+    (state) => state?.envModel?.clearENV
+  );
 
   useEffect(() => {
     return () => {
       clearPrompt();
       clearConversation();
+      clearEnv();
     };
   }, []);
 
