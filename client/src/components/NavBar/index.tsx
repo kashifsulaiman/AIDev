@@ -22,9 +22,6 @@ export default function NavBar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleClick = () => {
-    router.push('/contact-us');
-  };
   const ContacthandleClick = () => {
     router.push('/log-in');
   };
@@ -33,6 +30,7 @@ export default function NavBar() {
     { label: 'About us', href: '/about-us' },
     { label: 'Contact us', href: '/contact-us' },
     { label: 'Policy', href: '/privacy-policy' },
+    { label: 'pricing plan', href: '/pricing-plan' },
   ];
 
   return (
@@ -75,14 +73,6 @@ export default function NavBar() {
           ))}
         </NavbarContent>
         <NavbarContent className="flex !flex-grow-0 items-center">
-          <NavbarItem className="hidden min-[470px]:flex">
-            <CButton
-              variant="secondary"
-              className="rounded-[100px] border !border-[#376EE7] px-6 py-2.5 font-Jakarta text-base font-medium text-blue-950"
-              label="Contact Sales"
-              onClick={handleClick}
-            />
-          </NavbarItem>
           <CButton
             className="rounded-[100px] border !border-[#376EE7] px-6 py-2.5 font-Jakarta text-base font-medium text-white"
             label="Try For Free"
